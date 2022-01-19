@@ -15,6 +15,7 @@ import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../components/clientApp";
 import { userContext } from "../../context/userContext";
+import Grid from "@mui/material/Grid";
 
 export function TransactionModal() {
   const database = getDatabase(firebase);
@@ -68,56 +69,74 @@ export function TransactionModal() {
         Add Transaction
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Transaction</DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>Transaction</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
             To subscribe to this website, please enter your email address here. We will send updates
             occasionally.
           </DialogContentText> */}
-          <TextField
-            label="Amount"
-            value={amount}
-            onChange={handleAmoutChange}
-            name="amount"
-            id="amount-input"
-            InputProps={{
-              inputComponent: NumberFormatCustom,
-              inputMode: "numeric",
-              pattern: "[0-9]*",
-            }}
-            variant="standard"
-          />
-          <br />
-          <TextField
-            label="Interest"
-            value={interest}
-            onChange={handleInterestChange}
-            name="interest"
-            id="interest-input"
-            InputProps={{
-              inputComponent: NumberFormatCustom,
-            }}
-            variant="standard"
-          />
-          <br />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Basic example"
-              value={date}
-              onChange={(newValue) => {
-                setDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <br />
-
-            <TextField id="outlined-multiline-static" label="Notes" multiline rows={4} />
-          </LocalizationProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
-        </DialogActions>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Amount"
+                  value={amount}
+                  onChange={handleAmoutChange}
+                  name="amount"
+                  id="amount-input"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                    inputMode: "numeric",
+                    pattern: "[0-9]*",
+                  }}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Interest"
+                  value={interest}
+                  onChange={handleInterestChange}
+                  name="interest"
+                  id="interest-input"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="Transaction date"
+                    value={date}
+                    onChange={(newValue) => {
+                      setDate(newValue);
+                    }}
+                    renderInput={(params) => <TextField fullWidth required {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="outlined-multiline-static"
+                  label="Notes"
+                  multiline
+                  rows={4}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Submit</Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
