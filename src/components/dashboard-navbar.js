@@ -14,10 +14,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { Bell as BellIcon } from "../icons/bell";
 import { UserCircle as UserCircleIcon } from "../icons/user-circle";
-import { Users as UsersIcon } from "../icons/users";
+import LogoutIcon from "@mui/icons-material/Logout";
 import firebase from "../firebase/clientApp";
-// Import the useAuthStateHook
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useContext } from "react";
 import { userContext } from "../context/userContext";
 
@@ -68,14 +66,14 @@ export const DashboardNavbar = (props) => {
           </Typography>
           <Typography color="textPrimary">{!userLoading && !user && "Please Sign in"}</Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Tooltip title="Contacts">
+          <Tooltip title="Log out">
             <IconButton
               sx={{ ml: 1 }}
               onClick={() => {
                 firebase.auth().signOut();
               }}
             >
-              <UsersIcon fontSize="small" />
+              <LogoutIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Notifications">

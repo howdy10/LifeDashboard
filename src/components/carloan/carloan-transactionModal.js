@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext, useState, forwardRef } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,15 +14,17 @@ import DatePicker from "@mui/lab/DatePicker";
 import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../components/clientApp";
+import { userContext } from "../../context/userContext";
 
 export function TransactionModal() {
   const database = getDatabase(firebase);
 
-  const [open, setOpen] = React.useState(false);
+  const { user, userLoading } = useContext(userContext);
+  const [open, setOpen] = useState(false);
 
-  const [amount, setAmount] = React.useState(0);
-  const [interest, setInterest] = React.useState(0);
-  const [date, setDate] = React.useState(null);
+  const [amount, setAmount] = useState(0);
+  const [interest, setInterest] = useState(0);
+  const [date, setDate] = useState(null);
 
   const handleAmoutChange = (event) => {
     setAmount(event.target.value);
@@ -50,17 +52,19 @@ export function TransactionModal() {
       date: getTime(date),
     };
 
-    const newTransactionsKey = push(child(ref(database), "Loans/0/transactions")).key;
+    const newTransactionsKey = push(
+      child(ref(database), "users/" + user.uid + "/Loans/0/transactions")
+    ).key;
 
     const updates = {};
-    updates["Loans/0/transactions/" + newTransactionsKey] = transaction;
+    updates["users/" + user.uid + "/Loans/0/transactions/" + newTransactionsKey] = transaction;
     update(ref(database), updates);
     setOpen(false);
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button color="primary" variant="contained" onClick={handleClickOpen} sx={{ mr: 1 }}>
         Add Transaction
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -118,7 +122,7 @@ export function TransactionModal() {
     </div>
   );
 }
-const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
 
   return (

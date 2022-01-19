@@ -12,6 +12,7 @@ import { ShoppingBag as ShoppingBagIcon } from "../icons/shopping-bag";
 import { User as UserIcon } from "../icons/user";
 import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -24,7 +25,7 @@ const items = [
   },
   {
     href: "/carLoan",
-    icon: <UsersIcon fontSize="small" />,
+    icon: <DirectionsCarIcon fontSize="small" />,
     title: "CarLoan",
   },
   {
