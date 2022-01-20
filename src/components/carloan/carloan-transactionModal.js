@@ -16,11 +16,14 @@ import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../components/clientApp";
 import { userContext } from "../../context/userContext";
 import Grid from "@mui/material/Grid";
+import { getAuth } from "firebase/auth";
 
 export function TransactionModal() {
   const database = getDatabase(firebase);
 
-  const { user, userLoading } = useContext(userContext);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   const [open, setOpen] = useState(false);
 
   const [amount, setAmount] = useState(0);
