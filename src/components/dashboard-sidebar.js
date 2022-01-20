@@ -13,6 +13,7 @@ import { User as UserIcon } from "../icons/user";
 import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -29,14 +30,14 @@ const items = [
     title: "CarLoan",
   },
   {
+    href: "/insurance",
+    icon: <LocalHospitalIcon fontSize="small" />,
+    title: "Insurance",
+  },
+  {
     href: "/customers",
     icon: <UsersIcon fontSize="small" />,
     title: "Customers",
-  },
-  {
-    href: "/products",
-    icon: <ShoppingBagIcon fontSize="small" />,
-    title: "Products",
   },
   {
     href: "/account",
