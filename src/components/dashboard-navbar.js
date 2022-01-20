@@ -18,6 +18,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import firebase from "../firebase/clientApp";
 import { useEffect, useContext } from "react";
 import { userContext } from "../context/userContext";
+import { getAuth } from "firebase/auth";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -27,7 +28,8 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 export const DashboardNavbar = (props) => {
   const { onSidebarOpen, ...other } = props;
 
-  const { user, userLoading } = useContext(userContext);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   return (
     <>
@@ -61,10 +63,8 @@ export const DashboardNavbar = (props) => {
           >
             <MenuIcon fontSize="small" />
           </IconButton>
-          <Typography color="textPrimary">
-            {!userLoading && user && "Hello " + user.displayName}
-          </Typography>
-          <Typography color="textPrimary">{!userLoading && !user && "Please Sign in"}</Typography>
+          <Typography color="textPrimary">{user && "Hello " + user.displayName}</Typography>
+          <Typography color="textPrimary">{!user && "Please Sign in"}</Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Tooltip title="Log out">
             <IconButton

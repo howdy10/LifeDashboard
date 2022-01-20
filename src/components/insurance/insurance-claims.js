@@ -30,10 +30,12 @@ function Row(props) {
           {format(row.date, "MM/dd/yyyy")}
         </TableCell>
         <TableCell align="right">
-          {row.cost.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
+          {row.insurance
+            ? row.cost.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })
+            : "N/A"}
         </TableCell>
         <TableCell>{row.provider}</TableCell>
         <TableCell>{row.person}</TableCell>
