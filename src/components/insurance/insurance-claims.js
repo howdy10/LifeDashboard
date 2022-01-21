@@ -25,7 +25,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }} onClick={() => setOpen(!open)}>
         <TableCell component="th" scope="row">
           {format(row.date, "MM/dd/yyyy")}
         </TableCell>
