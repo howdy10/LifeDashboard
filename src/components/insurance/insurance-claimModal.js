@@ -30,8 +30,6 @@ import {
 export function ClaimModal() {
   const database = getDatabase(firebase);
 
-  const auth = getAuth();
-  const user = auth.currentUser;
   const [open, setOpen] = useState(false);
 
   const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));

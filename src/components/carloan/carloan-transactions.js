@@ -50,7 +50,7 @@ export const CarloanTransactions = ({ loan, ...rest }) => (
         <TableBody>
           {loan.transactions &&
             Object.keys(loan.transactions).map((id, index) => (
-              <TableRow hover key={loan.transactions[id].id}>
+              <TableRow hover key={index}>
                 <TableCell>{format(loan.transactions[id].date, "MM/dd/yyyy")}</TableCell>
                 <TableCell>
                   {loan.transactions[id].amount.toLocaleString("en-US", {
