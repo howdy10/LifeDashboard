@@ -16,13 +16,10 @@ import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../components/clientApp";
 import { userContext } from "../../context/userContext";
 import Grid from "@mui/material/Grid";
-import { getAuth } from "firebase/auth";
+import { CarLoanTransactionUrl } from "../../firebase/databaseLinks";
 
 export function TransactionModal() {
   const database = getDatabase(firebase);
-
-  const auth = getAuth();
-  const user = auth.currentUser;
 
   const [open, setOpen] = useState(false);
 
@@ -56,12 +53,10 @@ export function TransactionModal() {
       date: getTime(date),
     };
 
-    const newTransactionsKey = push(
-      child(ref(database), "users/" + user.uid + "/Loans/0/transactions")
-    ).key;
+    const newTransactionsKey = push(child(ref(database), CarLoanTransactionUrl())).key;
 
     const updates = {};
-    updates["users/" + user.uid + "/Loans/0/transactions/" + newTransactionsKey] = transaction;
+    updates[CarLoanTransactionUrl() + "/" + newTransactionsKey] = transaction;
     update(ref(database), updates);
     setOpen(false);
   };

@@ -10,16 +10,13 @@ import { useObject } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { userContext } from "../context/userContext";
-import { getAuth } from "firebase/auth";
+import { CarLoanUrl } from "../firebase/databaseLinks";
 
 export const CarLoan = () => {
   // Get a reference to the database service
   const database = getDatabase(firebase);
-  const auth = getAuth();
-  const user = auth.currentUser;
 
-  const [snapshot, loading, error] = useObject(ref(database, "users/" + user?.uid + "/Loans/0"));
+  const [snapshot, loading, error] = useObject(ref(database, CarLoanUrl()));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>

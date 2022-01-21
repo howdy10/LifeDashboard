@@ -21,6 +21,11 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { getAuth } from "firebase/auth";
+import {
+  InsuranceClaimsUrl,
+  InsuranceMembersUrl,
+  InsuranceProvidersUrl,
+} from "../../firebase/databaseLinks";
 
 export function ClaimModal() {
   const database = getDatabase(firebase);
@@ -29,11 +34,9 @@ export function ClaimModal() {
   const user = auth.currentUser;
   const [open, setOpen] = useState(false);
 
-  const [members, membersLoading, membersError] = useObject(
-    ref(database, "users/" + user?.uid + "/HealthInsurance/members")
-  );
+  const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
   const [providers, providersLoading, providersError] = useObject(
-    ref(database, "users/" + user?.uid + "/HealthInsurance/providers")
+    ref(database, InsuranceProvidersUrl())
   );
 
   const [amount, setAmount] = useState(0);
@@ -85,10 +88,10 @@ export function ClaimModal() {
       insurance: insurance,
     };
 
-    const newKey = push(child(ref(database), "users/" + user.uid + "/HealthInsurance/claims")).key;
+    const newKey = push(child(ref(database), InsuranceClaimsUrl())).key;
 
     const updates = {};
-    updates["users/" + user.uid + "/HealthInsurance/claims/" + newKey] = claim;
+    updates[InsuranceClaimsUrl() + "/" + newKey] = claim;
     update(ref(database), updates);
     handleClose();
   };

@@ -13,6 +13,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { userContext } from "../context/userContext";
 import { getAuth } from "firebase/auth";
 import { InsuranceBoard } from "../components/insurance/insurance-board";
+import { InsuranceUrl } from "../firebase/databaseLinks";
 
 export const Insurance = () => {
   const database = getDatabase(firebase);
@@ -20,9 +21,7 @@ export const Insurance = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const [snapshot, loading, error] = useObject(
-    ref(database, "users/" + user?.uid + "/HealthInsurance")
-  );
+  const [snapshot, loading, error] = useObject(ref(database, InsuranceUrl()));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
