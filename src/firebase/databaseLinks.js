@@ -1,39 +1,51 @@
 import { getAuth } from "firebase/auth";
+import { useEffect } from "react";
+import { ref, getDatabase } from "firebase/database";
+import { useListKeys } from "react-firebase-hooks/database";
+import { firebase } from "./clientApp";
 
-const familyId = "a70b3195-4787-4509-8d08-cfeb49761524";
+export const GetFamilyId = () => {
+  const database = getDatabase(firebase);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const [keys, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
+
+  return keys ? keys[0] : "";
+};
 
 export const CarLoanUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/Loans/0";
+  return "family/" + GetFamilyId() + "/Loans/0";
 };
 
 export const CarLoanTransactionUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/Loans/0/transactions";
+  return "family/" + GetFamilyId() + "/Loans/0/transactions";
 };
 
 export const InsuranceUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/HealthInsurance";
+  return "family/" + GetFamilyId() + "/HealthInsurance";
 };
 
 export const InsuranceMembersUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/HealthInsurance/members";
+  return "family/" + GetFamilyId() + "/HealthInsurance/members";
 };
 
 export const InsuranceProvidersUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/HealthInsurance/providers";
+  return "family/" + GetFamilyId() + "/HealthInsurance/providers";
 };
 
 export const InsuranceClaimsUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  return "family/" + familyId + "/HealthInsurance/claims";
+  return "family/" + GetFamilyId() + "/HealthInsurance/claims";
 };
