@@ -46,7 +46,6 @@ export const CarloanPercent = ({ remaning, initial }) => {
 
   useEffect(() => {
     setPaidPercent(Math.trunc(((initial - remaning) / initial) * 100));
-    console.log(paidPercent);
   }, [remaning, initial]);
 
   return (
