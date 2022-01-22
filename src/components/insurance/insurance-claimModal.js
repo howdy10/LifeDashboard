@@ -133,7 +133,10 @@ export function ClaimModal() {
                   onChange={(newValue) => {
                     setDate(newValue);
                   }}
-                  renderInput={(params) => <TextField fullWidth required error {...params} />}
+                  renderInput={(params) => {
+                    params.error = submittionAttempt && date === null;
+                    return <TextField fullWidth error={true} {...params} />;
+                  }}
                 />
               </LocalizationProvider>
             </Grid>

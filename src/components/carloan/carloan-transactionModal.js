@@ -124,7 +124,10 @@ export function TransactionModal() {
                   onChange={(newValue) => {
                     setDate(newValue);
                   }}
-                  renderInput={(params) => <TextField fullWidth required {...params} />}
+                  renderInput={(params) => {
+                    params.error = submittionAttempt && date === null;
+                    return <TextField fullWidth error={true} {...params} />;
+                  }}
                 />
               </LocalizationProvider>
             </Grid>
