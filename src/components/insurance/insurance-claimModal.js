@@ -29,6 +29,7 @@ import {
 
 export function ClaimModal() {
   const database = getDatabase(firebase);
+  const insuranceClaimUrl = InsuranceClaimsUrl();
 
   const [open, setOpen] = useState(false);
 
@@ -86,10 +87,10 @@ export function ClaimModal() {
       insurance: insurance,
     };
 
-    const newKey = push(child(ref(database), InsuranceClaimsUrl())).key;
+    const newKey = push(child(ref(database), insuranceClaimUrl)).key;
 
     const updates = {};
-    updates[InsuranceClaimsUrl() + "/" + newKey] = claim;
+    updates[insuranceClaimUrl + "/" + newKey] = claim;
     update(ref(database), updates);
     handleClose();
   };
