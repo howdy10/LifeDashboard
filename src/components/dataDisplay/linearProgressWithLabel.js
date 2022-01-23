@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -36,10 +36,6 @@ LinearProgressWithLabel.defaultProps = {
   showGoalLabel: false,
 };
 LinearProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate and buffer variants.
-   * Value between 0 and 100.
-   */
   current: PropTypes.number.isRequired,
   goal: PropTypes.number.isRequired,
   showCurrentLabel: PropTypes.bool,
