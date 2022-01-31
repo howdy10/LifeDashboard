@@ -14,6 +14,7 @@ import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -33,6 +34,11 @@ const items = [
     href: "/insurance",
     icon: <LocalHospitalIcon fontSize="small" />,
     title: "Insurance",
+  },
+  {
+    href: "/budget",
+    icon: <AccountBalanceIcon fontSize="small" />,
+    title: "Budget",
   },
   {
     href: "/customers",

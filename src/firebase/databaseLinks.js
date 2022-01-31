@@ -49,3 +49,9 @@ export const InsuranceClaimsUrl = () => {
   const user = auth.currentUser;
   return "family/" + GetFamilyId() + "/HealthInsurance/claims";
 };
+
+export const BudgetUrl = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return "family/" + GetFamilyId() + "/Budget";
+};
