@@ -18,7 +18,7 @@ export function LinearProgressWithLabel(props) {
           </Typography>
         </Box>
       )}
-      <Box sx={{ width: "84%", mr: 1, ml: 1 }}>
+      <Box sx={{ width: "100%", mr: 1, ml: 1 }}>
         <LinearProgress variant="determinate" value={(props.current / props.goal) * 100} />
       </Box>
       {props.showGoalLabel && (
