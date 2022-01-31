@@ -1,0 +1,239 @@
+{
+  "_links": {
+    "create": {
+      "href": "https://api.everydollar.com/budget/forms/budget/create"
+    },
+    "delete": {
+      "href": "https://api.everydollar.com/budget/forms/budget/delete"
+    }
+  },
+  "debt_snowball_sync_state": "ineligible",
+  "_embedded": {
+    "budget": [
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:f2f06a9e-11b1-4d95-b820-448f4629514f"
+          }
+        },
+        "date": "2019-10-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:4f73dd77-21e8-45ee-9361-f3aa0acb6048"
+          }
+        },
+        "date": "2019-12-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:69b388a6-2061-4864-b147-ddaa568e2d26"
+          }
+        },
+        "date": "2020-01-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:7981744c-d520-49dc-beca-65cc40163979"
+          }
+        },
+        "date": "2020-02-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:97249874-d967-48a1-a1c1-c7fda991e2d9"
+          }
+        },
+        "date": "2020-03-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:c007a969-9b82-4a33-a0eb-c0e5feac8fb4"
+          }
+        },
+        "date": "2020-04-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:843d5b1d-49e7-4214-8c2a-397a64ca30c8"
+          }
+        },
+        "date": "2020-05-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:171e5e17-df9d-4528-bc1b-d035a1e15401"
+          }
+        },
+        "date": "2020-06-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:c8fcb08b-748b-4f47-b586-8faceef76f32"
+          }
+        },
+        "date": "2020-07-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:61fe8a56-29f8-4687-9532-ba41714e6028"
+          }
+        },
+        "date": "2020-08-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:7afa2282-24b7-469f-987f-112e622d6c45"
+          }
+        },
+        "date": "2020-09-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:337bcc3e-6475-4bd7-b18d-1632b13d2cde"
+          }
+        },
+        "date": "2020-10-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:b5bfd96f-5afe-48c0-9015-d99be01dfc08"
+          }
+        },
+        "date": "2020-11-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:fcd5b11d-3934-4600-b29c-4f8dec5825a0"
+          }
+        },
+        "date": "2020-12-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:9d3b6ce8-5f44-4fd9-ae7e-f66cb00acf6d"
+          }
+        },
+        "date": "2021-01-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:16b82626-3f4f-47e8-b863-91661d21f54d"
+          }
+        },
+        "date": "2021-02-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:b28cbd02-944a-446a-be69-0d10c0410f41"
+          }
+        },
+        "date": "2021-03-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:4a67ef3e-cc61-4d23-a311-4c48239d1171"
+          }
+        },
+        "date": "2021-04-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:fd3a55f3-5e4a-487d-b1aa-21ce86e75f31"
+          }
+        },
+        "date": "2021-05-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:9b9a5b60-3352-4afc-a359-e25ee1afbe6b"
+          }
+        },
+        "date": "2021-06-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:4421fa66-7e84-4f6f-a8cf-7ed4bedd7eb5"
+          }
+        },
+        "date": "2021-07-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:85ec4de5-5da4-47cc-8c82-ca8dbc78ca2e"
+          }
+        },
+        "date": "2021-08-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:f9ff1cb3-b095-4bfc-a007-a43cee51cee8"
+          }
+        },
+        "date": "2021-09-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:0629c251-9468-4aa1-923b-4e7e208c17b8"
+          }
+        },
+        "date": "2021-10-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:9a18392c-4d58-4116-a9a1-0f13ace75dfb"
+          }
+        },
+        "date": "2021-11-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:c6c8461b-792c-48d6-ab8e-38ed9f3bb72e"
+          }
+        },
+        "date": "2021-12-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:29b3a9f5-46ee-4be8-8509-f84b598961d8"
+          }
+        },
+        "date": "2022-01-01"
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "urn:everydollar:budget:0332ed6e-5d02-46b8-a647-a51151fc7875"
+          }
+        },
+        "date": "2022-02-01"
+      }
+    ]
+  }
+}
