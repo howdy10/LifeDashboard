@@ -14,6 +14,7 @@ import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import HomeIcon from "@mui/icons-material/Home";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -23,6 +24,11 @@ const items = [
     href: "/",
     icon: <ChartBarIcon fontSize="small" />,
     title: "Dashboard",
+  },
+  {
+    href: "/homeLoan",
+    icon: <HomeIcon fontSize="small" />,
+    title: "HomeLoan",
   },
   {
     href: "/carLoan",

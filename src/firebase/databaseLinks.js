@@ -26,6 +26,18 @@ export const CarLoanTransactionUrl = () => {
   return "family/" + GetFamilyId() + "/Loans/0/transactions";
 };
 
+export const HomeLoanUrl = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return "family/" + GetFamilyId() + "/Loans/1";
+};
+
+export const HomeLoanTransactionUrl = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return "family/" + GetFamilyId() + "/Loans/1/transactions";
+};
+
 export const InsuranceUrl = () => {
   const auth = getAuth();
   const user = auth.currentUser;
