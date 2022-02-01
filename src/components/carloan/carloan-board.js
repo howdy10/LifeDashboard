@@ -18,12 +18,20 @@ import { Download as DownloadIcon } from "../../icons/download";
 import { CarloanBalances } from "./carloan-balances";
 import { CarloanPercent } from "./carloan-percent";
 import { CarloanNumbers } from "./carloan-numbers";
+import { DashboardUrl } from "../../firebase/databaseLinks";
+import { ref, getDatabase, push, child, update } from "firebase/database";
+import { firebase } from "../../components/clientApp";
 
 export const CarloanBoard = ({ loan, ...rest }) => {
+  const database = getDatabase(firebase);
+  const dashboardUrl = DashboardUrl();
+
   const [remaining, setRemaining] = useState(0);
   const [interest, setInterest] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [principalPaid, setPrincipalPaid] = useState(0);
+
+  const [updateDashboard, setUpdateDashboard] = useState(true);
 
   useEffect(() => {
     let totalPaid = 0;
@@ -43,6 +51,20 @@ export const CarloanBoard = ({ loan, ...rest }) => {
     setPrincipalPaid(totalPaid - interestPaid);
     setRemaining(loan.loanAmount - totalPaid + interestPaid);
   }, [loan]);
+
+  useEffect(() => {
+    if (updateDashboard && remaining !== 0) {
+      let loanDashboard = {
+        percent: Math.trunc(((loan.loanAmount - remaining) / loan.loanAmount) * 100),
+        title: "Car Loan Nissan",
+        type: "loan",
+      };
+      const updates = {};
+      updates[dashboardUrl + "/0"] = loanDashboard;
+      update(ref(database), updates);
+      setUpdateDashboard(false);
+    }
+  }, [remaining]);
   return (
     <Box>
       <Box
