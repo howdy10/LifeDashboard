@@ -2,17 +2,17 @@ import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from
 import InsertChartIcon from "@mui/icons-material/InsertChartOutlined";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-export const LoanProgress = (loan, props) => {
+export const LoanProgress = ({ loan, props }) => {
   return (
     <Card sx={{ height: "100%" }} {...props}>
       <CardContent>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
-              {loan.loan.title}
+              {loan.title}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {loan.loan.percent}%
+              {loan.percent}%
             </Typography>
           </Grid>
           <Grid item>
@@ -28,7 +28,7 @@ export const LoanProgress = (loan, props) => {
           </Grid>
         </Grid>
         <Box sx={{ pt: 3 }}>
-          <LinearProgress value={loan.loan.percent} variant="determinate" />
+          <LinearProgress value={loan.percent} variant="determinate" />
         </Box>
       </CardContent>
     </Card>
