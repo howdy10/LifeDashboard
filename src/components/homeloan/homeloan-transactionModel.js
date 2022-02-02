@@ -13,7 +13,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
-import { firebase } from "../../components/clientApp";
+import { firebase } from "../../firebase/clientApp";
 import Grid from "@mui/material/Grid";
 import { HomeLoanTransactionUrl } from "../../firebase/databaseLinks";
 

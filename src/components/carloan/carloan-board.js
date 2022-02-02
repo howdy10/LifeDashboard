@@ -20,7 +20,7 @@ import { CarloanPercent } from "./carloan-percent";
 import { CarloanNumbers } from "./carloan-numbers";
 import { DashboardUrl } from "../../firebase/databaseLinks";
 import { ref, getDatabase, push, child, update } from "firebase/database";
-import { firebase } from "../../components/clientApp";
+import { firebase } from "../../firebase/clientApp";
 
 export const CarloanBoard = ({ loan, ...rest }) => {
   const database = getDatabase(firebase);

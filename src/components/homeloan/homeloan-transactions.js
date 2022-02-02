@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { TransactionModal } from "./carloan-transactionModel";
+import { TransactionModal } from "./homeloan-transactionModel";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import {
