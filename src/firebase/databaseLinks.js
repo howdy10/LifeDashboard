@@ -17,6 +17,18 @@ export const DashboardUrl = () => {
   return "family/a70b3195-4787-4509-8d08-cfeb49761524/Dashboard";
 };
 
+export const EmergencyBucketUrl = () => {
+  return "family/" + GetFamilyId() + "/Savings/emergencyFund";
+};
+
+export const BucketsUrl = () => {
+  return "family/" + GetFamilyId() + "/Savings/buckets";
+};
+
+export const SavingsUrl = () => {
+  return "family/a70b3195-4787-4509-8d08-cfeb49761524//Savings";
+};
+
 export const CarLoanUrl = () => {
   return "family/" + GetFamilyId() + "/Loans/0";
 };
