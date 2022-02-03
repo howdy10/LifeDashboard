@@ -7,6 +7,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import MoneyIcon from "@mui/icons-material/Money";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { SavingsUrl } from "../../firebase/databaseLinks";
+import { TransactionModal } from "./savings-transactionModel";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
   const [total, setTotal] = useState(0);
@@ -31,6 +32,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
     <Card sx={{ height: "100%" }}>
       <CardContent>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+          <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
               {bucket.name}

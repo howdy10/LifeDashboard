@@ -40,7 +40,7 @@ const Savings = () => {
           <Grid container spacing={3}>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
               <LoadingComponent loading={loading} error={error}>
-                <SavingBucket bucket={snapshot} />
+                <SavingBucket bucket={snapshot} bucketId={"emergencyFund"} />
               </LoadingComponent>
             </Grid>
             <LoadingComponent loading={bucketsLoading} error={bucketsError}>
