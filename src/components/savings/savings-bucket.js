@@ -55,7 +55,11 @@ export const SavingBucket = ({ bucket, bucketId }) => {
         </Box>
 
         <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
-        <SavingsTransactions transactions={bucketTransactions} bucketName={bucket.name} />
+        <SavingsTransactions
+          transactions={bucketTransactions}
+          bucketId={bucketId}
+          bucketName={bucket.name}
+        />
       </CardContent>
     </Card>
   );

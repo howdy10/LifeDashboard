@@ -28,9 +28,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { deleteSavingTransaction } from "../../api/savings-api";
 
-export const SavingsTransactions = ({ transactions, bucketName, ...rest }) => {
+export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...rest }) => {
   const [open, setOpen] = useState(false);
+  const [tryingToDelete, setTryingToDelete] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,6 +40,10 @@ export const SavingsTransactions = ({ transactions, bucketName, ...rest }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleTryingToDeleteClose = () => {
+    setTryingToDelete(false);
   };
 
   return (
@@ -63,29 +69,58 @@ export const SavingsTransactions = ({ transactions, bucketName, ...rest }) => {
             <TableBody>
               {transactions &&
                 Object.keys(transactions).map((id, index) => (
-                  <TableRow hover key={index}>
-                    <TableCell>
-                      {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
-                    </TableCell>
-                    <TableCell>
-                      {transactions[id].amount.toLocaleString("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      })}
-                    </TableCell>
-                    <TableCell>{transactions[id].note}</TableCell>
+                  <>
+                    <TableRow hover key={index}>
+                      <TableCell>
+                        {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
+                      </TableCell>
+                      <TableCell>
+                        {transactions[id].amount.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })}
+                      </TableCell>
+                      <TableCell>{transactions[id].note}</TableCell>
 
-                    <TableCell>
-                      <Fab color="primary" size="small">
-                        <EditIcon />
-                      </Fab>
-                    </TableCell>
-                    <TableCell>
-                      <Fab color="primary" size="small">
-                        <DeleteForeverIcon />
-                      </Fab>
-                    </TableCell>
-                  </TableRow>
+                      <TableCell>
+                        <Fab color="primary" size="small">
+                          <EditIcon />
+                        </Fab>
+                      </TableCell>
+                      <TableCell>
+                        <Fab
+                          color="primary"
+                          size="small"
+                          onClick={() => {
+                            setTryingToDelete(true);
+                          }}
+                        >
+                          <DeleteForeverIcon />
+                        </Fab>
+                      </TableCell>
+                    </TableRow>
+                    <Dialog
+                      open={tryingToDelete}
+                      onClose={handleTryingToDeleteClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">
+                        {"Are you sure you want to Delete this transaction?"}
+                      </DialogTitle>
+                      <DialogActions>
+                        <Button onClick={handleTryingToDeleteClose}>Disagree</Button>
+                        <Button
+                          onClick={() => {
+                            deleteSavingTransaction(id, bucketId);
+                          }}
+                          autoFocus
+                        >
+                          Agree
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </>
                 ))}
             </TableBody>
           </Table>
@@ -97,3 +132,36 @@ export const SavingsTransactions = ({ transactions, bucketName, ...rest }) => {
     </div>
   );
 };
+
+export default function AlertDialog() {
+  const [tryingToDelete, setTryingToDelete] = useState(false);
+
+  const handleClickOpen = () => {
+    setTryingToDelete(true);
+  };
+
+  const handleClose = () => {
+    setTryingToDelete(false);
+  };
+
+  return (
+    <div>
+      <Dialog
+        open={tryingToDelete}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to Delete this transaction?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
