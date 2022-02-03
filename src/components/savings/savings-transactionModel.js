@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 import { Avatar, Box, Card, CardContent, Grid, Typography, Fab } from "@mui/material";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
@@ -13,14 +13,29 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import AddIcon from "@mui/icons-material/Add";
+import Snackbar from "@mui/material/Snackbar";
 import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 import { CarLoanTransactionUrl } from "../../firebase/databaseLinks";
 import { createSavingTransaction } from "../../api/savings-api";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import MuiAlert from "@mui/material/Alert";
 
 export function TransactionModal({ bucketId, bucketName }) {
   const [open, setOpen] = useState(false);
+  const [completedSnackbar, setCompletedSnackbar] = useState(false);
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setCompletedSnackbar(false);
+  };
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(null);
@@ -32,7 +47,7 @@ export function TransactionModal({ bucketId, bucketName }) {
     setAmount(event.target.value);
   };
   const handleNoteChange = (event) => {
-    setAmount(event.target.value);
+    setNote(event.target.value);
   };
 
   const handleClickOpen = () => {
@@ -60,6 +75,7 @@ export function TransactionModal({ bucketId, bucketName }) {
       bucketId: bucketId,
     };
     createSavingTransaction(transaction);
+    setCompletedSnackbar(true);
     handleClose();
     setOpen(false);
   };
@@ -125,6 +141,12 @@ export function TransactionModal({ bucketId, bucketName }) {
           <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar open={completedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Transaction Saved
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
