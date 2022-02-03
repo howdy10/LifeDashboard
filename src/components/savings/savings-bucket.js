@@ -8,6 +8,7 @@ import MoneyIcon from "@mui/icons-material/Money";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { SavingsUrl } from "../../firebase/databaseLinks";
 import { TransactionModal } from "./savings-transactionModel";
+import { SavingsTransactions } from "./savings-transactions";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
   const [total, setTotal] = useState(0);
@@ -54,6 +55,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
         </Box>
 
         <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
+        <SavingsTransactions transactions={bucketTransactions} bucketName={bucket.name} />
       </CardContent>
     </Card>
   );
