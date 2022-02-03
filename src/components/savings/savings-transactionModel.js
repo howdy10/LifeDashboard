@@ -1,4 +1,5 @@
 import { useState, forwardRef } from "react";
+import { Avatar, Box, Card, CardContent, Grid, Typography, Fab } from "@mui/material";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,10 +12,10 @@ import NumberFormat from "react-number-format";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import AddIcon from "@mui/icons-material/Add";
 import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
-import Grid from "@mui/material/Grid";
 import { CarLoanTransactionUrl } from "../../firebase/databaseLinks";
 import { createSavingTransaction } from "../../api/savings-api";
 
@@ -65,9 +66,11 @@ export function TransactionModal({ bucketId, bucketName }) {
 
   return (
     <div>
-      <Button color="primary" variant="contained" onClick={handleClickOpen} sx={{ mr: 1 }}>
-        Add Transaction
-      </Button>
+      <Grid item>
+        <Fab color="primary" size="small" onClick={handleClickOpen}>
+          <AddIcon />
+        </Fab>
+      </Grid>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Transaction</DialogTitle>
         <DialogContent>

@@ -32,7 +32,6 @@ export const SavingBucket = ({ bucket, bucketId }) => {
     <Card sx={{ height: "100%" }}>
       <CardContent>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
-          <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
               {bucket.name}
@@ -53,6 +52,8 @@ export const SavingBucket = ({ bucket, bucketId }) => {
             Goal: {MoneyFormatter(bucket.goal)}
           </Typography>
         </Box>
+
+        <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
       </CardContent>
     </Card>
   );
