@@ -88,7 +88,7 @@ export function TransactionModal({ bucketId, bucketName }) {
         </Fab>
       </Grid>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Transaction</DialogTitle>
+        <DialogTitle>Transaction for {bucketName}</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
