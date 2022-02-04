@@ -9,6 +9,7 @@ import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { SavingsUrl } from "../../firebase/databaseLinks";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
+import { updateSavingsBucketTotal } from "../../api/savings-api";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
   const [total, setTotal] = useState(0);
@@ -28,6 +29,13 @@ export const SavingBucket = ({ bucket, bucketId }) => {
     }
     setTotal(current);
   }, [bucketTransactions]);
+
+  useEffect(() => {
+    if (bucket.amount !== total && total !== 0) {
+      bucket.amount = total;
+      updateSavingsBucketTotal(bucket, bucketId);
+    }
+  }, [total]);
 
   return (
     <Card sx={{ height: "100%" }}>

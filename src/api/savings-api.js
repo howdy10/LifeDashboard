@@ -33,3 +33,17 @@ export function deleteSavingTransaction(transactionId, bucketId) {
   remove(ref(database, savingsUrl + "/transactions/" + transactionId));
   remove(ref(database, savingsUrl + "/bucketTransactions/" + bucketId + "/" + transactionId));
 }
+
+export function updateSavingsBucketTotal(bucket, id) {
+  const database = getDatabase(firebase);
+  const savingsUrl = SavingsUrl();
+
+  const updates = {};
+  if (id === "emergencyFund") {
+    updates[savingsUrl + "/" + id] = bucket;
+  } else {
+    updates[savingsUrl + "/buckets/" + id] = bucket;
+  }
+
+  return update(ref(database), updates);
+}
