@@ -82,46 +82,43 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
                   .slice()
                   .sort(getComparator("desc", "date"))
                   .map((id, index) => (
-                    <div key={index}>
-                      <TableRow hover>
-                        <TableCell>
-                          {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
-                        </TableCell>
-                        <TableCell>
-                          {transactions[id].amount.toLocaleString("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                          })}
-                        </TableCell>
-                        <TableCell>{transactions[id].note}</TableCell>
-
-                        <TableCell>
-                          <Fab
-                            color="primary"
-                            size="small"
-                            onClick={() => {
-                              setEditAmount(transactions[id].amount);
-                              setEditDate(transactions[id].date);
-                              setEditNote(transactions[id].note);
-                              setEditId(id);
-                              setEditModal(true);
-                            }}
-                          >
-                            <EditIcon />
-                          </Fab>
-                        </TableCell>
-                        <TableCell>
-                          <Fab
-                            color="primary"
-                            size="small"
-                            onClick={() => {
-                              setTryingToDelete(true);
-                            }}
-                          >
-                            <DeleteForeverIcon />
-                          </Fab>
-                        </TableCell>
-                      </TableRow>
+                    <TableRow hover key={index}>
+                      <TableCell>
+                        {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
+                      </TableCell>
+                      <TableCell>
+                        {transactions[id].amount.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })}
+                      </TableCell>
+                      <TableCell>{transactions[id].note}</TableCell>
+                      <TableCell>
+                        <Fab
+                          color="primary"
+                          size="small"
+                          onClick={() => {
+                            setEditAmount(transactions[id].amount);
+                            setEditDate(transactions[id].date);
+                            setEditNote(transactions[id].note);
+                            setEditId(id);
+                            setEditModal(true);
+                          }}
+                        >
+                          <EditIcon />
+                        </Fab>
+                      </TableCell>
+                      <TableCell>
+                        <Fab
+                          color="primary"
+                          size="small"
+                          onClick={() => {
+                            setTryingToDelete(true);
+                          }}
+                        >
+                          <DeleteForeverIcon />
+                        </Fab>
+                      </TableCell>
                       {editModal && (
                         <TransactionForm
                           bucketId={bucketId}
@@ -156,7 +153,7 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
                           </Button>
                         </DialogActions>
                       </Dialog>
-                    </div>
+                    </TableRow>
                   ))}
             </TableBody>
           </Table>
