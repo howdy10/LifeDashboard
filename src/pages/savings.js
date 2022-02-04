@@ -18,12 +18,26 @@ import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { useEffect, useState } from "react";
+import { MoneyFormatter } from "../components/dataDisplay/numberFormatter";
 
 const Savings = () => {
   const database = getDatabase(firebase);
 
   const [snapshot, loading, error] = useObjectVal(ref(database, EmergencyBucketUrl()));
   const [buckets, bucketsLoading, bucketsError] = useObjectVal(ref(database, BucketsUrl()));
+
+  const [savingsTotal, setSavingsTotal] = useState();
+
+  useEffect(() => {
+    let savingsTotal = snapshot?.amount ?? 0;
+    if (buckets) {
+      Object.keys(buckets)
+        .filter((key, index) => !buckets[key].complete)
+        .map((key, index) => (savingsTotal += buckets[key].amount ?? 0));
+    }
+    setSavingsTotal(savingsTotal);
+  }, [snapshot, buckets]);
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Head>
@@ -38,6 +52,9 @@ const Savings = () => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={3}>
+            <Grid item xs={12}>
+              Total:{MoneyFormatter(savingsTotal)}
+            </Grid>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
               <LoadingComponent loading={loading} error={error}>
                 <SavingBucket bucket={snapshot} bucketId={"emergencyFund"} />
