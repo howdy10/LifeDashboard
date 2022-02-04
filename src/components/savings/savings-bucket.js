@@ -53,13 +53,18 @@ export const SavingBucket = ({ bucket, bucketId }) => {
             Goal: {MoneyFormatter(bucket.goal)}
           </Typography>
         </Box>
-
-        <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
-        <SavingsTransactions
-          transactions={bucketTransactions}
-          bucketId={bucketId}
-          bucketName={bucket.name}
-        />
+        <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+          <Grid item>
+            <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
+          </Grid>
+          <Grid item>
+            <SavingsTransactions
+              transactions={bucketTransactions}
+              bucketId={bucketId}
+              bucketName={bucket.name}
+            />
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

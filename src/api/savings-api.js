@@ -15,6 +15,17 @@ export function createSavingTransaction(transaction) {
   return update(ref(database), updates);
 }
 
+export function updateSavingTransaction(transaction, transactionId) {
+  const database = getDatabase(firebase);
+  const savingsUrl = SavingsUrl();
+
+  const updates = {};
+  updates[savingsUrl + "/transactions/" + transactionId] = transaction;
+  updates[savingsUrl + "/bucketTransactions/" + transaction.bucketId + "/" + transactionId] =
+    transaction;
+  return update(ref(database), updates);
+}
+
 export function deleteSavingTransaction(transactionId, bucketId) {
   const database = getDatabase(firebase);
   const savingsUrl = SavingsUrl();

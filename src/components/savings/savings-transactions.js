@@ -1,15 +1,8 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import { v4 as uuid } from "uuid";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
 import ListIcon from "@mui/icons-material/List";
 import {
-  Box,
   Button,
-  Card,
-  CardHeader,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -21,18 +14,21 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip,
-  Typography,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { deleteSavingTransaction } from "../../api/savings-api";
+import { TransactionForm } from "./savings-transactionForm";
 
 export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...rest }) => {
   const [open, setOpen] = useState(false);
   const [tryingToDelete, setTryingToDelete] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+
+  const [editAmount, setEditAmount] = useState(0);
+  const [editDate, setEditDate] = useState(null);
+  const [editNote, setEditNote] = useState("");
+  const [editId, setEditId] = useState(undefined);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,20 +42,34 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
     setTryingToDelete(false);
   };
 
+  function descendingComparator(a, b, orderBy) {
+    if (transactions[b][orderBy] < transactions[a][orderBy]) {
+      return -1;
+    }
+    if (transactions[b][orderBy] > transactions[a][orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
   return (
-    <div>
-      <Grid item>
-        <Fab color="primary" size="small" onClick={handleClickOpen}>
-          <ListIcon />
-        </Fab>
-      </Grid>
+    <>
+      <Fab color="primary" size="small" onClick={handleClickOpen}>
+        <ListIcon />
+      </Fab>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Transaction for {bucketName}</DialogTitle>
         <DialogContent>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sortDirection="desc">Date</TableCell>
+                <TableCell>Date</TableCell>
                 <TableCell>Amount</TableCell>
                 <TableCell>Note</TableCell>
                 <TableCell></TableCell>
@@ -68,60 +78,86 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
             </TableHead>
             <TableBody>
               {transactions &&
-                Object.keys(transactions).map((id, index) => (
-                  <>
-                    <TableRow hover key={index}>
-                      <TableCell>
-                        {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
-                      </TableCell>
-                      <TableCell>
-                        {transactions[id].amount.toLocaleString("en-US", {
-                          style: "currency",
-                          currency: "USD",
-                        })}
-                      </TableCell>
-                      <TableCell>{transactions[id].note}</TableCell>
+                Object.keys(transactions)
+                  .slice()
+                  .sort(getComparator("desc", "date"))
+                  .map((id, index) => (
+                    <>
+                      <TableRow hover key={index}>
+                        <TableCell>
+                          {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
+                        </TableCell>
+                        <TableCell>
+                          {transactions[id].amount.toLocaleString("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                          })}
+                        </TableCell>
+                        <TableCell>{transactions[id].note}</TableCell>
 
-                      <TableCell>
-                        <Fab color="primary" size="small">
-                          <EditIcon />
-                        </Fab>
-                      </TableCell>
-                      <TableCell>
-                        <Fab
-                          color="primary"
-                          size="small"
-                          onClick={() => {
-                            setTryingToDelete(true);
-                          }}
-                        >
-                          <DeleteForeverIcon />
-                        </Fab>
-                      </TableCell>
-                    </TableRow>
-                    <Dialog
-                      open={tryingToDelete}
-                      onClose={handleTryingToDeleteClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">
-                        {"Are you sure you want to Delete this transaction?"}
-                      </DialogTitle>
-                      <DialogActions>
-                        <Button onClick={handleTryingToDeleteClose}>Disagree</Button>
-                        <Button
-                          onClick={() => {
-                            deleteSavingTransaction(id, bucketId);
-                          }}
-                          autoFocus
-                        >
-                          Agree
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </>
-                ))}
+                        <TableCell>
+                          <Fab
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              setEditAmount(transactions[id].amount);
+                              setEditDate(transactions[id].date);
+                              setEditNote(transactions[id].note);
+                              setEditId(id);
+                              setEditModal(true);
+                            }}
+                          >
+                            <EditIcon />
+                          </Fab>
+                        </TableCell>
+                        <TableCell>
+                          <Fab
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              setTryingToDelete(true);
+                            }}
+                          >
+                            <DeleteForeverIcon />
+                          </Fab>
+                        </TableCell>
+                      </TableRow>
+                      {editModal && (
+                        <TransactionForm
+                          bucketId={bucketId}
+                          bucketName={bucketName}
+                          open={editModal}
+                          setOpen={setEditModal}
+                          preDate={editDate}
+                          preAmount={editAmount}
+                          preNote={editNote}
+                          preId={editId}
+                        />
+                      )}
+                      <Dialog
+                        open={tryingToDelete}
+                        onClose={handleTryingToDeleteClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Are you sure you want to Delete this transaction?"}
+                        </DialogTitle>
+                        <DialogActions>
+                          <Button onClick={handleTryingToDeleteClose}>Disagree</Button>
+                          <Button
+                            onClick={() => {
+                              deleteSavingTransaction(id, bucketId);
+                              handleTryingToDeleteClose();
+                            }}
+                            autoFocus
+                          >
+                            Agree
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </>
+                  ))}
             </TableBody>
           </Table>
         </DialogContent>
@@ -129,39 +165,6 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
-
-export default function AlertDialog() {
-  const [tryingToDelete, setTryingToDelete] = useState(false);
-
-  const handleClickOpen = () => {
-    setTryingToDelete(true);
-  };
-
-  const handleClose = () => {
-    setTryingToDelete(false);
-  };
-
-  return (
-    <div>
-      <Dialog
-        open={tryingToDelete}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to Delete this transaction?"}
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-}
