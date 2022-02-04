@@ -15,6 +15,7 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
+import { AccountBalance } from "../components/dashboard/account-balance";
 
 const Dashboard = () => {
   const database = getDatabase(firebase);
@@ -38,7 +39,9 @@ const Dashboard = () => {
               <Budget />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalCustomers />
+              <LoadingComponent loading={loading} error={error}>
+                {snapshot && <AccountBalance account={snapshot[1]} />}
+              </LoadingComponent>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <LoadingComponent loading={loading} error={error}>

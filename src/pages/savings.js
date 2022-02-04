@@ -1,20 +1,11 @@
 import Head from "next/head";
 import { Box, Container, Grid } from "@mui/material";
-import { Budget } from "../components/dashboard/budget";
-import { LatestOrders } from "../components/dashboard/latest-orders";
-import { LatestProducts } from "../components/dashboard/latest-products";
-import { Sales } from "../components/dashboard/sales";
-import { TasksProgress } from "../components/dashboard/tasks-progress";
-import { LoanProgress } from "../components/dashboard/loan-progress";
-import { TotalCustomers } from "../components/dashboard/total-customers";
-import { TotalProfit } from "../components/dashboard/total-profit";
-import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { SavingBucket } from "../components/savings/savings-bucket";
-import { ref, getDatabase } from "firebase/database";
+import { ref, getDatabase, push, child, update } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseLinks";
+import { EmergencyBucketUrl, BucketsUrl, DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -23,21 +14,34 @@ import { MoneyFormatter } from "../components/dataDisplay/numberFormatter";
 
 const Savings = () => {
   const database = getDatabase(firebase);
+  const dashboardUrl = DashboardUrl();
 
   const [snapshot, loading, error] = useObjectVal(ref(database, EmergencyBucketUrl()));
   const [buckets, bucketsLoading, bucketsError] = useObjectVal(ref(database, BucketsUrl()));
 
-  const [savingsTotal, setSavingsTotal] = useState();
+  const [savingsTotal, setSavingsTotal] = useState(0);
+  const [updateDashboard, setUpdateDashboard] = useState(true);
 
   useEffect(() => {
     let savingsTotal = snapshot?.amount ?? 0;
     if (buckets) {
-      Object.keys(buckets)
-        .filter((key, index) => !buckets[key].complete)
-        .map((key, index) => (savingsTotal += buckets[key].amount ?? 0));
+      Object.keys(buckets).map((key, index) => (savingsTotal += buckets[key].amount ?? 0));
     }
     setSavingsTotal(savingsTotal);
+
+    if (updateDashboard && snapshot && buckets) {
+      let loanDashboard = {
+        amount: savingsTotal,
+        title: "Savings",
+        type: "account",
+      };
+      const updates = {};
+      updates[dashboardUrl + "/1"] = loanDashboard;
+      update(ref(database), updates);
+      setUpdateDashboard(false);
+    }
   }, [snapshot, buckets]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Head>
