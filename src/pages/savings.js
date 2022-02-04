@@ -29,6 +29,7 @@ const Savings = () => {
     }
     setSavingsTotal(savingsTotal);
 
+    //Update only if theres a differencr
     if (updateDashboard && snapshot && buckets) {
       let loanDashboard = {
         amount: savingsTotal,
