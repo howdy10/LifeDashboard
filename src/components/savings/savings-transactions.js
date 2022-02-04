@@ -82,8 +82,8 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
                   .slice()
                   .sort(getComparator("desc", "date"))
                   .map((id, index) => (
-                    <>
-                      <TableRow hover key={index}>
+                    <div key={index}>
+                      <TableRow hover>
                         <TableCell>
                           {transactions[id].date && format(transactions[id].date, "MM/dd/yyyy")}
                         </TableCell>
@@ -156,7 +156,7 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
                           </Button>
                         </DialogActions>
                       </Dialog>
-                    </>
+                    </div>
                   ))}
             </TableBody>
           </Table>
