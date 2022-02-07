@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Avatar, Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useObjectVal, useObject } from "react-firebase-hooks/database";
 import { firebase } from "../../firebase/clientApp";
 import { ref, getDatabase } from "firebase/database";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import MoneyIcon from "@mui/icons-material/Money";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { SavingsUrl } from "../../firebase/databaseLinks";
 import { TransactionModal } from "./savings-transactionModel";
