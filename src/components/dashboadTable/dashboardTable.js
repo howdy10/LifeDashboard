@@ -41,11 +41,11 @@ export const DashboardTable = ({ columns, data }) => {
         </TableHead>
         <TableBody>
           {data &&
-            data.map((item, indexRow) => (
+            Object.keys(data).map((item, indexRow) => (
               <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
-                {Object.keys(item).map((id, index) => (
+                {Object.keys(data[item]).map((id, index) => (
                   <TableCell data-testid={"cell-" + indexRow + "-" + index} key={index}>
-                    {renderSwitch(columns[index].type, item[columns[index].field])}
+                    {renderSwitch(columns[index].type, data[item][columns[index].field])}
                   </TableCell>
                 ))}
               </TableRow>

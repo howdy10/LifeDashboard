@@ -139,6 +139,43 @@ test("Render Rows with N/A for $0 values", () => {
   expect(cell12).toHaveTextContent("N/A");
 });
 
+test("Render Rows with object lists", () => {
+  render(
+    <DashboardTable
+      data={{
+        key1: { ValueTest: "Row1-col1", TestValue: "Row1-col2" },
+        key2: { ValueTest: "Row2-col1", TestValue: "Row2-col2" },
+      }}
+      columns={[
+        { title: "ViewTest", field: "ValueTest" },
+        { title: "TestView", field: "TestValue" },
+      ]}
+    />
+  );
+  const table = screen.queryByTestId("full-table");
+  const Column1 = screen.queryByTestId("column-0");
+  const Column2 = screen.queryByTestId("column-1");
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+
+  const cell11 = screen.queryByTestId("cell-0-0");
+  const cell12 = screen.queryByTestId("cell-0-1");
+  const cell21 = screen.queryByTestId("cell-1-0");
+  const cell22 = screen.queryByTestId("cell-1-1");
+
+  expect(table).toBeTruthy();
+  expect(Column1).toHaveTextContent("ViewTest");
+  expect(Column2).toHaveTextContent("TestView");
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+
+  expect(cell11).toHaveTextContent("Row1-col1");
+  expect(cell12).toHaveTextContent("Row1-col2");
+  expect(cell21).toHaveTextContent("Row2-col1");
+  expect(cell22).toHaveTextContent("Row2-col2");
+});
+
 test("Render Rows with icons", () => {});
 test("Render Rows with clickable icons", () => {});
 test("Render Rows Collapsable row", () => {});
