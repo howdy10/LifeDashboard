@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { DashboardTable } from "./dashboardTable";
 import "@testing-library/jest-dom";
 
@@ -176,6 +176,145 @@ test("Render Rows with object lists", () => {
   expect(cell22).toHaveTextContent("Row2-col2");
 });
 
-test("Render Rows with icons", () => {});
-test("Render Rows with clickable icons", () => {});
+test("Render Rows with edit icon", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      action={[
+        {
+          icon: "edit",
+        },
+      ]}
+    />
+  );
+
+  const ActionColumn = screen.queryByTestId("column-action");
+  const actionCell = screen.queryByTestId("cell-0-action");
+  const editButton = screen.queryByTestId("cell-action-edit");
+
+  expect(ActionColumn).toHaveTextContent("Action");
+  expect(actionCell).toContainElement(editButton);
+});
+
+test("Render Rows with delete icon", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      action={[
+        {
+          icon: "delete",
+        },
+      ]}
+    />
+  );
+
+  const ActionColumn = screen.queryByTestId("column-action");
+  const actionCell = screen.queryByTestId("cell-0-action");
+  const deleteButton = screen.queryByTestId("cell-action-delete");
+
+  expect(ActionColumn).toHaveTextContent("Action");
+  expect(actionCell).toContainElement(deleteButton);
+});
+
+test("Render Rows with two icon", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      action={[
+        {
+          icon: "edit",
+        },
+        {
+          icon: "delete",
+        },
+      ]}
+    />
+  );
+
+  const ActionColumn = screen.queryByTestId("column-action");
+  const actionCell = screen.queryByTestId("cell-0-action");
+  const deleteButton = screen.queryByTestId("cell-action-delete");
+  const editButton = screen.queryByTestId("cell-action-edit");
+
+  expect(ActionColumn).toHaveTextContent("Action");
+  expect(actionCell).toContainElement(deleteButton);
+  expect(actionCell).toContainElement(editButton);
+});
+
+test("Render Rows with clickable icons", () => {
+  let count = 0;
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      action={[
+        {
+          icon: "edit",
+          onClick: () => {
+            count = 1;
+          },
+        },
+      ]}
+    />
+  );
+
+  const editButton = screen.queryByTestId("fab-action-edit");
+  fireEvent.click(editButton);
+
+  expect(count).toEqual(1);
+});
+
+test("Render Rows with data values not in columns", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: "Row1-col1", TestValue: "Row1-col2", Extra: "boom" },
+        { ValueTest: "Row2-col1", TestValue: "Row2-col2", NotInColumns: "lala" },
+      ]}
+      columns={[
+        { title: "ViewTest", field: "ValueTest" },
+        { title: "TestView", field: "TestValue" },
+      ]}
+    />
+  );
+  const table = screen.queryByTestId("full-table");
+  const Column1 = screen.queryByTestId("column-0");
+  const Column2 = screen.queryByTestId("column-1");
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+
+  const cell11 = screen.queryByTestId("cell-0-0");
+  const cell12 = screen.queryByTestId("cell-0-1");
+  const cell21 = screen.queryByTestId("cell-1-0");
+  const cell22 = screen.queryByTestId("cell-1-1");
+
+  expect(table).toBeTruthy();
+  expect(Column1).toHaveTextContent("ViewTest");
+  expect(Column2).toHaveTextContent("TestView");
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+
+  expect(cell11).toHaveTextContent("Row1-col1");
+  expect(cell12).toHaveTextContent("Row1-col2");
+  expect(cell21).toHaveTextContent("Row2-col1");
+  expect(cell22).toHaveTextContent("Row2-col2");
+});
+
+test("Test column alignment prop", () => {});
 test("Render Rows Collapsable row", () => {});
