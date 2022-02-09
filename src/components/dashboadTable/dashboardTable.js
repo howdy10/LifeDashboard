@@ -56,11 +56,12 @@ export const DashboardTable = ({ columns, data, rowEdits, rowDelete, order }) =>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && order
-            ? Object.keys(data)
-                .sort(getComparator(order.direction, order.column))
-                .map((item, indexRow) => row(item, indexRow))
-            : Object.keys(data).map((item, indexRow) => row(item, indexRow))}
+          {data &&
+            (order
+              ? Object.keys(data)
+                  .sort(getComparator(order.direction, order.column))
+                  .map((item, indexRow) => row(item, indexRow))
+              : Object.keys(data).map((item, indexRow) => row(item, indexRow)))}
         </TableBody>
       </Table>
     </PerfectScrollbar>
