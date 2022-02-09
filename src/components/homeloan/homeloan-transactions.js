@@ -18,6 +18,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { DashboardTable } from "../dashboadTable/dashboardTable";
+
+const columns = [
+  { title: "Date", field: "date", type: "date" },
+  { title: "Amount", field: "amount", type: "currency" },
+  { title: "Interest", field: "interest", type: "currency" },
+  { title: "Escrow", field: "escrow", type: "currency" },
+];
 
 export const HomeloanTransactions = ({ loan, ...rest }) => (
   <Card>
@@ -38,43 +46,6 @@ export const HomeloanTransactions = ({ loan, ...rest }) => (
         <TransactionModal />
       </Box>
     </Box>
-    <PerfectScrollbar>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sortDirection="desc">Date</TableCell>
-            <TableCell>Amount</TableCell>
-            <TableCell>Interest</TableCell>
-            <TableCell>Escrow</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loan.transactions &&
-            Object.keys(loan.transactions).map((id, index) => (
-              <TableRow hover key={index}>
-                <TableCell>{format(loan.transactions[id].date, "MM/dd/yyyy")}</TableCell>
-                <TableCell>
-                  {loan.transactions[id].amount.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
-                </TableCell>
-                <TableCell>
-                  {loan.transactions[id].interest.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
-                </TableCell>
-                <TableCell>
-                  {loan.transactions[id].escrow.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </PerfectScrollbar>
+    <DashboardTable columns={columns} data={loan.transactions} />
   </Card>
 );
