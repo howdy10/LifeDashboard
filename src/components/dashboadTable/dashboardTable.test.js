@@ -184,11 +184,7 @@ test("Render Rows with edit icon", () => {
         { title: "FirstMoney", field: "ValueTest" },
         { title: "SecondMoney", field: "TestValue" },
       ]}
-      action={[
-        {
-          icon: "edit",
-        },
-      ]}
+      rowEdits={() => {}}
     />
   );
 
@@ -208,11 +204,7 @@ test("Render Rows with delete icon", () => {
         { title: "FirstMoney", field: "ValueTest" },
         { title: "SecondMoney", field: "TestValue" },
       ]}
-      action={[
-        {
-          icon: "delete",
-        },
-      ]}
+      rowDelete={() => {}}
     />
   );
 
@@ -232,14 +224,8 @@ test("Render Rows with two icon", () => {
         { title: "FirstMoney", field: "ValueTest" },
         { title: "SecondMoney", field: "TestValue" },
       ]}
-      action={[
-        {
-          icon: "edit",
-        },
-        {
-          icon: "delete",
-        },
-      ]}
+      rowEdits={() => {}}
+      rowDelete={() => {}}
     />
   );
 
@@ -262,19 +248,16 @@ test("Render Rows with clickable icons", () => {
         { title: "FirstMoney", field: "ValueTest" },
         { title: "SecondMoney", field: "TestValue" },
       ]}
-      action={[
-        {
-          icon: "edit",
-          onClick: () => {
-            count = 1;
-          },
-        },
-      ]}
+      rowEdits={() => {
+        count = 1;
+      }}
     />
   );
 
   const editButton = screen.queryByTestId("fab-action-edit");
   fireEvent.click(editButton);
+  const confirmButton = screen.queryByTestId("fab-action-confirm");
+  fireEvent.click(confirmButton);
 
   expect(count).toEqual(1);
 });
