@@ -1,8 +1,31 @@
 import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from "@mui/material";
-import InsertChartIcon from "@mui/icons-material/InsertChartOutlined";
+import IconButton from "@mui/material/IconButton";
+import { useRouter } from "next/router";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-export const LoanProgress = ({ loan, props }) => {
+export const LoanProgress = ({ loan, href, props }) => {
+  const router = useRouter();
+
+  const Icon = () => {
+    let base = (
+      <Avatar
+        sx={{
+          backgroundColor: "warning.main",
+          height: 56,
+          width: 56,
+        }}
+      >
+        <DirectionsCarIcon />
+      </Avatar>
+    );
+
+    if (href) {
+      return <IconButton onClick={() => router.push(href)}> {base}</IconButton>;
+    } else {
+      return base;
+    }
+  };
+
   return (
     <Card sx={{ height: "100%" }} {...props}>
       <CardContent>
@@ -15,17 +38,7 @@ export const LoanProgress = ({ loan, props }) => {
               {loan.percent}%
             </Typography>
           </Grid>
-          <Grid item>
-            <Avatar
-              sx={{
-                backgroundColor: "warning.main",
-                height: 56,
-                width: 56,
-              }}
-            >
-              <DirectionsCarIcon />
-            </Avatar>
-          </Grid>
+          <Grid item>{Icon()}</Grid>
         </Grid>
         <Box sx={{ pt: 3 }}>
           <LinearProgress value={loan.percent} variant="determinate" />

@@ -40,12 +40,12 @@ const Dashboard = () => {
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <LoadingComponent loading={loading} error={error}>
-                {snapshot && <AccountBalance account={snapshot[1]} />}
+                {snapshot && <AccountBalance href="/savings" account={snapshot[1]} />}
               </LoadingComponent>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <LoadingComponent loading={loading} error={error}>
-                {snapshot && <LoanProgress loan={snapshot[0]} />}
+                {snapshot && <LoanProgress href="/carLoan" loan={snapshot[0]} />}
               </LoadingComponent>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
