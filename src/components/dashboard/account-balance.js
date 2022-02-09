@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 
-export const AccountBalance = ({ account, href, props }) => {
+export const AccountBalance = ({ account, href, ...props }) => {
   const router = useRouter();
 
   const Icon = () => {
