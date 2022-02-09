@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import ListIcon from "@mui/icons-material/List";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Fab } from "@mui/material";
 import { deleteSavingTransaction } from "../../api/savings-api";
 import { getTime } from "date-fns";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { createSavingTransaction, updateSavingTransaction } from "../../api/savings-api";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -15,9 +17,25 @@ const order = {
   column: "date",
   direction: "desc",
 };
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...rest }) => {
   const [open, setOpen] = useState(false);
+  const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
+  const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
+  const [deletedSnackbar, setDeletedSnackbar] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setUpdatedSnackbar(false);
+    setDeletedErrorSnackbar(false);
+    setDeletedSnackbar(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,8 +46,8 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
   };
 
   const handleUpdateRow = (newData, oldData, index) => {
-    if (newData.amount === 0 || newData.date === null) {
-      console.log("aleart not full object");
+    if (newData.amount === 0 || newData.date === null || isNaN(newData.amount)) {
+      setDeletedErrorSnackbar(true);
       return;
     }
     let transaction = {
@@ -45,10 +63,12 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
     } else {
       createSavingTransaction(transaction);
     }
+    setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
     deleteSavingTransaction(index, oldData.bucketId);
+    setDeletedSnackbar(true);
   };
   return (
     <>
@@ -70,6 +90,21 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={updatedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
+          Transaction updated
+        </Alert>
+      </Snackbar>
+      <Snackbar open={deletedErrorSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
+          Transaction not complete
+        </Alert>
+      </Snackbar>
+      <Snackbar open={deletedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
+          Transaction deleted
+        </Alert>
+      </Snackbar>
     </>
   );
 };

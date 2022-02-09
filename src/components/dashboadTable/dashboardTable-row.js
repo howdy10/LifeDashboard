@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -21,6 +21,9 @@ export const DashboardTableRow = ({
 }) => {
   const [rowData, setRowData] = useState(data[idRow]);
 
+  useEffect(() => {
+    setRowData(data[idRow]);
+  }, [data]);
   const renderRowEditIcons = (index) => {
     if (rowBeingEdited === index || rowBeingDeleted === index) {
       return (
@@ -33,6 +36,7 @@ export const DashboardTableRow = ({
               } else if (rowBeingDeleted === index) {
                 onRowDelete(data[idRow], idRow);
               }
+              setRowData({ ...data[idRow] });
               setRowBeingEdited(null);
               setRowBeingDeleted(null);
             }}
