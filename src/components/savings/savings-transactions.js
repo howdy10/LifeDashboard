@@ -11,6 +11,10 @@ const columns = [
   { title: "Amount", field: "amount", type: "currency" },
   { title: "Note", field: "note" },
 ];
+const order = {
+  column: "date",
+  direction: "desc",
+};
 
 export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...rest }) => {
   const [open, setOpen] = useState(false);
@@ -22,22 +26,6 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
   const handleClose = () => {
     setOpen(false);
   };
-
-  function descendingComparator(a, b, orderBy) {
-    if (transactions[b][orderBy] < transactions[a][orderBy]) {
-      return -1;
-    }
-    if (transactions[b][orderBy] > transactions[a][orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
 
   const handleUpdateRow = (newData, oldData, index) => {
     if (newData.amount === 0 || newData.date === null) {
@@ -75,6 +63,7 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
             data={transactions}
             rowEdits={handleUpdateRow}
             rowDelete={handleDeleteRow}
+            order={order}
           />
         </DialogContent>
         <DialogActions>

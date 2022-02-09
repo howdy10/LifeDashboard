@@ -9,6 +9,11 @@ const columns = [
   { title: "Interest", field: "interest", type: "currency" },
 ];
 
+const order = {
+  column: "date",
+  direction: "desc",
+};
+
 export const CarloanTransactions = ({ loan, ...rest }) => {
   return (
     <Card>
@@ -29,7 +34,7 @@ export const CarloanTransactions = ({ loan, ...rest }) => {
           <TransactionModal />
         </Box>
       </Box>
-      <DashboardTable columns={columns} data={loan.transactions} />
+      <DashboardTable columns={columns} data={loan.transactions} order={order} />
     </Card>
   );
 };

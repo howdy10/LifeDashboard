@@ -26,7 +26,10 @@ const columns = [
   { title: "Interest", field: "interest", type: "currency" },
   { title: "Escrow", field: "escrow", type: "currency" },
 ];
-
+const order = {
+  column: "date",
+  direction: "desc",
+};
 export const HomeloanTransactions = ({ loan, ...rest }) => (
   <Card>
     {/* <CardHeader title="Payments" /> */}
@@ -46,6 +49,6 @@ export const HomeloanTransactions = ({ loan, ...rest }) => (
         <TransactionModal />
       </Box>
     </Box>
-    <DashboardTable columns={columns} data={loan.transactions} />
+    <DashboardTable columns={columns} data={loan.transactions} order={order} />
   </Card>
 );
