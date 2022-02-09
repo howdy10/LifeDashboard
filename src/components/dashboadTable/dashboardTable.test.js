@@ -299,5 +299,55 @@ test("Render Rows with data values not in columns", () => {
   expect(cell22).toHaveTextContent("Row2-col2");
 });
 
+test("Test row asc", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest", type: "nullCurrency" },
+        { title: "SecondMoney", field: "TestValue", type: "nullCurrency" },
+      ]}
+      order={{ column: "ValueTest", direction: "asc" }}
+    />
+  );
+
+  const firstCell = screen.queryByTestId("cell-0-0");
+  const secondCell = screen.queryByTestId("cell-1-0");
+  const thridCell = screen.queryByTestId("cell-2-0");
+
+  expect(firstCell).toHaveTextContent("$100.00");
+  expect(secondCell).toHaveTextContent("$200.00");
+  expect(thridCell).toHaveTextContent("$300.00");
+});
+
+test("Test row desc", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest", type: "nullCurrency" },
+        { title: "SecondMoney", field: "TestValue", type: "nullCurrency" },
+      ]}
+      order={{ column: "ValueTest", direction: "desc" }}
+    />
+  );
+
+  const firstCell = screen.queryByTestId("cell-0-0");
+  const secondCell = screen.queryByTestId("cell-1-0");
+  const thridCell = screen.queryByTestId("cell-2-0");
+
+  expect(firstCell).toHaveTextContent("$300.00");
+  expect(secondCell).toHaveTextContent("$200.00");
+  expect(thridCell).toHaveTextContent("$100.00");
+});
+
 test("Test column alignment prop", () => {});
 test("Render Rows Collapsable row", () => {});

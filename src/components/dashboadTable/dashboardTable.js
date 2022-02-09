@@ -4,9 +4,43 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
-export const DashboardTable = ({ columns, data, rowEdits, rowDelete }) => {
+export const DashboardTable = ({ columns, data, rowEdits, rowDelete, order }) => {
   const [rowBeingEdited, setRowBeingEdited] = useState(null);
   const [rowBeingDeleted, setRowBeingDeleted] = useState(null);
+
+  function descendingComparator(a, b, orderBy) {
+    if (data[b][orderBy] < data[a][orderBy]) {
+      return -1;
+    }
+    if (data[b][orderBy] > data[a][orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  const row = (item, indexRow) => {
+    return (
+      <DashboardTableRow
+        key={indexRow}
+        rowBeingEdited={rowBeingEdited}
+        rowBeingDeleted={rowBeingDeleted}
+        indexRow={indexRow}
+        columns={columns}
+        data={data}
+        idRow={item}
+        setRowBeingEdited={setRowBeingEdited}
+        setRowBeingDeleted={setRowBeingDeleted}
+        onRowUpdateComplete={rowEdits}
+        onRowDelete={rowDelete}
+      />
+    );
+  };
 
   return (
     <PerfectScrollbar>
@@ -22,22 +56,11 @@ export const DashboardTable = ({ columns, data, rowEdits, rowDelete }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data &&
-            Object.keys(data).map((item, indexRow) => (
-              <DashboardTableRow
-                key={indexRow}
-                rowBeingEdited={rowBeingEdited}
-                rowBeingDeleted={rowBeingDeleted}
-                indexRow={indexRow}
-                columns={columns}
-                data={data}
-                idRow={item}
-                setRowBeingEdited={setRowBeingEdited}
-                setRowBeingDeleted={setRowBeingDeleted}
-                onRowUpdateComplete={rowEdits}
-                onRowDelete={rowDelete}
-              />
-            ))}
+          {data && order
+            ? Object.keys(data)
+                .sort(getComparator(order.direction, order.column))
+                .map((item, indexRow) => row(item, indexRow))
+            : Object.keys(data).map((item, indexRow) => row(item, indexRow))}
         </TableBody>
       </Table>
     </PerfectScrollbar>
@@ -52,4 +75,8 @@ DashboardTable.propTypes = {
   action: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, onClick: PropTypes.func })),
   rowEdits: PropTypes.func,
   rowDelete: PropTypes.func,
+  order: PropTypes.shape({
+    column: PropTypes.string,
+    direction: PropTypes.oneOfType[("desc", "asc")],
+  }),
 };
