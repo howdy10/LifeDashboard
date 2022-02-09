@@ -48,7 +48,7 @@ DashboardTable.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({ title: PropTypes.string, field: PropTypes.string, type: PropTypes.string })
   ),
-  data: PropTypes.object,
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
   action: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, onClick: PropTypes.func })),
   rowEdits: PropTypes.func,
   rowDelete: PropTypes.func,
