@@ -83,15 +83,8 @@ export const DashboardNavbar = (props) => {
               </Badge>
             </IconButton>
           </Tooltip>
-          <Avatar
-            sx={{
-              height: 40,
-              width: 40,
-              ml: 1,
-            }}
-            src="/static/images/avatars/avatar_1.png"
-          >
-            <UserCircleIcon fontSize="small" />
+          <Avatar sx={{ bgcolor: "primary.main", height: 40, width: 40, ml: 1 }}>
+            {user && user.displayName.charAt(0)}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>
