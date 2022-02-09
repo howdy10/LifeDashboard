@@ -39,7 +39,7 @@ const Savings = () => {
       const updates = {};
       updates[dashboardUrl + "/1"] = loanDashboard;
       update(ref(database), updates);
-      setUpdateDashboard(false);
+      // setUpdateDashboard(false);
     }
   }, [snapshot, buckets]);
 

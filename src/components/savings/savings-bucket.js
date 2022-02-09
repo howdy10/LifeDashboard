@@ -29,7 +29,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
   }, [bucketTransactions]);
 
   useEffect(() => {
-    if (bucket.amount !== total && total !== 0) {
+    if (bucket.amount !== total) {
       bucket.amount = total;
       updateSavingsBucketTotal(bucket, bucketId);
     }
