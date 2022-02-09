@@ -14,7 +14,7 @@ export const GetFamilyId = () => {
 };
 
 export const DashboardUrl = () => {
-  return "family/a70b3195-4787-4509-8d08-cfeb49761524/Dashboard";
+  return "family/" + GetFamilyId() + "/Dashboard";
 };
 
 export const EmergencyBucketUrl = () => {
@@ -26,7 +26,7 @@ export const BucketsUrl = () => {
 };
 
 export const SavingsUrl = () => {
-  return "family/a70b3195-4787-4509-8d08-cfeb49761524//Savings";
+  return "family/" + GetFamilyId() + "/Savings";
 };
 
 export const CarLoanUrl = () => {
