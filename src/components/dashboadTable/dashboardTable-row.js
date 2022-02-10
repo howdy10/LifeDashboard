@@ -111,6 +111,7 @@ export const DashboardTableRow = ({
                 indexColumn={index}
                 indexRow={indexRow}
                 idRow={idRow}
+                isColumnEditable={columns[index].edit}
                 columnName={columns[index].title}
                 type={columns[index].type}
                 value={rowData[columns[index].field]}

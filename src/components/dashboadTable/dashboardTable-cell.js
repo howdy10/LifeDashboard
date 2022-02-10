@@ -10,6 +10,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { DashboardTable } from "./dashboardTable";
 
 export const DashboardTableCell = ({
   rowBeingEdited,
@@ -17,6 +21,7 @@ export const DashboardTableCell = ({
   indexRow,
   idRow,
   columnName,
+  isColumnEditable,
   type,
   value,
   onUpdateValue,
@@ -82,17 +87,39 @@ export const DashboardTableCell = ({
           </LocalizationProvider>
         );
       case "boolean":
-        return value ? (
-          <CheckIcon data-testid="check-icon" />
-        ) : (
-          <CloseIcon data-testid="close-icon" />
+        return (
+          <FormGroup aria-label="position" row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={value}
+                  onChange={(event) => {
+                    onUpdateValue(event.target.checked);
+                  }}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              }
+              label=""
+            />
+          </FormGroup>
         );
       default:
-        return value;
+        return (
+          <TextField
+            fullWidth
+            required
+            label={columnName}
+            value={value}
+            onChange={(event) => {
+              onUpdateValue(parseInt(event.target.value));
+            }}
+            variant="outlined"
+          />
+        );
     }
   };
 
-  if (rowBeingEdited === indexRow) {
+  if (rowBeingEdited === indexRow && isColumnEditable) {
     return (
       <TableCell data-testid={"cell-" + indexRow + "-" + indexColumn} key={indexColumn}>
         {renderDataEdit(type, value)}
@@ -105,6 +132,13 @@ export const DashboardTableCell = ({
       </TableCell>
     );
   }
+};
+DashboardTableCell.defaultProps = {
+  isColumnEditable: true,
+};
+
+DashboardTableCell.PropTypes = {
+  isColumnEditable: PropTypes.bool,
 };
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
