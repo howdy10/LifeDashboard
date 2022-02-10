@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material";
 import { DashboardTableCell } from "./dashboardTable-cell";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Info } from "@mui/icons-material";
 
 export const DashboardTableRow = ({
   rowBeingEdited,
@@ -139,10 +140,17 @@ export const DashboardTableRow = ({
       </TableRow>
       {infoRow && (
         <TableRow data-testid={"row-" + indexRow + "-collapse"}>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length + 1}>
             <Collapse in={infoRowOpened === indexRow} timeout="auto" unmountOnExit>
               {rowBeingEdited === indexRow && infoRowEditComponent
-                ? infoRowEditComponent(infoRowVaribles?.map((x) => rowData[x]))
+                ? infoRowEditComponent(
+                    infoRowVaribles?.map((x) => rowData[x]),
+                    (value, objectIndex) => {
+                      const newData = { ...rowData };
+                      newData[infoRowVaribles[objectIndex]] = value;
+                      setRowData(newData);
+                    }
+                  )
                 : infoRow(infoRowVaribles?.map((x) => rowData[x]))}
             </Collapse>
           </TableCell>
