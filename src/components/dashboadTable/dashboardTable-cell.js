@@ -32,9 +32,9 @@ export const DashboardTableCell = ({
         return format(value, "MM/dd/yyyy");
       case "boolean":
         return value ? (
-          <CheckIcon data-testid="check-icon" />
+          <CheckIcon color="success" data-testid="check-icon" />
         ) : (
-          <CloseIcon data-testid="close-icon" />
+          <CloseIcon color="error" data-testid="close-icon" />
         );
       default:
         return value;
