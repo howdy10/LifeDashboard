@@ -191,9 +191,11 @@ test("Render Rows with edit icon", () => {
   const ActionColumn = screen.queryByTestId("column-action");
   const actionCell = screen.queryByTestId("cell-0-action");
   const editButton = screen.queryByTestId("cell-action-edit");
+  const deleteButton = screen.queryByTestId("cell-action-delete");
 
   expect(ActionColumn).toHaveTextContent("Action");
   expect(actionCell).toContainElement(editButton);
+  expect(actionCell).not.toContainElement(deleteButton);
 });
 
 test("Render Rows with delete icon", () => {
@@ -210,10 +212,12 @@ test("Render Rows with delete icon", () => {
 
   const ActionColumn = screen.queryByTestId("column-action");
   const actionCell = screen.queryByTestId("cell-0-action");
+  const editButton = screen.queryByTestId("cell-action-edit");
   const deleteButton = screen.queryByTestId("cell-action-delete");
 
   expect(ActionColumn).toHaveTextContent("Action");
   expect(actionCell).toContainElement(deleteButton);
+  expect(actionCell).not.toContainElement(editButton);
 });
 
 test("Render Rows with two icon", () => {

@@ -91,7 +91,7 @@ export const DashboardTableRow = ({
     <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
       {(onRowUpdateComplete || onRowDelete) && renderRowEditIcons(indexRow)}
       {rowBeingDeleted === indexRow ? (
-        <TableCell>
+        <TableCell colSpan={6}>
           <Typography>Are you sure you want to Delete this transaction?</Typography>
         </TableCell>
       ) : (
