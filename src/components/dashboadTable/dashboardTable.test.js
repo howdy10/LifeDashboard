@@ -353,5 +353,65 @@ test("Test row desc", () => {
   expect(thridCell).toHaveTextContent("$100.00");
 });
 
+test("Render Rows Collapsable row with no row variables", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest", type: "nullCurrency" },
+        { title: "SecondMoney", field: "TestValue", type: "nullCurrency" },
+      ]}
+      infoRow={() => <div data-testid="infoRow" />}
+    />
+  );
+  const table = screen.queryByTestId("full-table");
+  expect(table).toBeTruthy();
+
+  const collapseTitle = screen.queryByTestId("column-collapse");
+  const collapseIcon = screen.queryByTestId("cell-0-collapseIcon");
+  const collapseRow = screen.queryByTestId("row-0-collapse");
+
+  expect(collapseTitle).toBeTruthy();
+  expect(collapseIcon).toBeTruthy();
+  expect(collapseRow).toBeTruthy();
+});
+
+test("Render Rows Collapsable row with row variables", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: "TestValue0" },
+        { ValueTest: 300, TestValue: "TestValue1" },
+        { ValueTest: 200, TestValue: "TestValue2" },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest", type: "nullCurrency" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      infoRow={(x) => <div data-testid="infoRow">{x[0]}</div>}
+      infoRowVaribles={["TestValue"]}
+    />
+  );
+  const table = screen.queryByTestId("full-table");
+  expect(table).toBeTruthy();
+
+  const collapseTitle = screen.queryByTestId("column-collapse");
+  const collapseIcon = screen.queryByTestId("cell-0-collapseIcon");
+  const collapseRow = screen.queryByTestId("row-0-collapse");
+
+  expect(collapseTitle).toBeTruthy();
+  expect(collapseIcon).toBeTruthy();
+  expect(collapseRow).toBeTruthy();
+  fireEvent.click(collapseIcon);
+
+  expect(collapseRow).toHaveTextContent("TestValue0");
+  const collapseComponent = screen.queryByTestId("infoRow");
+  expect(collapseComponent).toBeTruthy();
+  expect(collapseComponent).toHaveTextContent("TestValue0");
+});
+
 test("Test column alignment prop", () => {});
-test("Render Rows Collapsable row", () => {});

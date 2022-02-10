@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { TableCell, TableRow, Typography } from "@mui/material";
+import { Collapse, TableCell, TableRow, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import { DashboardTableCell } from "./dashboardTable-cell";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 export const DashboardTableRow = ({
   rowBeingEdited,
@@ -18,6 +20,10 @@ export const DashboardTableRow = ({
   idRow,
   setRowBeingEdited,
   setRowBeingDeleted,
+  infoRow,
+  infoRowOpened,
+  setInfoRowOpened,
+  infoRowVaribles,
 }) => {
   const [rowData, setRowData] = useState(data[idRow]);
 
@@ -88,33 +94,56 @@ export const DashboardTableRow = ({
   };
 
   return (
-    <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
-      {(onRowUpdateComplete || onRowDelete) && renderRowEditIcons(indexRow)}
-      {rowBeingDeleted === indexRow ? (
-        <TableCell colSpan={6}>
-          <Typography>Are you sure you want to Delete this transaction?</Typography>
-        </TableCell>
-      ) : (
-        Object.keys(rowData)
-          .filter((id, index) => columns[index])
-          .map((id, index) => (
-            <DashboardTableCell
-              key={index}
-              rowBeingEdited={rowBeingEdited}
-              indexColumn={index}
-              indexRow={indexRow}
-              idRow={idRow}
-              columnName={columns[index].title}
-              type={columns[index].type}
-              value={rowData[columns[index].field]}
-              onUpdateValue={(value) => {
-                const newData = { ...rowData };
-                newData[columns[index].field] = value;
-                setRowData(newData);
-              }}
-            />
-          ))
+    <>
+      <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
+        {(onRowUpdateComplete || onRowDelete) && renderRowEditIcons(indexRow)}
+        {rowBeingDeleted === indexRow ? (
+          <TableCell colSpan={6}>
+            <Typography>Are you sure you want to Delete this transaction?</Typography>
+          </TableCell>
+        ) : (
+          Object.keys(rowData)
+            .filter((id, index) => columns[index])
+            .map((id, index) => (
+              <DashboardTableCell
+                key={index}
+                rowBeingEdited={rowBeingEdited}
+                indexColumn={index}
+                indexRow={indexRow}
+                idRow={idRow}
+                columnName={columns[index].title}
+                type={columns[index].type}
+                value={rowData[columns[index].field]}
+                onUpdateValue={(value) => {
+                  const newData = { ...rowData };
+                  newData[columns[index].field] = value;
+                  setRowData(newData);
+                }}
+              />
+            ))
+        )}
+        {infoRow && (
+          <TableCell>
+            <IconButton
+              data-testid={"cell-" + indexRow + "-collapseIcon"}
+              aria-label="expand row"
+              size="small"
+              onClick={() => setInfoRowOpened(indexRow === infoRowOpened ? null : indexRow)}
+            >
+              {infoRowOpened === indexRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+        )}
+      </TableRow>
+      {infoRow && (
+        <TableRow data-testid={"row-" + indexRow + "-collapse"}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={infoRowOpened === indexRow} timeout="auto" unmountOnExit>
+              {infoRow(infoRowVaribles?.map((x) => rowData[x]))}
+            </Collapse>
+          </TableCell>
+        </TableRow>
       )}
-    </TableRow>
+    </>
   );
 };

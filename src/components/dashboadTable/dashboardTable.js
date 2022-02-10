@@ -4,9 +4,18 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
-export const DashboardTable = ({ columns, data, rowEdits, rowDelete, order }) => {
+export const DashboardTable = ({
+  columns,
+  data,
+  rowEdits,
+  rowDelete,
+  order,
+  infoRow,
+  infoRowVaribles,
+}) => {
   const [rowBeingEdited, setRowBeingEdited] = useState(null);
   const [rowBeingDeleted, setRowBeingDeleted] = useState(null);
+  const [infoRowOpened, setInfoRowOpened] = useState(null);
 
   function descendingComparator(a, b, orderBy) {
     if (data[b][orderBy] < data[a][orderBy]) {
@@ -38,6 +47,10 @@ export const DashboardTable = ({ columns, data, rowEdits, rowDelete, order }) =>
         setRowBeingDeleted={setRowBeingDeleted}
         onRowUpdateComplete={rowEdits}
         onRowDelete={rowDelete}
+        infoRow={infoRow}
+        infoRowOpened={infoRowOpened}
+        setInfoRowOpened={setInfoRowOpened}
+        infoRowVaribles={infoRowVaribles}
       />
     );
   };
@@ -53,6 +66,7 @@ export const DashboardTable = ({ columns, data, rowEdits, rowDelete, order }) =>
                 {item.title}
               </TableCell>
             ))}
+            {infoRow && <TableCell data-testid={"column-collapse"} />}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -80,4 +94,6 @@ DashboardTable.propTypes = {
     column: PropTypes.string,
     direction: PropTypes.oneOfType[("desc", "asc")],
   }),
+  infoRow: PropTypes.func,
+  infoRowVaribles: PropTypes.arrayOf(PropTypes.string),
 };
