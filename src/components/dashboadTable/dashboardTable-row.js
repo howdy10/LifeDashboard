@@ -21,6 +21,7 @@ export const DashboardTableRow = ({
   setRowBeingEdited,
   setRowBeingDeleted,
   infoRow,
+  infoRowEditComponent,
   infoRowOpened,
   setInfoRowOpened,
   infoRowVaribles,
@@ -140,7 +141,9 @@ export const DashboardTableRow = ({
         <TableRow data-testid={"row-" + indexRow + "-collapse"}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={infoRowOpened === indexRow} timeout="auto" unmountOnExit>
-              {infoRow(infoRowVaribles?.map((x) => rowData[x]))}
+              {rowBeingEdited === indexRow && infoRowEditComponent
+                ? infoRowEditComponent(infoRowVaribles?.map((x) => rowData[x]))
+                : infoRow(infoRowVaribles?.map((x) => rowData[x]))}
             </Collapse>
           </TableCell>
         </TableRow>

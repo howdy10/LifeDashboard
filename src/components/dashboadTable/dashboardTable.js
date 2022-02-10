@@ -12,6 +12,7 @@ export const DashboardTable = ({
   order,
   infoRow,
   infoRowVaribles,
+  infoRowEditComponent,
 }) => {
   const [rowBeingEdited, setRowBeingEdited] = useState(null);
   const [rowBeingDeleted, setRowBeingDeleted] = useState(null);
@@ -51,6 +52,7 @@ export const DashboardTable = ({
         infoRowOpened={infoRowOpened}
         setInfoRowOpened={setInfoRowOpened}
         infoRowVaribles={infoRowVaribles}
+        infoRowEditComponent={infoRowEditComponent}
       />
     );
   };
@@ -96,4 +98,5 @@ DashboardTable.propTypes = {
   }),
   infoRow: PropTypes.func,
   infoRowVaribles: PropTypes.arrayOf(PropTypes.string),
+  infoRowEditComponent: PropTypes.func,
 };
