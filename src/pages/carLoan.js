@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useEffect, useContext } from "react";
 import { Box, Container } from "@mui/material";
 import { CarloanBoard } from "src/components/carloan/carloan-board";
 import { DashboardLayout } from "../components/dashboard-layout";

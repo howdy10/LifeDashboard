@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useEffect, useContext } from "react";
 import { Box, Container } from "@mui/material";
 import { HomeloanBoard } from "src/components/homeloan/homeloan-board";
 import { DashboardLayout } from "../components/dashboard-layout";

@@ -16,8 +16,6 @@ import { Bell as BellIcon } from "../icons/bell";
 import { UserCircle as UserCircleIcon } from "../icons/user-circle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import firebase from "../firebase/clientApp";
-import { useEffect, useContext } from "react";
-import { userContext } from "../context/userContext";
 import { getAuth } from "firebase/auth";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({

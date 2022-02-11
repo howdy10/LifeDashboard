@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useEffect, useContext } from "react";
 import { Box, Container } from "@mui/material";
 import { CarloanBoard } from "src/components/carloan/carloan-board";
 import { DashboardLayout } from "../components/dashboard-layout";
@@ -10,7 +9,6 @@ import { useObject, useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { userContext } from "../context/userContext";
 import { getAuth } from "firebase/auth";
 import { InsuranceBoard } from "../components/insurance/insurance-board";
 import { InsuranceUrl } from "../firebase/databaseLinks";
