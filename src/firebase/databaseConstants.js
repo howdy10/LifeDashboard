@@ -1,0 +1,12 @@
+export const DashboardUrl = "/Dashboard";
+export const EmergencyBucketUrl = "/Savings/emergencyFund";
+export const BucketsUrl = "/Savings/buckets";
+export const SavingsUrl = "/Savings";
+export const CarLoanUrl = "/Loans/0";
+export const CarLoanTransactionUrl = "/Loans/0/transactions";
+export const HomeLoanUrl = "/Loans/1";
+export const HomeLoanTransactionUrl = "/Loans/1/transactions";
+export const InsuranceUrl = "/HealthInsurance";
+export const InsuranceMembersUrl = "/HealthInsurance/members";
+export const InsuranceProvidersUrl = "/HealthInsurance/providers";
+export const InsuranceClaimsUrl = "/HealthInsurance/claims";

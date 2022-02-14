@@ -1,62 +1,72 @@
+import { useMemo } from "react";
 import { getAuth } from "firebase/auth";
 import { ref, getDatabase } from "firebase/database";
 import { useListKeys } from "react-firebase-hooks/database";
 import { firebase } from "./clientApp";
 
 export const GetFamilyId = () => {
+  const [keys, loading, error] = GetFamilyBaseUrl();
+
+  return keys ? keys : "";
+};
+
+export const GetFamilyBaseUrl = () => {
   const database = getDatabase(firebase);
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const [keys, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
+  const [snapshots, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
 
-  return keys ? keys[0] : "";
+  const values = useMemo(() => (snapshots ? "family/" + snapshots[0] : null), [snapshots]);
+
+  const resArray = [values, loading, error];
+  return useMemo(() => resArray, resArray);
 };
 
 export const DashboardUrl = () => {
-  return "family/" + GetFamilyId() + "/Dashboard";
+  return GetFamilyId() + "/Dashboard";
 };
 
 export const EmergencyBucketUrl = () => {
-  return "family/" + GetFamilyId() + "/Savings/emergencyFund";
+  return GetFamilyId() + "/Savings/emergencyFund";
 };
 
 export const BucketsUrl = () => {
-  return "family/" + GetFamilyId() + "/Savings/buckets";
+  return GetFamilyId() + "/Savings/buckets";
 };
 
 export const SavingsUrl = () => {
-  return "family/" + GetFamilyId() + "/Savings";
+  return GetFamilyId() + "/Savings";
 };
 
 export const CarLoanUrl = () => {
-  return "family/" + GetFamilyId() + "/Loans/0";
+  return GetFamilyId() + "/Loans/0";
 };
 
 export const CarLoanTransactionUrl = () => {
-  return "family/" + GetFamilyId() + "/Loans/0/transactions";
+  return GetFamilyId() + "/Loans/0/transactions";
 };
 
 export const HomeLoanUrl = () => {
-  return "family/" + GetFamilyId() + "/Loans/1";
+  return GetFamilyId() + "/Loans/1";
 };
 
 export const HomeLoanTransactionUrl = () => {
-  return "family/" + GetFamilyId() + "/Loans/1/transactions";
+  return GetFamilyId() + "/Loans/1/transactions";
 };
 
 export const InsuranceUrl = () => {
-  return "family/" + GetFamilyId() + "/HealthInsurance";
+  return GetFamilyId() + "/HealthInsurance";
 };
 
 export const InsuranceMembersUrl = () => {
-  return "family/" + GetFamilyId() + "/HealthInsurance/members";
+  return GetFamilyId() + "/HealthInsurance/members";
 };
 
 export const InsuranceProvidersUrl = () => {
-  return "family/" + GetFamilyId() + "/HealthInsurance/providers";
+  return GetFamilyId() + "/HealthInsurance/providers";
 };
 
 export const InsuranceClaimsUrl = () => {
-  return "family/" + GetFamilyId() + "/HealthInsurance/claims";
+  return GetFamilyId() + "/HealthInsurance/claims";
 };
