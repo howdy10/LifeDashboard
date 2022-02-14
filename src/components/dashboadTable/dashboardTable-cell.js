@@ -137,7 +137,7 @@ DashboardTableCell.defaultProps = {
   isColumnEditable: true,
 };
 
-DashboardTableCell.PropTypes = {
+DashboardTableCell.propTypes = {
   isColumnEditable: PropTypes.bool,
 };
 
