@@ -16,6 +16,7 @@ import { firebase } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import { AccountBalance } from "../components/dashboard/account-balance";
+import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 
 const Dashboard = () => {
   const database = getDatabase(firebase);
@@ -48,7 +49,7 @@ const Dashboard = () => {
               </LoadingComponent>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalProfit sx={{ height: "100%" }} />
+              <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
             </Grid>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
               <Budget />
