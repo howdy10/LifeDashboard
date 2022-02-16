@@ -20,15 +20,11 @@ import AppContext from "src/context/AppContext";
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
 
   return (
-    <React.Fragment>
-      <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }} onClick={() => setOpen(!open)}>
-        <TableCell>{row.provider}</TableCell>
-        <TableCell>{row.person}</TableCell>
-      </TableRow>
-    </React.Fragment>
+    <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableCell>{row.provider}</TableCell>
+    </TableRow>
   );
 }
 
