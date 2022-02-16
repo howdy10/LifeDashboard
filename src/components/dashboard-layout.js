@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
-import { userContext } from "../context/userContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
+import { LoadingComponent } from "./loading-component";
+import { GetFamilyBaseUrl } from "../firebase/databaseLinks";
+import AppContext from "../context/AppContext";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -20,6 +22,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 
 export const DashboardLayout = (props) => {
   const { children } = props;
+  const value = useContext(AppContext);
 
   const router = useRouter();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -28,11 +31,12 @@ export const DashboardLayout = (props) => {
   useEffect(() => {
     if (!(user || userLoading)) {
       router.push("/auth");
+    } else {
+      value.setUser(user);
     }
   }, [user, userLoading]);
-
   return (
-    <userContext.Provider value={{ user, userLoading }}>
+    <>
       <DashboardLayoutRoot>
         <Box
           sx={{
@@ -42,11 +46,36 @@ export const DashboardLayout = (props) => {
             width: "100%",
           }}
         >
-          {children}
+          <LoadingComponent loading={userLoading} error={error}>
+            {user && (
+              <DashboardLayout2 {...props} user={user}>
+                {children}
+              </DashboardLayout2>
+            )}
+          </LoadingComponent>
         </Box>
       </DashboardLayoutRoot>
       <DashboardNavbar onSidebarOpen={() => setSidebarOpen(true)} />
       <DashboardSidebar onClose={() => setSidebarOpen(false)} open={isSidebarOpen} />
-    </userContext.Provider>
+    </>
+  );
+};
+
+const DashboardLayout2 = ({ user, ...props }) => {
+  const { children } = props;
+
+  const [keys, loading, error] = GetFamilyBaseUrl();
+  const value = useContext(AppContext);
+
+  useEffect(() => {
+    if (keys && !loading) {
+      value.setFamilyIdBaseUrl(keys);
+    }
+  }, [keys]);
+
+  return (
+    <LoadingComponent loading={loading} error={error}>
+      {children}
+    </LoadingComponent>
   );
 };
