@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { useObjectVal, useObject } from "react-firebase-hooks/database";
+import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../../firebase/clientApp";
 import { ref, getDatabase } from "firebase/database";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { SavingsUrl } from "../../firebase/databaseLinks";
+import { SavingsUrl } from "../../firebase/databaseConstants";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
 import { updateSavingsBucketTotal } from "../../api/savings-api";
+import AppContext from "src/context/AppContext";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
   const [total, setTotal] = useState(0);
-
+  const value = useContext(AppContext);
   const database = getDatabase(firebase);
 
   const [bucketTransactions, loading, error] = useObjectVal(
-    ref(database, SavingsUrl() + "/" + bucket.bucketTransactions)
+    ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/" + bucket.bucketTransactions)
   );
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
   useEffect(() => {
     if (bucket.amount !== total) {
       bucket.amount = total;
-      updateSavingsBucketTotal(bucket, bucketId);
+      updateSavingsBucketTotal(value.state.familyIdBaseUrl, bucket, bucketId);
     }
   }, [total]);
 

@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useContext } from "react";
 import ListIcon from "@mui/icons-material/List";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Fab } from "@mui/material";
 import { getTime } from "date-fns";
@@ -10,6 +10,7 @@ import {
 } from "../../api/savings-api";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import AppContext from "src/context/AppContext";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -29,6 +30,8 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
+
+  const value = useContext(AppContext);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -62,15 +65,15 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
     };
 
     if (index) {
-      updateSavingTransaction(transaction, index);
+      updateSavingTransaction(value.state.familyIdBaseUrl, transaction, index);
     } else {
-      createSavingTransaction(transaction);
+      createSavingTransaction(value.state.familyIdBaseUrl, transaction);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteSavingTransaction(index, oldData.bucketId);
+    deleteSavingTransaction(value.state.familyIdBaseUrl, index, oldData.bucketId);
     setDeletedSnackbar(true);
   };
   return (

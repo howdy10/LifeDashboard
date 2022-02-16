@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useContext } from "react";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { getTime } from "date-fns";
 import { createSavingTransaction, updateSavingTransaction } from "../../api/savings-api";
 import MuiAlert from "@mui/material/Alert";
+import AppContext from "src/context/AppContext";
 
 export function TransactionForm({
   bucketId,
@@ -27,6 +28,8 @@ export function TransactionForm({
   preId,
 }) {
   const [completedSnackbar, setCompletedSnackbar] = useState(false);
+  const value = useContext(AppContext);
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -73,9 +76,9 @@ export function TransactionForm({
     };
 
     if (preId) {
-      updateSavingTransaction(transaction, preId);
+      updateSavingTransaction(value.state.familyIdBaseUrl, transaction, preId);
     } else {
-      createSavingTransaction(transaction);
+      createSavingTransaction(value.state.familyIdBaseUrl, transaction);
     }
     setCompletedSnackbar(true);
     handleClose();

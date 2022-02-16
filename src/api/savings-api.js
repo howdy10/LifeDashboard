@@ -1,10 +1,10 @@
 import { firebase } from "../firebase/clientApp";
 import { ref, getDatabase, push, child, update, remove } from "firebase/database";
-import { SavingsUrl } from "../firebase/databaseLinks";
+import { SavingsUrl } from "src/firebase/databaseConstants";
 
-export function createSavingTransaction(transaction) {
+export function createSavingTransaction(baseUrl, transaction) {
   const database = getDatabase(firebase);
-  const savingsUrl = SavingsUrl();
+  const savingsUrl = baseUrl + SavingsUrl;
 
   const newTransactionsKey = push(child(ref(database), savingsUrl + "/Transactions")).key;
 
@@ -12,31 +12,39 @@ export function createSavingTransaction(transaction) {
   updates[savingsUrl + "/transactions/" + newTransactionsKey] = transaction;
   updates[savingsUrl + "/bucketTransactions/" + transaction.bucketId + "/" + newTransactionsKey] =
     transaction;
-  return update(ref(database), updates);
+  return update(ref(database), updates).catch((error) => {
+    console.error("Unable to create saving transaction");
+    console.error(error);
+    console.log(savingsUrl);
+  });
 }
 
-export function updateSavingTransaction(transaction, transactionId) {
+export function updateSavingTransaction(baseUrl, transaction, transactionId) {
   const database = getDatabase(firebase);
-  const savingsUrl = SavingsUrl();
+  const savingsUrl = baseUrl + SavingsUrl;
 
   const updates = {};
   updates[savingsUrl + "/transactions/" + transactionId] = transaction;
   updates[savingsUrl + "/bucketTransactions/" + transaction.bucketId + "/" + transactionId] =
     transaction;
-  return update(ref(database), updates);
+  return update(ref(database), updates).catch((error) => {
+    console.error("Unable to Update saving transaction");
+    console.error(error);
+    console.log(savingsUrl);
+  });
 }
 
-export function deleteSavingTransaction(transactionId, bucketId) {
+export function deleteSavingTransaction(baseUrl, transactionId, bucketId) {
   const database = getDatabase(firebase);
-  const savingsUrl = SavingsUrl();
+  const savingsUrl = baseUrl + SavingsUrl;
 
   remove(ref(database, savingsUrl + "/transactions/" + transactionId));
   remove(ref(database, savingsUrl + "/bucketTransactions/" + bucketId + "/" + transactionId));
 }
 
-export function updateSavingsBucketTotal(bucket, id) {
+export function updateSavingsBucketTotal(baseUrl, bucket, id) {
   const database = getDatabase(firebase);
-  const savingsUrl = SavingsUrl();
+  const savingsUrl = baseUrl + SavingsUrl;
 
   const updates = {};
   if (id === "emergencyFund") {
@@ -45,5 +53,9 @@ export function updateSavingsBucketTotal(bucket, id) {
     updates[savingsUrl + "/buckets/" + id] = bucket;
   }
 
-  return update(ref(database), updates);
+  return update(ref(database), updates).catch((error) => {
+    console.error("Unable to update saving bucket total");
+    console.error(error);
+    console.log(savingsUrl);
+  });
 }
