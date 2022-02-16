@@ -1,10 +1,10 @@
 import { firebase } from "../firebase/clientApp";
 import { ref, getDatabase, push, child, update, remove } from "firebase/database";
-import { InsuranceClaimsUrl } from "../firebase/databaseLinks";
+import { InsuranceClaimsUrl } from "../firebase/databaseConstants";
 
-export function createInsuranceClaim(claim) {
+export function createInsuranceClaim(baseUrl, claim) {
   const database = getDatabase(firebase);
-  const claimsUrl = InsuranceClaimsUrl();
+  const claimsUrl = baseUrl + InsuranceClaimsUrl;
 
   const newKey = push(child(ref(database), claimsUrl)).key;
 
@@ -13,18 +13,18 @@ export function createInsuranceClaim(claim) {
   return update(ref(database), updates);
 }
 
-export function updateInsuranceClaim(claim, claimId) {
+export function updateInsuranceClaim(baseUrl, claim, claimId) {
   const database = getDatabase(firebase);
-  const claimsUrl = InsuranceClaimsUrl();
+  const claimsUrl = baseUrl + InsuranceClaimsUrl;
 
   const updates = {};
   updates[claimsUrl + "/" + claimId] = claim;
   return update(ref(database), updates);
 }
 
-export function deleteInsuranceClaim(claimId) {
+export function deleteInsuranceClaim(baseUrl, claimId) {
   const database = getDatabase(firebase);
-  const claimsUrl = InsuranceClaimsUrl();
+  const claimsUrl = baseUrl + InsuranceClaimsUrl;
 
   remove(ref(database, claimsUrl + "/" + claimId));
 }

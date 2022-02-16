@@ -1,37 +1,32 @@
-import { useState, forwardRef, useEffect } from "react";
+import { useState, forwardRef, useContext } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import NumberFormat from "react-number-format";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import { getTime } from "date-fns";
-import { ref, getDatabase, push, child, update } from "firebase/database";
+import { ref, getDatabase } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 import { useObject } from "react-firebase-hooks/database";
 import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { getAuth } from "firebase/auth";
-import {
-  InsuranceClaimsUrl,
-  InsuranceMembersUrl,
-  InsuranceProvidersUrl,
-} from "../../firebase/databaseLinks";
+import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../../firebase/databaseLinks";
+import AppContext from "src/context/AppContext";
+import { createInsuranceClaim } from "src/api/insurance-api";
 
 export function ClaimModal() {
   const database = getDatabase(firebase);
-  const insuranceClaimUrl = InsuranceClaimsUrl();
+  const value = useContext(AppContext);
 
   const [open, setOpen] = useState(false);
-
   const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
   const [providers, providersLoading, providersError] = useObject(
     ref(database, InsuranceProvidersUrl())
@@ -86,11 +81,7 @@ export function ClaimModal() {
       insurance: insurance,
     };
 
-    const newKey = push(child(ref(database), insuranceClaimUrl)).key;
-
-    const updates = {};
-    updates[insuranceClaimUrl + "/" + newKey] = claim;
-    update(ref(database), updates);
+    createInsuranceClaim(value.state.familyIdBaseUrl, claim);
     handleClose();
   };
 
