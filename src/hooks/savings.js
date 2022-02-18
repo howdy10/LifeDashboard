@@ -63,7 +63,7 @@ export const GetSavingsTotalOfBucket = (bucketId) => {
     setSavingsTotal({
       ...setSavingsTotal,
       amount: current,
-      goal: bucketTransactions,
+      transactions: bucketTransactions,
     });
   }, [bucketTransactions]);
 
