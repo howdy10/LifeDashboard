@@ -9,6 +9,7 @@ import { firebase } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import { AccountBalance } from "../components/dashboard/account-balance";
+import { SavingsBalance } from "src/components/dashboard/savings-balance";
 import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 
 const Dashboard = () => {
@@ -29,36 +30,20 @@ const Dashboard = () => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={3}>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+              <SavingsBalance sx={{ height: "100%" }} />
+            </Grid>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
               <LoadingComponent loading={loading} error={error}>
-                {snapshot && (
-                  <AccountBalance href="/savings" account={snapshot[1]} sx={{ height: "100%" }} />
-                )}
+                {snapshot && <LoanProgress href="/loans/0" loan={snapshot[0]} loanId={0} />}
               </LoadingComponent>
             </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <LoadingComponent loading={loading} error={error}>
-                {snapshot && <LoanProgress href="/loans/0" loan={snapshot[0]} />}
-              </LoadingComponent>
-            </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
               <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
             </Grid>
-            <Grid item lg={3} sm={6} xl={3} xs={12}>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
               <Budget />
             </Grid>
-            {/* <Grid item lg={8} md={12} xl={9} xs={12}>
-              <Sales />
-            </Grid>
-            <Grid item lg={4} md={6} xl={3} xs={12}>
-              <TrafficByDevice sx={{ height: "100%" }} />
-            </Grid>
-            <Grid item lg={4} md={6} xl={3} xs={12}>
-              <LatestProducts sx={{ height: "100%" }} />
-            </Grid>
-            <Grid item lg={8} md={12} xl={9} xs={12}>
-              <LatestOrders />
-            </Grid> */}
           </Grid>
         </Container>
       </Box>

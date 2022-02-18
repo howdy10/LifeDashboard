@@ -23,12 +23,10 @@ export const CarloanBoard = ({ loan, ...rest }) => {
     let interestPaid = 0;
 
     if (loan.transactions) {
-      Object.keys(loan.transactions).map(
-        (key, index) => (totalPaid += loan.transactions[key].amount)
-      );
-      Object.keys(loan.transactions).map(
-        (key, index) => (interestPaid += loan.transactions[key].interest)
-      );
+      Object.keys(loan.transactions).map((key, index) => {
+        totalPaid += loan.transactions[key].amount;
+        interestPaid += loan.transactions[key].interest;
+      });
     }
 
     setTotalPaid(totalPaid);
