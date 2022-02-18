@@ -31,8 +31,8 @@ export const GetInsurancePaid = () => {
     }
   }, [insurance]);
 
-  const values = useMemo(() => (insurance ? insuranceInfo : null), [insuranceInfo]);
+  // const values = useMemo(() => (insurance ? insuranceInfo : null), [insuranceInfo]);
 
-  const resArray = [values, loading, error];
+  const resArray = [insuranceInfo, loading, error];
   return useMemo(() => resArray, resArray);
 };
