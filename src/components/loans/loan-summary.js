@@ -57,7 +57,8 @@ export const LoanSummary = ({ loan, loanId }) => {
             <Typography color="textPrimary" variant="h4">
               {MoneyFormatter(remaining)}
             </Typography>
-
+          </Grid>
+          <Grid item>
             <Icon href={loanId} />
           </Grid>
         </Grid>
