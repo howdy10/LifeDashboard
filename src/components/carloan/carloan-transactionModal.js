@@ -14,11 +14,11 @@ import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 import Grid from "@mui/material/Grid";
-import { CarLoanTransactionUrl } from "../../firebase/databaseLinks";
+import { AllLoansUrl } from "../../firebase/databaseLinks";
 
-export function TransactionModal() {
+export function TransactionModal({ loanId }) {
   const database = getDatabase(firebase);
-  const transactionUrl = CarLoanTransactionUrl();
+  const transactionUrl = AllLoansUrl() + "/" + loanId + "/transactions";
 
   const [open, setOpen] = useState(false);
 

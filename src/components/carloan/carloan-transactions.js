@@ -13,7 +13,7 @@ const order = {
   direction: "desc",
 };
 
-export const CarloanTransactions = ({ loan, ...rest }) => {
+export const CarloanTransactions = ({ loan, loanId, ...rest }) => {
   return (
     <Card>
       {/* <CardHeader title="Payments" /> */}
@@ -30,7 +30,7 @@ export const CarloanTransactions = ({ loan, ...rest }) => {
           Payments
         </Typography>
         <Box sx={{ m: 1 }}>
-          <TransactionModal />
+          <TransactionModal loanId={loanId} />
         </Box>
       </Box>
       <DashboardTable columns={columns} data={loan.transactions} order={order} />

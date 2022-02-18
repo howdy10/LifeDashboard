@@ -13,20 +13,24 @@ import { CarloanTransactions } from "src/components/carloan/carloan-transactions
 import { HomeloanBoard } from "src/components/homeloan/homeloan-board";
 import { HomeloanTransactions } from "src/components/homeloan/homeloan-transactions";
 
-const CarLoan = ({ snapshot }) => {
+const CarLoan = ({ snapshot, loanId }) => {
   return (
     <Container maxWidth={false}>
-      {snapshot && <CarloanBoard loan={snapshot} />}
-      <Box sx={{ mt: 3 }}>{snapshot && <CarloanTransactions loan={snapshot} />}</Box>
+      {snapshot && <CarloanBoard loan={snapshot} loanId={loanId} />}
+      <Box sx={{ mt: 3 }}>
+        {snapshot && <CarloanTransactions loan={snapshot} loanId={loanId} />}
+      </Box>
     </Container>
   );
 };
 
-const HouseLoan = ({ snapshot }) => {
+const HouseLoan = ({ snapshot, loanId }) => {
   return (
     <Container maxWidth={false}>
-      {snapshot && <HomeloanBoard loan={snapshot} />}
-      <Box sx={{ mt: 3 }}>{snapshot && <HomeloanTransactions loan={snapshot} />}</Box>
+      {snapshot && <HomeloanBoard loan={snapshot} loanId={loanId} />}
+      <Box sx={{ mt: 3 }}>
+        {snapshot && <HomeloanTransactions loan={snapshot} loanId={loanId} />}
+      </Box>
     </Container>
   );
 };
@@ -54,7 +58,7 @@ export const Loan = () => {
         {!loading && snapshot.type === "mortgage" ? (
           <HouseLoan snapshot={snapshot} />
         ) : (
-          <CarLoan snapshot={snapshot} />
+          <CarLoan snapshot={snapshot} loanId={id} />
         )}
       </Box>
     </LocalizationProvider>
