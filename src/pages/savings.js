@@ -1,52 +1,31 @@
 import Head from "next/head";
+import { useContext } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { SavingsBoard } from "../components/savings/savings-board";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { SavingBucket } from "../components/savings/savings-bucket";
-import { ref, getDatabase, push, child, update } from "firebase/database";
+import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { EmergencyBucketUrl, BucketsUrl, DashboardUrl } from "../firebase/databaseLinks";
+import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseConstants";
 import { LoadingComponent } from "../components/loading-component";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { useEffect, useState } from "react";
-import { MoneyFormatter } from "../components/dataDisplay/numberFormatter";
+import { GetSavingsTotal } from "src/hooks/savings";
+import AppContext from "src/context/AppContext";
 
 const Savings = () => {
   const database = getDatabase(firebase);
-  const dashboardUrl = DashboardUrl();
+  const value = useContext(AppContext);
 
-  const [snapshot, loading, error] = useObjectVal(ref(database, EmergencyBucketUrl()));
-  const [buckets, bucketsLoading, bucketsError] = useObjectVal(ref(database, BucketsUrl()));
+  const [snapshot, loading, error] = useObjectVal(
+    ref(database, value.state.familyIdBaseUrl + EmergencyBucketUrl)
+  );
+  const [buckets, bucketsLoading, bucketsError] = useObjectVal(
+    ref(database, value.state.familyIdBaseUrl + BucketsUrl)
+  );
 
-  const [savingsTotal, setSavingsTotal] = useState(0);
-  const [goalTotal, setGoalTotal] = useState(0);
-  const [updateDashboard, setUpdateDashboard] = useState(true);
-
-  useEffect(() => {
-    let savingsTotal = snapshot?.amount ?? 0;
-    let goalTotal = snapshot?.goal ?? 0;
-    if (buckets) {
-      Object.keys(buckets).map((key, index) => (savingsTotal += buckets[key].amount ?? 0));
-      Object.keys(buckets).map((key, index) => (goalTotal += buckets[key].goal ?? 0));
-    }
-    setSavingsTotal(savingsTotal);
-    setGoalTotal(goalTotal);
-
-    //Update only if theres a differencr
-    if (updateDashboard && snapshot && buckets) {
-      let loanDashboard = {
-        amount: savingsTotal,
-        title: "Savings",
-        type: "account",
-      };
-      const updates = {};
-      updates[dashboardUrl + "/1"] = loanDashboard;
-      update(ref(database), updates);
-      // setUpdateDashboard(false);
-    }
-  }, [snapshot, buckets]);
+  const [savings, savingsLoading, savingsError] = GetSavingsTotal();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -63,7 +42,7 @@ const Savings = () => {
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <SavingsBoard savingsTotal={savingsTotal} goalTotal={goalTotal} />
+              <SavingsBoard savingsTotal={savings.amount} goalTotal={savings.goal} />
             </Grid>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
               <LoadingComponent loading={loading} error={error}>

@@ -1,7 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { firebase } from "../../firebase/clientApp";
-import { ref, getDatabase } from "firebase/database";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
@@ -11,7 +9,6 @@ import { GetSavingsTotalOfBucket } from "src/hooks/savings";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
   const value = useContext(AppContext);
-  const database = getDatabase(firebase);
 
   const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
 
