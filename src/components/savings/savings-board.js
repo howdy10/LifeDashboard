@@ -1,4 +1,3 @@
-import { useEffect, useState, useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 

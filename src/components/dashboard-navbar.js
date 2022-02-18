@@ -11,9 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import { Bell as BellIcon } from "../icons/bell";
-import { UserCircle as UserCircleIcon } from "../icons/user-circle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import firebase from "../firebase/clientApp";
 import { getAuth } from "firebase/auth";

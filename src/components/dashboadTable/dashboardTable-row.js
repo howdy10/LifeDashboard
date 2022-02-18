@@ -8,7 +8,6 @@ import { IconButton } from "@mui/material";
 import { DashboardTableCell } from "./dashboardTable-cell";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Info } from "@mui/icons-material";
 
 export const DashboardTableRow = ({
   rowBeingEdited,

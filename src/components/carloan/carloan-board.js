@@ -1,25 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon,
-  Typography,
-  Container,
-  Grid,
-} from "@mui/material";
-
-import { Search as SearchIcon } from "../../icons/search";
-import { Upload as UploadIcon } from "../../icons/upload";
-import { Download as DownloadIcon } from "../../icons/download";
+import { Box, Container, Grid } from "@mui/material";
 import { CarloanBalances } from "./carloan-balances";
 import { CarloanPercent } from "./carloan-percent";
 import { CarloanNumbers } from "./carloan-numbers";
 import { DashboardUrl } from "../../firebase/databaseLinks";
-import { ref, getDatabase, push, child, update } from "firebase/database";
+import { ref, getDatabase, update } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 
 export const CarloanBoard = ({ loan, ...rest }) => {

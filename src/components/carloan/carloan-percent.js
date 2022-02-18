@@ -1,19 +1,5 @@
-import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Typography,
-  useTheme,
-  Grid,
-} from "@mui/material";
-import LaptopMacIcon from "@mui/icons-material/LaptopMac";
-import TabletIcon from "@mui/icons-material/Tablet";
-import { set } from "nprogress";
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
+import { Box, Card, CardContent, Divider, Typography, useTheme, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function CircularProgressWithLabel(props) {

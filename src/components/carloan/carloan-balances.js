@@ -1,6 +1,4 @@
-import { Avatar, Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import MoneyIcon from "@mui/icons-material/Money";
+import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 
 export const CarloanBalances = ({ remaning, initial }) => (
   <Card sx={{ height: "100%" }}>

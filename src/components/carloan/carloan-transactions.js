@@ -1,5 +1,4 @@
 import { TransactionModal } from "./carloan-transactionModal";
-import Paper from "@mui/material/Paper";
 import { Box, Card, Typography } from "@mui/material";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 
