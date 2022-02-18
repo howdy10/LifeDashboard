@@ -1,11 +1,13 @@
-import { Avatar, Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Avatar, Card, CardContent, Grid, Typography } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
+import { GetSavingsTotal } from "src/hooks/savings";
 
 export const AccountBalance = ({ account, href, ...props }) => {
   const router = useRouter();
+  const [savings, savingsLoading, savingsError] = GetSavingsTotal();
 
   const Icon = () => {
     let base = (
@@ -35,7 +37,7 @@ export const AccountBalance = ({ account, href, ...props }) => {
               {account.title}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(account.amount)}
+              {MoneyFormatter(savings?.amount)}
             </Typography>
           </Grid>
           <Grid item>{Icon()}</Grid>

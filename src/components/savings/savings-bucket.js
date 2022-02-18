@@ -1,37 +1,23 @@
 import { useEffect, useState, useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../../firebase/clientApp";
 import { ref, getDatabase } from "firebase/database";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { SavingsUrl } from "../../firebase/databaseConstants";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
 import { updateSavingsBucketTotal } from "../../api/savings-api";
 import AppContext from "src/context/AppContext";
+import { GetSavingsTotalOfBucket } from "src/hooks/savings";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
-  const [total, setTotal] = useState(0);
   const value = useContext(AppContext);
   const database = getDatabase(firebase);
 
-  const [bucketTransactions, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/" + bucket.bucketTransactions)
-  );
+  const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
 
   useEffect(() => {
-    let current = 0;
-    if (bucketTransactions) {
-      Object.keys(bucketTransactions).map(
-        (key, index) => (current += bucketTransactions[key].amount)
-      );
-    }
-    setTotal(current);
-  }, [bucketTransactions]);
-
-  useEffect(() => {
-    if (bucket.amount !== total) {
-      bucket.amount = total;
+    if (bucket.amount !== total.amount) {
+      bucket.amount = total.amount;
       updateSavingsBucketTotal(value.state.familyIdBaseUrl, bucket, bucketId);
     }
   }, [total]);
@@ -45,7 +31,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
               {bucket.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(total)}
+              {MoneyFormatter(total.amount)}
             </Typography>
           </Grid>
         </Grid>
@@ -66,7 +52,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
           </Grid>
           <Grid item>
             <SavingsTransactions
-              transactions={bucketTransactions}
+              transactions={total.transactions}
               bucketId={bucketId}
               bucketName={bucket.name}
             />
