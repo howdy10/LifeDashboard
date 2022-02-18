@@ -12,7 +12,7 @@ const order = {
   column: "date",
   direction: "desc",
 };
-export const HomeloanTransactions = ({ loan, ...rest }) => (
+export const HomeloanTransactions = ({ loan, loanId, ...rest }) => (
   <Card>
     {/* <CardHeader title="Payments" /> */}
     <Box
@@ -28,7 +28,7 @@ export const HomeloanTransactions = ({ loan, ...rest }) => (
         Payments
       </Typography>
       <Box sx={{ m: 1 }}>
-        <TransactionModal />
+        <TransactionModal loanId={loanId} />
       </Box>
     </Box>
     <DashboardTable columns={columns} data={loan.transactions} order={order} />

@@ -56,7 +56,7 @@ export const Loan = () => {
         }}
       >
         {!loading && snapshot.type === "mortgage" ? (
-          <HouseLoan snapshot={snapshot} />
+          <HouseLoan snapshot={snapshot} loanId={id} />
         ) : (
           <CarLoan snapshot={snapshot} loanId={id} />
         )}
