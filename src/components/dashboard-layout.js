@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "./dashboard-navbar";
@@ -7,8 +7,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/clientApp";
 import { useRouter } from "next/router";
 import { LoadingComponent } from "./loading-component";
-import { GetFamilyBaseUrl } from "../firebase/databaseLinks";
 import AppContext from "../context/AppContext";
+import { getAuth } from "firebase/auth";
+import { ref, getDatabase } from "firebase/database";
+import { useListKeys } from "react-firebase-hooks/database";
+import { firebase as DBfire } from "../firebase/clientApp";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -59,6 +62,18 @@ export const DashboardLayout = (props) => {
       <DashboardSidebar onClose={() => setSidebarOpen(false)} open={isSidebarOpen} />
     </>
   );
+};
+export const GetFamilyBaseUrl = () => {
+  const database = getDatabase(DBfire);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const [snapshots, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
+
+  const values = useMemo(() => (snapshots ? "family/" + snapshots[0] : null), [snapshots]);
+
+  const resArray = [values, loading, error];
+  return useMemo(() => resArray, resArray);
 };
 
 const DashboardLayout2 = ({ user, ...props }) => {

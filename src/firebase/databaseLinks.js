@@ -1,26 +1,11 @@
-import { useMemo } from "react";
-import { getAuth } from "firebase/auth";
-import { ref, getDatabase } from "firebase/database";
-import { useListKeys } from "react-firebase-hooks/database";
-import { firebase } from "./clientApp";
+import { useMemo, useContext } from "react";
+
+import AppContext from "src/context/AppContext";
 
 export const GetFamilyId = () => {
-  const [keys, loading, error] = GetFamilyBaseUrl();
+  const value = useContext(AppContext);
 
-  return keys ? keys : "";
-};
-
-export const GetFamilyBaseUrl = () => {
-  const database = getDatabase(firebase);
-  const auth = getAuth();
-  const user = auth.currentUser;
-
-  const [snapshots, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
-
-  const values = useMemo(() => (snapshots ? "family/" + snapshots[0] : null), [snapshots]);
-
-  const resArray = [values, loading, error];
-  return useMemo(() => resArray, resArray);
+  return value.state.familyIdBaseUrl;
 };
 
 export const DashboardUrl = () => {
@@ -43,6 +28,9 @@ export const SavingsTransactionsUrl = () => {
   return GetFamilyId() + "/Savings/transactions";
 };
 
+export const AllLoansUrl = () => {
+  return GetFamilyId() + "/Loans";
+};
 export const CarLoanUrl = () => {
   return GetFamilyId() + "/Loans/0";
 };
