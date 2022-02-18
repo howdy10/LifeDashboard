@@ -39,6 +39,10 @@ export const SavingsUrl = () => {
   return GetFamilyId() + "/Savings";
 };
 
+export const SavingsTransactionsUrl = () => {
+  return GetFamilyId() + "/Savings/transactions";
+};
+
 export const CarLoanUrl = () => {
   return GetFamilyId() + "/Loans/0";
 };
