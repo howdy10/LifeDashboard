@@ -7,6 +7,7 @@ import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import { Selector as SelectorIcon } from "../icons/selector";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import SavingsIcon from "@mui/icons-material/Savings";
 import HomeIcon from "@mui/icons-material/Home";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
@@ -24,6 +25,7 @@ const items = [
     icon: <SavingsIcon fontSize="small" />,
     title: "Savings",
   },
+  { href: "/loans", icon: <CreditCardIcon fontSize="small" />, title: "Loans" },
   {
     href: "/homeLoan",
     icon: <HomeIcon fontSize="small" />,
