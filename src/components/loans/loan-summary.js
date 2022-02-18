@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Avatar, Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import IconButton from "@mui/material/IconButton";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
