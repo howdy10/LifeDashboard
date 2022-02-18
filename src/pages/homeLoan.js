@@ -2,7 +2,6 @@ import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import { HomeloanBoard } from "src/components/homeloan/homeloan-board";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { customers } from "../__mocks__/customers";
 import { HomeloanTransactions } from "src/components/homeloan/homeloan-transactions";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -31,9 +30,7 @@ export const HomeLoan = () => {
       >
         <Container maxWidth={false}>
           {!loading && snapshot && <HomeloanBoard loan={snapshot} />}
-          <Box sx={{ mt: 3 }}>
-            {snapshot && <HomeloanTransactions loan={snapshot} customers={customers} />}
-          </Box>
+          <Box sx={{ mt: 3 }}>{snapshot && <HomeloanTransactions loan={snapshot} />}</Box>
         </Container>
       </Box>
     </LocalizationProvider>

@@ -2,7 +2,6 @@ import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import { CarloanBoard } from "src/components/carloan/carloan-board";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { customers } from "../__mocks__/customers";
 import { CarloanTransactions } from "src/components/carloan/carloan-transactions";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -31,9 +30,7 @@ export const CarLoan = () => {
       >
         <Container maxWidth={false}>
           {!loading && snapshot && <CarloanBoard loan={snapshot} />}
-          <Box sx={{ mt: 3 }}>
-            {snapshot && <CarloanTransactions loan={snapshot} customers={customers} />}
-          </Box>
+          <Box sx={{ mt: 3 }}>{snapshot && <CarloanTransactions loan={snapshot} />}</Box>
         </Container>
       </Box>
     </LocalizationProvider>
