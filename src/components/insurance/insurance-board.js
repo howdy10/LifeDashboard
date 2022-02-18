@@ -34,16 +34,6 @@ export const InsuranceBoard = ({ insurance, ...rest }) => {
                 outOfPocket={insurance.outOfPocket}
               />
             </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              {/* <CarloanPercent remaning={remaining} initial={loan.loanAmount} /> */}
-            </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              {/* <CarloanNumbers
-                interestPaid={interest}
-                totalPaid={totalPaid}
-                principalPaid={principalPaid}
-              /> */}
-            </Grid>
           </Grid>
         </Container>
       </Box>
