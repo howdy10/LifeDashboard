@@ -110,7 +110,7 @@ export const DashboardTableCell = ({
             label={columnName}
             value={value}
             onChange={(event) => {
-              onUpdateValue(parseInt(event.target.value));
+              onUpdateValue(event.target.value);
             }}
             variant="outlined"
           />
