@@ -73,8 +73,6 @@ export function InsuranceClaims({ claims, ...rest }) {
       bill: newData.bill,
       insurance: newData.insurance,
     };
-    console.log(claim);
-    console.log(newData);
     if (index) {
       updateInsuranceClaim(value.state.familyIdBaseUrl, claim, index);
     } else {
