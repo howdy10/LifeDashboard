@@ -26,16 +26,6 @@ const items = [
   },
   { href: "/loans", icon: <CreditCardIcon fontSize="small" />, title: "Loans" },
   {
-    href: "/homeLoan",
-    icon: <HomeIcon fontSize="small" />,
-    title: "HomeLoan",
-  },
-  {
-    href: "/carLoan",
-    icon: <DirectionsCarIcon fontSize="small" />,
-    title: "CarLoan",
-  },
-  {
     href: "/insurance",
     icon: <LocalHospitalIcon fontSize="small" />,
     title: "Insurance",
