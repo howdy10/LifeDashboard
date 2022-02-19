@@ -12,10 +12,19 @@ import { AccountBalance } from "../components/dashboard/account-balance";
 import { SavingsBalance } from "src/components/dashboard/savings-balance";
 import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 
+const CardResolver = ({ card }) => {
+  switch (card.type) {
+    case "loan":
+      return <LoanProgress loanId={card.loanId} />;
+    default:
+      return "No card type for " + card.type;
+  }
+};
+
 const Dashboard = () => {
   const database = getDatabase(firebase);
 
-  const [snapshot, loading, error] = useObjectVal(ref(database, DashboardUrl()));
+  const [cards, loading, error] = useObjectVal(ref(database, DashboardUrl()));
   return (
     <>
       <Head>
@@ -36,14 +45,14 @@ const Dashboard = () => {
             <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
               <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
             </Grid>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <LoadingComponent loading={loading} error={error}>
-                {snapshot && <LoanProgress loanId={0} />}
-              </LoadingComponent>
-            </Grid>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <Budget />
-            </Grid>
+            <LoadingComponent loading={loading} error={error}>
+              {cards &&
+                Object.keys(cards).map((id, index) => (
+                  <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+                    <CardResolver card={cards[id]} />
+                  </Grid>
+                ))}
+            </LoadingComponent>
           </Grid>
         </Container>
       </Box>
