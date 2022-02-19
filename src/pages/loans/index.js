@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
-import { Avatar, Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { DashboardLayout } from "src/components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";

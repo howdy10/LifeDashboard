@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { Box, Container, Grid } from "@mui/material";
-import { Budget } from "../components/dashboard/budget";
 import { LoanProgress } from "../components/dashboard/loan-progress";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
@@ -50,7 +49,7 @@ const Dashboard = () => {
             <LoadingComponent loading={loading} error={error}>
               {cards &&
                 Object.keys(cards).map((id, index) => (
-                  <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+                  <Grid key={index} item xl={3} lg={6} md={6} sm={12} xs={12}>
                     <CardResolver card={cards[id]} />
                   </Grid>
                 ))}

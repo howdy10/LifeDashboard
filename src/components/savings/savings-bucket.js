@@ -1,9 +1,8 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
-import { updateSavingsBucketTotal } from "../../api/savings-api";
 import AppContext from "src/context/AppContext";
 import { GetSavingsTotalOfBucket } from "src/hooks/savings";
 
@@ -11,13 +10,6 @@ export const SavingBucket = ({ bucket, bucketId }) => {
   const value = useContext(AppContext);
 
   const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
-
-  useEffect(() => {
-    if (bucket.amount !== total.amount) {
-      bucket.amount = total.amount;
-      updateSavingsBucketTotal(value.state.familyIdBaseUrl, bucket, bucketId);
-    }
-  }, [total]);
 
   return (
     <Card sx={{ height: "100%" }}>

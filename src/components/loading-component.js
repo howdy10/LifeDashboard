@@ -6,7 +6,7 @@ export const LoadingComponent = ({ loading, error, children }) => {
     if (error && !loading) {
       console.error(error);
     }
-  }, [error]);
+  }, [error, loading]);
 
   return loading ? <CircularProgress /> : error ? "error" : children;
 };
