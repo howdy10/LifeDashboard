@@ -2,9 +2,12 @@ import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import { GetLoanDetails } from "src/hooks/loan";
 
-export const LoanProgress = ({ loan, href, props }) => {
+export const LoanProgress = ({ loanId, ...props }) => {
   const router = useRouter();
+
+  const [loan, loading, error] = GetLoanDetails(loanId);
 
   const Icon = () => {
     let base = (
@@ -19,11 +22,7 @@ export const LoanProgress = ({ loan, href, props }) => {
       </Avatar>
     );
 
-    if (href) {
-      return <IconButton onClick={() => router.push(href)}> {base}</IconButton>;
-    } else {
-      return base;
-    }
+    return <IconButton onClick={() => router.push("loans/" + loanId)}> {base}</IconButton>;
   };
 
   return (
@@ -32,16 +31,16 @@ export const LoanProgress = ({ loan, href, props }) => {
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
-              {loan.title}
+              {loan.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {loan.percent}%
+              {loan.percentPaid}%
             </Typography>
           </Grid>
           <Grid item>{Icon()}</Grid>
         </Grid>
         <Box sx={{ pt: 3 }}>
-          <LinearProgress value={loan.percent} variant="determinate" />
+          <LinearProgress value={loan.percentPaid} variant="determinate" />
         </Box>
       </CardContent>
     </Card>
