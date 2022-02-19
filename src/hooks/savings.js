@@ -48,24 +48,29 @@ export const GetSavingsTotalOfBucket = (bucketId) => {
   const [savingsTotal, setSavingsTotal] = useState({
     amount: 0,
     transactions: [],
+    name: null,
   });
   const [bucketTransactions, loading, error] = useObjectVal(
     ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/bucketTransactions/" + bucketId)
   );
+  const [bucketInfo, infoLoading, infoError] = useObjectVal(
+    ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
+  );
 
   useEffect(() => {
     let current = 0;
-    if (bucketTransactions) {
+    if (bucketTransactions && (bucketInfo || bucketId === "emergencyFund")) {
       Object.keys(bucketTransactions).map(
         (key, index) => (current += bucketTransactions[key].amount)
       );
+      setSavingsTotal({
+        ...setSavingsTotal,
+        amount: current,
+        transactions: bucketTransactions,
+        name: bucketInfo?.name ?? "emergencyFund",
+      });
     }
-    setSavingsTotal({
-      ...setSavingsTotal,
-      amount: current,
-      transactions: bucketTransactions,
-    });
-  }, [bucketTransactions]);
+  }, [bucketTransactions, bucketInfo]);
 
   const resArray = [savingsTotal, loading, error];
   return useMemo(() => resArray, resArray);

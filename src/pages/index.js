@@ -15,7 +15,9 @@ import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 const CardResolver = ({ card }) => {
   switch (card.type) {
     case "loan":
-      return <LoanProgress loanId={card.loanId} />;
+      return <LoanProgress sx={{ height: "100%" }} loanId={card.loanId} />;
+    case "savings":
+      return <AccountBalance sx={{ height: "100%" }} bucketId={card.bucketId} />;
     default:
       return "No card type for " + card.type;
   }
