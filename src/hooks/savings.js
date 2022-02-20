@@ -69,6 +69,13 @@ export const GetSavingsTotalOfBucket = (bucketId) => {
         transactions: bucketTransactions,
         name: bucketInfo?.name ?? "emergencyFund",
       });
+    } else {
+      setSavingsTotal({
+        ...setSavingsTotal,
+        amount: 0,
+        transactions: [],
+        name: null,
+      });
     }
   }, [bucketTransactions, bucketInfo]);
 
