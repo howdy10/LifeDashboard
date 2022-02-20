@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, TableCell, TableRow, Typography } from "@mui/material";
+import {
+  IconButton,
+  Collapse,
+  Menu,
+  MenuItem,
+  TableCell,
+  TableRow,
+  Typography,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { IconButton } from "@mui/material";
 import { DashboardTableCell } from "./dashboardTable-cell";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -31,7 +41,16 @@ export const DashboardTableRow = ({
   useEffect(() => {
     setRowData(data[idRow]);
   }, [data]);
-  const renderRowEditIcons = (index) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const renderRowEditMenu = (index) => {
     if (rowBeingEdited === index || rowBeingDeleted === index) {
       return (
         <TableCell data-testid={"cell-" + index + "-action"}>
@@ -65,31 +84,60 @@ export const DashboardTableRow = ({
     }
 
     let EditIconButton = (
-      <IconButton
+      <MenuItem
         data-testid="fab-action-edit"
         onClick={() => {
+          handleClose();
           setRowBeingEdited(index);
         }}
       >
-        <EditIcon data-testid={"cell-action-edit"} />
-      </IconButton>
+        <ListItemIcon>
+          <EditIcon data-testid={"cell-action-edit"} />
+        </ListItemIcon>
+        <ListItemText>Edit</ListItemText>
+      </MenuItem>
     );
 
     let DeleteIconButton = (
-      <IconButton
+      <MenuItem
         data-testid="fab-action-delete"
         onClick={() => {
+          handleClose();
           setRowData({ ...data[idRow] });
           setRowBeingDeleted(index);
         }}
       >
-        <DeleteForeverIcon data-testid={"cell-action-delete"} />
-      </IconButton>
+        <ListItemIcon>
+          <DeleteForeverIcon data-testid={"cell-action-delete"} />
+        </ListItemIcon>
+        <ListItemText>Delete</ListItemText>
+      </MenuItem>
     );
     return (
       <TableCell data-testid={"cell-" + index + "-action"}>
-        {onRowUpdateComplete && EditIconButton}
-        {onRowDelete && DeleteIconButton}
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          data-testid="action-menu-icon"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          {onRowUpdateComplete && EditIconButton}
+          {onRowDelete && DeleteIconButton}
+        </Menu>
       </TableCell>
     );
   };
@@ -97,7 +145,7 @@ export const DashboardTableRow = ({
   return (
     <>
       <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
-        {(onRowUpdateComplete || onRowDelete) && renderRowEditIcons(indexRow)}
+        {(onRowUpdateComplete || onRowDelete) && renderRowEditMenu(indexRow)}
         {rowBeingDeleted === indexRow ? (
           <TableCell colSpan={6}>
             <Typography>Are you sure you want to Delete this Entry?</Typography>

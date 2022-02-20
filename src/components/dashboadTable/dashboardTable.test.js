@@ -189,13 +189,15 @@ test("Render Rows with edit icon", () => {
   );
 
   const ActionColumn = screen.queryByTestId("column-action");
-  const actionCell = screen.queryByTestId("cell-0-action");
+  expect(ActionColumn).toHaveTextContent("Action");
+
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  fireEvent.click(menuButton);
+
   const editButton = screen.queryByTestId("cell-action-edit");
   const deleteButton = screen.queryByTestId("cell-action-delete");
-
-  expect(ActionColumn).toHaveTextContent("Action");
-  expect(actionCell).toContainElement(editButton);
-  expect(actionCell).not.toContainElement(deleteButton);
+  expect(editButton).toBeTruthy();
+  expect(deleteButton).not.toBeTruthy();
 });
 
 test("Render Rows with delete icon", () => {
@@ -211,13 +213,15 @@ test("Render Rows with delete icon", () => {
   );
 
   const ActionColumn = screen.queryByTestId("column-action");
-  const actionCell = screen.queryByTestId("cell-0-action");
+  expect(ActionColumn).toHaveTextContent("Action");
+
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  fireEvent.click(menuButton);
   const editButton = screen.queryByTestId("cell-action-edit");
   const deleteButton = screen.queryByTestId("cell-action-delete");
 
-  expect(ActionColumn).toHaveTextContent("Action");
-  expect(actionCell).toContainElement(deleteButton);
-  expect(actionCell).not.toContainElement(editButton);
+  expect(deleteButton).toBeTruthy();
+  expect(editButton).not.toBeTruthy();
 });
 
 test("Render Rows with two icon", () => {
@@ -234,13 +238,16 @@ test("Render Rows with two icon", () => {
   );
 
   const ActionColumn = screen.queryByTestId("column-action");
-  const actionCell = screen.queryByTestId("cell-0-action");
+  expect(ActionColumn).toHaveTextContent("Action");
+
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  fireEvent.click(menuButton);
+
   const deleteButton = screen.queryByTestId("cell-action-delete");
   const editButton = screen.queryByTestId("cell-action-edit");
 
-  expect(ActionColumn).toHaveTextContent("Action");
-  expect(actionCell).toContainElement(deleteButton);
-  expect(actionCell).toContainElement(editButton);
+  expect(editButton).toBeTruthy();
+  expect(deleteButton).toBeTruthy();
 });
 
 test("Render Rows with clickable icons", () => {
@@ -257,7 +264,8 @@ test("Render Rows with clickable icons", () => {
       }}
     />
   );
-
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  fireEvent.click(menuButton);
   const editButton = screen.queryByTestId("fab-action-edit");
   fireEvent.click(editButton);
   const confirmButton = screen.queryByTestId("fab-action-confirm");
