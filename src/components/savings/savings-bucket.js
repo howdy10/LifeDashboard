@@ -22,19 +22,19 @@ export const SavingBucket = ({ bucket, bucketId }) => {
             <Typography color="textPrimary" variant="h4">
               {MoneyFormatter(total.amount)}
             </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography color="textSecondary" variant="caption">
+                Goal: {MoneyFormatter(bucket.goal)}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            pt: 2,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Typography color="textSecondary" variant="caption">
-            Goal: {MoneyFormatter(bucket.goal)}
-          </Typography>
-        </Box>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <TransactionModal bucketId={bucketId} bucketName={bucket.name} />

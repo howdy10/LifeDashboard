@@ -13,19 +13,18 @@ export const SavingsBoard = ({ savingsTotal, goalTotal }) => {
             <Typography color="textPrimary" variant="h4">
               {MoneyFormatter(savingsTotal)}
             </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography color="textSecondary" variant="caption">
+                Goal: {MoneyFormatter(goalTotal)}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            pt: 2,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Typography color="textSecondary" variant="caption">
-            Goal: {MoneyFormatter(goalTotal)}
-          </Typography>
-        </Box>
       </CardContent>
     </Card>
   );
