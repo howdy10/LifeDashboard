@@ -70,9 +70,13 @@ export const GetFamilyBaseUrl = () => {
 
   const [snapshots, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
 
-  const values = useMemo(() => (snapshots ? "family/" + snapshots[0] : null), [snapshots]);
+  const values = useMemo(() => (snapshots[0] ? "family/" + snapshots[0] : null), [snapshots]);
+  const userErrors = useMemo(
+    () => (snapshots[0] ? undefined : "No family assosiated with user"),
+    [snapshots]
+  );
 
-  const resArray = [values, loading, error];
+  const resArray = [values, loading, userErrors];
   return useMemo(() => resArray, resArray);
 };
 
@@ -85,12 +89,14 @@ const DashboardLayout2 = ({ user, ...props }) => {
   useEffect(() => {
     if (keys && !loading) {
       value.setFamilyIdBaseUrl(keys);
+    } else if (error && !loading) {
+      console.error("No family id set to account");
     }
   }, [keys]);
 
   return (
     <LoadingComponent loading={loading} error={error}>
-      {children}
+      {keys && children}
     </LoadingComponent>
   );
 };
