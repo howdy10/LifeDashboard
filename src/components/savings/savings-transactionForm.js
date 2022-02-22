@@ -1,32 +1,27 @@
-import React, { useState, forwardRef, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import NumberFormat from "react-number-format";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import Snackbar from "@mui/material/Snackbar";
 import { getTime } from "date-fns";
 import { createSavingTransaction, updateSavingTransaction } from "../../api/savings-api";
 import MuiAlert from "@mui/material/Alert";
 import AppContext from "src/context/AppContext";
+import { useForm } from "react-hook-form";
+import { FormInputText } from "../forms/text-input";
+import { FormInputDate } from "../forms/date-input";
+import { FormInputMoney } from "../forms/money-input";
 
-export function TransactionForm({
-  bucketId,
-  bucketName,
-  preDate,
-  preAmount,
-  preNote,
-  open,
-  setOpen,
-  preId,
-}) {
+const defaultValues = {
+  amount: 0,
+  date: new Date(),
+  notes: "",
+};
+export function TransactionForm({ bucketId, bucketName, open, setOpen, preId }) {
   const [completedSnackbar, setCompletedSnackbar] = useState(false);
   const value = useContext(AppContext);
 
@@ -41,36 +36,19 @@ export function TransactionForm({
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  const [amount, setAmount] = useState(preAmount);
-  const [date, setDate] = useState(preDate);
-  const [note, setNote] = useState(preNote);
-
-  const [submittionAttempt, setSubmittionAttempt] = useState(false);
-
-  const handleAmoutChange = (event) => {
-    setAmount(event.target.value);
-  };
-  const handleNoteChange = (event) => {
-    setNote(event.target.value);
-  };
-
   const handleClose = () => {
-    setAmount(0);
-    setDate(null);
+    reset();
     setOpen(false);
-    setSubmittionAttempt(false);
   };
 
-  const handleSubmit = () => {
-    setSubmittionAttempt(true);
-
-    if (amount === 0 || date === null) {
+  const onSubmit = (data) => {
+    if (isNaN(data.date)) {
       return;
     }
     let transaction = {
-      amount: parseFloat(amount),
-      note: note,
-      date: getTime(date),
+      amount: parseFloat(data.amount),
+      note: data.note ?? "",
+      date: getTime(data.date),
       bucket: bucketName,
       bucketId: bucketId,
     };
@@ -85,6 +63,9 @@ export function TransactionForm({
     setOpen(false);
   };
 
+  const methods = useForm({ defaultValues: defaultValues });
+  const { handleSubmit, reset, control, setValue } = methods;
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -92,53 +73,32 @@ export function TransactionForm({
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <FormInputMoney
+                rules={{ required: true, validate: (value) => value != 0 }}
                 fullWidth
-                required
-                error={submittionAttempt && amount === 0}
-                label="Amount"
-                value={amount}
-                onChange={handleAmoutChange}
                 name="amount"
-                id="amount-input"
-                InputProps={{
-                  inputComponent: NumberFormatCustom,
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                }}
-                variant="outlined"
+                control={control}
+                label="Amount"
               />
             </Grid>
             <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Transaction date"
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => {
-                    params.error = submittionAttempt && date === null;
-                    return <TextField fullWidth error={true} {...params} />;
-                  }}
-                />
-              </LocalizationProvider>
+              <FormInputDate name="date" control={control} label="Transaction date" />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="outlined-multiline-static"
+              <FormInputText
+                name="note"
+                control={control}
                 label="Notes"
-                onChange={handleNoteChange}
                 multiline
                 rows={4}
+                fullWidth
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </DialogActions>
       </Dialog>
 
@@ -165,31 +125,4 @@ TransactionForm.propTypes = {
   preNote: PropTypes.string,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-};
-
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
-  const { onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      isNumericString
-      prefix="$"
-    />
-  );
-});
-
-NumberFormatCustom.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
 };

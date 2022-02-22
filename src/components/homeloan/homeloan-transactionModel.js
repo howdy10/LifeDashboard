@@ -1,70 +1,52 @@
 import { useState, forwardRef } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import NumberFormat from "react-number-format";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import { getTime } from "date-fns";
 import { ref, getDatabase, push, child, update } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 import Grid from "@mui/material/Grid";
 import { AllLoansUrl } from "../../firebase/databaseLinks";
+import { useForm } from "react-hook-form";
+import { FormInputDate } from "../forms/date-input";
+import { FormInputMoney } from "../forms/money-input";
 
+const defaultValues = {
+  amount: 0,
+  date: new Date(),
+  interest: 0,
+  escrow: 0,
+};
 export function TransactionModal({ loanId }) {
   const database = getDatabase(firebase);
   const transactionUrl = AllLoansUrl() + "/" + loanId + "/transactions";
 
   const [open, setOpen] = useState(false);
 
-  const [amount, setAmount] = useState(0);
-  const [interest, setInterest] = useState(0);
-  const [escrow, setEscrow] = useState(0);
-  const [date, setDate] = useState(null);
-
-  const [submittionAttempt, setSubmittionAttempt] = useState(false);
-
-  const handleAmoutChange = (event) => {
-    setAmount(event.target.value);
-  };
-
-  const handleInterestChange = (event) => {
-    setInterest(event.target.value);
-  };
+  const methods = useForm({ defaultValues: defaultValues });
+  const { handleSubmit, reset, control, setValue } = methods;
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleEscrowChange = (event) => {
-    setEscrow(event.target.value);
-  };
-
   const handleClose = () => {
-    setAmount(0);
-    setInterest(0);
-    setEscrow(0);
-    setDate(null);
+    reset();
     setOpen(false);
-    setSubmittionAttempt(false);
   };
 
-  const handleSubmit = () => {
-    setSubmittionAttempt(true);
-
-    if (amount === 0 || date === null || interest === 0) {
+  const onSubmit = (data) => {
+    if (isNaN(data.date)) {
       return;
     }
     let transaction = {
-      amount: parseFloat(amount),
-      interest: parseFloat(interest),
-      date: getTime(date),
-      escrow: parseFloat(escrow),
+      amount: parseFloat(data.amount),
+      interest: parseFloat(data.interest),
+      date: getTime(data.date),
+      escrow: parseFloat(data.escrow),
     };
 
     const newTransactionsKey = push(child(ref(database), transactionUrl)).key;
@@ -89,112 +71,42 @@ export function TransactionModal({ loanId }) {
           </DialogContentText> */}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <FormInputMoney
+                rules={{ required: true, validate: (value) => value != 0 }}
                 fullWidth
-                required
-                error={submittionAttempt && amount === 0}
-                label="Amount"
-                value={amount}
-                onChange={handleAmoutChange}
                 name="amount"
-                id="amount-input"
-                InputProps={{
-                  inputComponent: NumberFormatCustom,
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                }}
-                variant="outlined"
+                control={control}
+                label="Amount"
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
+              <FormInputMoney
+                rules={{ required: true }}
                 fullWidth
-                required
-                error={submittionAttempt && escrow === 0}
-                label="Escrow"
-                value={escrow}
-                onChange={handleEscrowChange}
                 name="escrow"
-                id="escrow-input"
-                InputProps={{
-                  inputComponent: NumberFormatCustom,
-                }}
-                variant="outlined"
+                control={control}
+                label="Escrow"
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
+              <FormInputMoney
+                rules={{ required: true }}
                 fullWidth
-                required
-                error={submittionAttempt && interest === 0}
-                label="Interest"
-                value={interest}
-                onChange={handleInterestChange}
                 name="interest"
-                id="interest-input"
-                InputProps={{
-                  inputComponent: NumberFormatCustom,
-                }}
-                variant="outlined"
+                control={control}
+                label="Interest"
               />
             </Grid>
             <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Transaction date"
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => {
-                    params.error = submittionAttempt && date === null;
-                    return <TextField fullWidth error={true} {...params} />;
-                  }}
-                />
-              </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="outlined-multiline-static"
-                label="Notes"
-                multiline
-                rows={4}
-              />
+              <FormInputDate name="date" control={control} label="Transaction date" />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
-  const { onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      isNumericString
-      prefix="$"
-    />
-  );
-});
-
-NumberFormatCustom.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
