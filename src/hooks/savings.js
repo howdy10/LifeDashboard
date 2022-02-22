@@ -59,15 +59,18 @@ export const GetSavingsTotalOfBucket = (bucketId) => {
 
   useEffect(() => {
     let current = 0;
-    if (bucketTransactions && (bucketInfo || bucketId === "emergencyFund")) {
+    if (bucketTransactions) {
       Object.keys(bucketTransactions).map(
         (key, index) => (current += bucketTransactions[key].amount)
       );
+    }
+
+    if (bucketInfo || bucketId === "emergencyFund") {
       setSavingsTotal({
         ...setSavingsTotal,
         amount: current,
-        transactions: bucketTransactions,
-        name: bucketInfo?.name ?? "emergencyFund",
+        transactions: bucketTransactions ?? [],
+        name: bucketInfo?.name ?? "Emergency Fund",
       });
     } else {
       setSavingsTotal({
