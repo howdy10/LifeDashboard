@@ -74,7 +74,7 @@ export const DashboardNavbar = (props) => {
           </Tooltip>
           <Tooltip title="Notifications">
             <IconButton sx={{ ml: 1 }}>
-              <Badge badgeContent={4} color="primary" variant="dot">
+              <Badge color="primary">
                 <BellIcon fontSize="small" />
               </Badge>
             </IconButton>
