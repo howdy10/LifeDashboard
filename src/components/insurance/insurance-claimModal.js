@@ -1,97 +1,72 @@
-import { useContext, useState, forwardRef, useEffect } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import NumberFormat from "react-number-format";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import { getTime } from "date-fns";
-import { ref, getDatabase, push, child, update } from "firebase/database";
-import { firebase } from "../../components/clientApp";
+import { ref, getDatabase } from "firebase/database";
+import { firebase } from "../../firebase/clientApp";
 import { useObject } from "react-firebase-hooks/database";
-import { userContext } from "../../context/userContext";
 import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { getAuth } from "firebase/auth";
-import {
-  InsuranceClaimsUrl,
-  InsuranceMembersUrl,
-  InsuranceProvidersUrl,
-} from "../../firebase/databaseLinks";
+import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../../firebase/databaseLinks";
+import AppContext from "src/context/AppContext";
+import { createInsuranceClaim } from "src/api/insurance-api";
+import { useForm } from "react-hook-form";
+import { FormInputDate } from "../forms/date-input";
+import { FormInputMoney } from "../forms/money-input";
+import { FormInputSwitch } from "../forms/switch-input";
+import { FormInputText } from "../forms/text-input";
+import { FormInputDropdown } from "../forms/dropdown-input";
+
+const defaultValues = {
+  amount: 0,
+  date: new Date(),
+  notes: "",
+  member: 0,
+  provider: 0,
+  checkboxValue: [],
+};
 
 export function ClaimModal() {
   const database = getDatabase(firebase);
-  const insuranceClaimUrl = InsuranceClaimsUrl();
+  const value = useContext(AppContext);
 
   const [open, setOpen] = useState(false);
-
   const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
   const [providers, providersLoading, providersError] = useObject(
     ref(database, InsuranceProvidersUrl())
   );
 
-  const [amount, setAmount] = useState(0);
-  const [date, setDate] = useState(null);
-  const [member, setMember] = useState(0);
-  const [provider, setProvider] = useState(0);
-  const [notes, setNotes] = useState("");
-  const [paid, setPaid] = useState(false);
-  const [bill, setBill] = useState(false);
-  const [insurance, setInsurance] = useState(false);
-
-  const [submittionAttempt, setSubmittionAttempt] = useState(false);
-
-  const handleAmoutChange = (event) => {
-    setAmount(event.target.value);
-  };
+  const methods = useForm({ defaultValues: defaultValues });
+  const { handleSubmit, reset, control, setValue } = methods;
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    setAmount(0);
-    setDate(null);
-    setMember(0);
-    setProvider(0);
-    setNotes("");
-    setPaid(false);
-    setBill(false);
-    setInsurance(false);
-    setSubmittionAttempt(false);
+    reset();
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    setSubmittionAttempt(true);
-
-    if (member === 0 || date === null || provider === 0) {
+  const onSubmit = (data) => {
+    if (isNaN(data.date)) {
       return;
     }
     let claim = {
-      cost: parseFloat(amount),
-      date: getTime(date),
-      notes: notes,
-      person: member,
-      provider: provider,
-      paid: paid,
-      bill: bill,
-      insurance: insurance,
+      cost: parseFloat(data.amount),
+      date: getTime(data.date),
+      notes: data.notes ?? "",
+      person: data.member,
+      provider: data.provider,
+      paid: data.checkboxValue.includes(3),
+      bill: data.checkboxValue.includes(2),
+      insurance: data.checkboxValue.includes(1),
     };
 
-    const newKey = push(child(ref(database), insuranceClaimUrl)).key;
-
-    const updates = {};
-    updates[insuranceClaimUrl + "/" + newKey] = claim;
-    update(ref(database), updates);
+    createInsuranceClaim(value.state.familyIdBaseUrl, claim);
     handleClose();
   };
 
@@ -109,178 +84,75 @@ export function ClaimModal() {
           </DialogContentText> */}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <FormInputMoney
+                rules={{ required: true }}
                 fullWidth
-                required
+                name="amount"
+                control={control}
                 label="Cost"
-                value={amount}
-                onChange={handleAmoutChange}
-                name="cost"
-                id="cost-input"
-                InputProps={{
-                  inputComponent: NumberFormatCustom,
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                }}
-                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Transaction date"
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => {
-                    params.error = submittionAttempt && date === null;
-                    return <TextField fullWidth error={true} {...params} />;
-                  }}
-                />
-              </LocalizationProvider>
+              <FormInputDate name="date" control={control} label="Transaction date" />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                error={submittionAttempt && member === 0}
+              <FormInputDropdown
                 fullWidth
-                required
-                id="member-select"
-                select
+                rules={{ validate: (value) => value != 0 }}
+                name="member"
+                control={control}
                 label="Member"
-                value={member}
-                onChange={(newValue) => {
-                  setMember(newValue.target.value);
-                }}
-                SelectProps={{
-                  native: true,
-                }}
-              >
-                <option key={-1} value={0}>
-                  Please Select
-                </option>
-                {!membersLoading &&
-                  Object.keys(members.val()).map((id, index) => (
-                    <option key={index} value={members.val()[id]}>
-                      {members.val()[id]}
-                    </option>
-                  ))}
-              </TextField>
+                options={members?.val()}
+              />
             </Grid>
             <Grid item xs={6}>
-              <TextField
+              <FormInputDropdown
                 fullWidth
-                error={submittionAttempt && provider === 0}
-                required
-                id="provider-select"
-                select
+                rules={{ validate: (value) => value != 0 }}
+                name="provider"
+                control={control}
                 label="Provider"
-                value={provider}
-                onChange={(newValue) => {
-                  setProvider(newValue.target.value);
-                }}
-                SelectProps={{
-                  native: true,
-                }}
-              >
-                <option key={-1} value={0}>
-                  Please Select
-                </option>
-                {!providersLoading &&
-                  Object.keys(providers.val()).map((id, index) => (
-                    <option key={index} value={providers.val()[id]}>
-                      {providers.val()[id]}
-                    </option>
-                  ))}
-              </TextField>
+                options={providers?.val()}
+              />
             </Grid>
             <Grid item xs={12}>
-              <FormGroup aria-label="position" row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={insurance}
-                      onChange={(event) => {
-                        setInsurance(event.target.checked);
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                  }
-                  label="Insurance"
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={bill}
-                      onChange={(event) => {
-                        setBill(event.target.checked);
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                  }
-                  label="Bill"
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={paid}
-                      onChange={(event) => {
-                        setPaid(event.target.checked);
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                  }
-                  label="Paid"
-                />
-              </FormGroup>
+              <FormInputSwitch
+                control={control}
+                setValue={setValue}
+                name={"checkboxValue"}
+                options={[
+                  {
+                    label: "Insurance",
+                    value: 1,
+                  },
+                  {
+                    label: "Bill",
+                    value: 2,
+                  },
+                  {
+                    label: "Paid",
+                    value: 3,
+                  },
+                ]}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="outlined-multiline-static"
+              <FormInputText
+                name="notes"
+                control={control}
                 label="Notes"
                 multiline
-                onChange={(newValue) => {
-                  setNotes(newValue.target.value);
-                }}
                 rows={4}
+                fullWidth
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit} type="submit">
-            Submit
-          </Button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
-  const { onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      isNumericString
-      prefix="$"
-    />
-  );
-});
-
-NumberFormatCustom.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};

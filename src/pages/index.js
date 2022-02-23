@@ -1,58 +1,65 @@
 import Head from "next/head";
 import { Box, Container, Grid } from "@mui/material";
-import { Budget } from "../components/dashboard/budget";
-import { LatestOrders } from "../components/dashboard/latest-orders";
-import { LatestProducts } from "../components/dashboard/latest-products";
-import { Sales } from "../components/dashboard/sales";
-import { TasksProgress } from "../components/dashboard/tasks-progress";
-import { TotalCustomers } from "../components/dashboard/total-customers";
-import { TotalProfit } from "../components/dashboard/total-profit";
-import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
+import { LoanProgress } from "../components/dashboard/loan-progress";
 import { DashboardLayout } from "../components/dashboard-layout";
+import { ref, getDatabase } from "firebase/database";
+import { useObjectVal } from "react-firebase-hooks/database";
+import { firebase } from "../firebase/clientApp";
+import { DashboardUrl } from "../firebase/databaseLinks";
+import { LoadingComponent } from "../components/loading-component";
+import { AccountBalance } from "../components/dashboard/account-balance";
+import { SavingsBalance } from "src/components/dashboard/savings-balance";
+import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 
-const Dashboard = () => (
-  <>
-    <Head>
-      <title>Dashboard | Material Kit</title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8,
-      }}
-    >
-      <Container maxWidth={false}>
-        <Grid container spacing={3}>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <Budget />
+const CardResolver = ({ card }) => {
+  switch (card.type) {
+    case "loan":
+      return <LoanProgress sx={{ height: "100%" }} loanId={card.loanId} />;
+    case "savings":
+      return <AccountBalance sx={{ height: "100%" }} bucketId={card.bucketId} />;
+    default:
+      return "No card type for " + card.type;
+  }
+};
+
+const Dashboard = () => {
+  const database = getDatabase(firebase);
+
+  const [cards, loading, error] = useObjectVal(ref(database, DashboardUrl()));
+  return (
+    <>
+      <Head>
+        <title>Life Dashboard</title>
+      </Head>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 8,
+        }}
+      >
+        <Container maxWidth={false}>
+          <Grid container spacing={3}>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+              <SavingsBalance sx={{ height: "100%" }} />
+            </Grid>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+              <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
+            </Grid>
+            <LoadingComponent loading={loading} error={error}>
+              {cards &&
+                Object.keys(cards).map((id, index) => (
+                  <Grid key={index} item xl={3} lg={6} md={6} sm={12} xs={12}>
+                    <CardResolver card={cards[id]} />
+                  </Grid>
+                ))}
+            </LoadingComponent>
           </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TotalCustomers />
-          </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TasksProgress />
-          </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TotalProfit sx={{ height: "100%" }} />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <Sales />
-          </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <TrafficByDevice sx={{ height: "100%" }} />
-          </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <LatestProducts sx={{ height: "100%" }} />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <LatestOrders />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  </>
-);
+        </Container>
+      </Box>
+    </>
+  );
+};
 
 Dashboard.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 

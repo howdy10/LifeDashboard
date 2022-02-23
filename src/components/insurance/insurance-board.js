@@ -1,25 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon,
-  Typography,
-  Container,
-  Grid,
-} from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { InsuranceDeductable } from "./insurance-deductable";
 
 export const InsuranceBoard = ({ insurance, ...rest }) => {
   const [claimsAmount, setClaimsAmount] = useState(0);
-
-  const [remaining, setRemaining] = useState(0);
-  const [interest, setInterest] = useState(0);
-  const [totalPaid, setTotalPaid] = useState(0);
-  const [principalPaid, setPrincipalPaid] = useState(0);
 
   useEffect(() => {
     let totalPaid = 0;
@@ -49,16 +33,6 @@ export const InsuranceBoard = ({ insurance, ...rest }) => {
                 deductible={insurance.deductible}
                 outOfPocket={insurance.outOfPocket}
               />
-            </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              {/* <CarloanPercent remaning={remaining} initial={loan.loanAmount} /> */}
-            </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              {/* <CarloanNumbers
-                interestPaid={interest}
-                totalPaid={totalPaid}
-                principalPaid={principalPaid}
-              /> */}
             </Grid>
           </Grid>
         </Container>

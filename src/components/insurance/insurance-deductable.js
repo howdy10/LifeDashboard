@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 import { LinearProgressWithLabel } from "../dataDisplay/linearProgressWithLabel";
 
 export const InsuranceDeductable = ({ paid, deductible, outOfPocket, ...rest }) => (

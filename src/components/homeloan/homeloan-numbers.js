@@ -1,12 +1,12 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 
-export const CarloanBalances = ({ remaning, initial }) => (
+export const HomeloanNumbers = ({ totalPaid, principalPaid, interestPaid, escrowBalance }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textPrimary" gutterBottom variant="h4">
-            Balances
+            Numbers
           </Typography>
         </Grid>
       </Grid>
@@ -19,14 +19,26 @@ export const CarloanBalances = ({ remaning, initial }) => (
         }}
       >
         <Typography color="textSecondary" variant="caption">
-          Initial Balance{": "}
-          {initial.toLocaleString("en-US", {
+          Total Paid{": "}
+          {totalPaid.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}
           <br />
-          Remaining Balance{": "}
-          {remaning.toLocaleString("en-US", {
+          Principal Paid{": "}
+          {principalPaid.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+          <br />
+          Interest Paid{": "}
+          {interestPaid.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+          <br />
+          Escrow Balance{": "}
+          {escrowBalance.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           })}

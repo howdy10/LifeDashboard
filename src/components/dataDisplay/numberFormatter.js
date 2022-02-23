@@ -1,5 +1,3 @@
-import React from "react";
-
 export function MoneyFormatter(number) {
   if (isNaN(number)) {
     return "NaN";

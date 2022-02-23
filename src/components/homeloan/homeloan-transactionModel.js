@@ -18,8 +18,8 @@ const defaultValues = {
   amount: 0,
   date: new Date(),
   interest: 0,
+  escrow: 0,
 };
-
 export function TransactionModal({ loanId }) {
   const database = getDatabase(firebase);
   const transactionUrl = AllLoansUrl() + "/" + loanId + "/transactions";
@@ -46,6 +46,7 @@ export function TransactionModal({ loanId }) {
       amount: parseFloat(data.amount),
       interest: parseFloat(data.interest),
       date: getTime(data.date),
+      escrow: parseFloat(data.escrow),
     };
 
     const newTransactionsKey = push(child(ref(database), transactionUrl)).key;
@@ -62,20 +63,29 @@ export function TransactionModal({ loanId }) {
         Add Transaction
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Transaction</DialogTitle>
+        <DialogTitle>Home Transaction</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
             To subscribe to this website, please enter your email address here. We will send updates
             occasionally.
           </DialogContentText> */}
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <FormInputMoney
                 rules={{ required: true, validate: (value) => value != 0 }}
                 fullWidth
                 name="amount"
                 control={control}
                 label="Amount"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormInputMoney
+                rules={{ required: true }}
+                fullWidth
+                name="escrow"
+                control={control}
+                label="Escrow"
               />
             </Grid>
             <Grid item xs={6}>

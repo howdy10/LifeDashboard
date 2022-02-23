@@ -11,13 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import { Bell as BellIcon } from "../icons/bell";
-import { UserCircle as UserCircleIcon } from "../icons/user-circle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import firebase from "../firebase/clientApp";
-import { useEffect, useContext } from "react";
-import { userContext } from "../context/userContext";
 import { getAuth } from "firebase/auth";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -83,15 +79,8 @@ export const DashboardNavbar = (props) => {
               </Badge>
             </IconButton>
           </Tooltip>
-          <Avatar
-            sx={{
-              height: 40,
-              width: 40,
-              ml: 1,
-            }}
-            src="/static/images/avatars/avatar_1.png"
-          >
-            <UserCircleIcon fontSize="small" />
+          <Avatar sx={{ bgcolor: "primary.main", height: 40, width: 40, ml: 1 }}>
+            {user && user.displayName.charAt(0)}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>

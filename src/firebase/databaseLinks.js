@@ -1,53 +1,51 @@
-import { getAuth } from "firebase/auth";
-import { useEffect } from "react";
-import { ref, getDatabase } from "firebase/database";
-import { useListKeys } from "react-firebase-hooks/database";
-import { firebase } from "./clientApp";
+import { useMemo, useContext } from "react";
+
+import AppContext from "src/context/AppContext";
 
 export const GetFamilyId = () => {
-  const database = getDatabase(firebase);
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const value = useContext(AppContext);
 
-  const [keys, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
-
-  return keys ? keys[0] : "";
+  return value.state.familyIdBaseUrl;
 };
 
-export const CarLoanUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/Loans/0";
+export const DashboardUrl = () => {
+  return GetFamilyId() + "/Dashboard";
 };
 
-export const CarLoanTransactionUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/Loans/0/transactions";
+export const EmergencyBucketUrl = () => {
+  return GetFamilyId() + "/Savings/emergencyFund";
+};
+
+export const BucketsUrl = () => {
+  return GetFamilyId() + "/Savings/buckets";
+};
+
+export const SavingsUrl = () => {
+  return GetFamilyId() + "/Savings";
+};
+
+export const SavingsTransactionsUrl = () => {
+  return GetFamilyId() + "/Savings/transactions";
+};
+
+export const AllLoansUrl = () => {
+  return GetFamilyId() + "/Loans";
 };
 
 export const InsuranceUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/HealthInsurance";
+  return GetFamilyId() + "/HealthInsurance";
 };
 
 export const InsuranceMembersUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/HealthInsurance/members";
+  return GetFamilyId() + "/HealthInsurance/members";
 };
 
 export const InsuranceProvidersUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/HealthInsurance/providers";
+  return GetFamilyId() + "/HealthInsurance/providers";
 };
 
 export const InsuranceClaimsUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/HealthInsurance/claims";
+  return GetFamilyId() + "/HealthInsurance/claims";
 };
 
 export const BudgetUrl = () => {
