@@ -1,9 +1,9 @@
 import { Avatar, Card, CardContent, Grid, Typography } from "@mui/material";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { GetCurrentBalance } from "src/hooks/balance";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
 export const AccountBalance = ({ href, type, ...props }) => {
   const router = useRouter();
@@ -19,7 +19,7 @@ export const AccountBalance = ({ href, type, ...props }) => {
           width: 56,
         }}
       >
-        <AttachMoneyIcon />
+        <AccountBalanceIcon />
       </Avatar>
     );
 

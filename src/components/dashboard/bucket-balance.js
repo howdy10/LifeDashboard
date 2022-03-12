@@ -1,5 +1,5 @@
 import { Avatar, Card, CardContent, Grid, Typography } from "@mui/material";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import SavingsIcon from "@mui/icons-material/Savings";
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
@@ -18,7 +18,7 @@ export const SavingsBucketBalance = ({ href, bucketId, ...props }) => {
           width: 56,
         }}
       >
-        <AttachMoneyIcon />
+        <SavingsIcon />
       </Avatar>
     );
 
