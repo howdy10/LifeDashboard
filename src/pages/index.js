@@ -7,7 +7,7 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
-import { AccountBalance } from "../components/dashboard/account-balance";
+import { SavingsBucketBalance } from "../components/dashboard/bucket-balance";
 import { SavingsBalance } from "src/components/dashboard/savings-balance";
 import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 
@@ -16,7 +16,7 @@ const CardResolver = ({ card }) => {
     case "loan":
       return <LoanProgress sx={{ height: "100%" }} loanId={card.loanId} />;
     case "savings":
-      return <AccountBalance sx={{ height: "100%" }} bucketId={card.bucketId} />;
+      return <SavingsBucketBalance sx={{ height: "100%" }} bucketId={card.bucketId} />;
     default:
       return "No card type for " + card.type;
   }
