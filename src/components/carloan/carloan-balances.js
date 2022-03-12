@@ -18,7 +18,7 @@ export const CarloanBalances = ({ remaning, initial }) => (
           alignItems: "center",
         }}
       >
-        <Typography color="textSecondary" variant="caption">
+        <Typography color="textSecondary" variant="subtitle1">
           Initial Balance{": "}
           {initial.toLocaleString("en-US", {
             style: "currency",

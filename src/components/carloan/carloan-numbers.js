@@ -18,7 +18,7 @@ export const CarloanNumbers = ({ totalPaid, principalPaid, interestPaid }) => (
           alignItems: "center",
         }}
       >
-        <Typography color="textSecondary" variant="caption">
+        <Typography color="textSecondary" variant="subtitle1">
           Total Paid{": "}
           {totalPaid.toLocaleString("en-US", {
             style: "currency",
