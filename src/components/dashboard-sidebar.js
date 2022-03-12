@@ -6,6 +6,7 @@ import { Box, Divider, Drawer, useMediaQuery } from "@mui/material";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
@@ -17,6 +18,7 @@ const items = [
     icon: <ChartBarIcon fontSize="small" />,
     title: "Dashboard",
   },
+  { href: "/balance", icon: <AccountBalanceIcon fontSize="small" />, title: "Bank Account" },
   {
     href: "/savings",
     icon: <SavingsIcon fontSize="small" />,

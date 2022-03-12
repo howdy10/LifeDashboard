@@ -32,6 +32,10 @@ export const AllLoansUrl = () => {
   return GetFamilyId() + "/Loans";
 };
 
+export const BudgetUrl = () => {
+  return GetFamilyId() + "/Budget";
+};
+
 export const InsuranceUrl = () => {
   return GetFamilyId() + "/HealthInsurance";
 };
