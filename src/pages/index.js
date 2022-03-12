@@ -10,6 +10,7 @@ import { LoadingComponent } from "../components/loading-component";
 import { SavingsBucketBalance } from "../components/dashboard/bucket-balance";
 import { SavingsBalance } from "src/components/dashboard/savings-balance";
 import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
+import { AccountBalance } from "src/components/dashboard/account-balance";
 
 const CardResolver = ({ card }) => {
   switch (card.type) {
@@ -40,6 +41,12 @@ const Dashboard = () => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={3}>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+              <AccountBalance sx={{ height: "100%" }} />
+            </Grid>
+            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+              <AccountBalance type="cc" sx={{ height: "100%" }} />
+            </Grid>
             <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
               <SavingsBalance sx={{ height: "100%" }} />
             </Grid>
