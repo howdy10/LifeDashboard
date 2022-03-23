@@ -12,6 +12,12 @@ The purpose of this application is to build a one stop shop for all your life tr
 - Car and home loans progress
 - Insurance claims and deductable progress
 
+## Firebase Function
+
+- Function are located in `functions/index.js`
+
+- Functions are deployed to firebase through `firebase deploy --only functions`
+
 ## Quick start
 
 - Clone the repo: `git clone https://github.com/howdy10/LifeDashboard`

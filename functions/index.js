@@ -15,13 +15,20 @@ exports.endingBalanceSchedule = functions.pubsub
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
-    const prevMonth = month - 1;
+    const lastMonthDate = new Date();
+    lastMonthDate.setMonth(lastMonthDate.getMonth(-1));
+    const prevMonth = lastMonthDate.getMonth();
+    const prevMonthYear = lastMonthDate.getFullYear();
     database
       .ref("family/a70b3195-4787-4509-8d08-cfeb49761524/Budget")
       .once("value")
       .then((snapshot) => {
         if (snapshot.exists()) {
-          var lastBalance = snapshot.child(year).child(prevMonth).child("endingBalance").val();
+          var lastBalance = snapshot
+            .child(prevMonthYear)
+            .child(prevMonth)
+            .child("endingBalance")
+            .val();
           var spent = snapshot.child("current").child("spent").val();
           var payChecks = snapshot.child(year).child(month).child("payChecks").val();
 
@@ -31,6 +38,12 @@ exports.endingBalanceSchedule = functions.pubsub
           }
           let currentBalance = lastBalance + paidThisMonth - spent;
 
+          functions.logger.info(
+            `Today date: ${today.toDateString()} Time: ${today.toTimeString()}`
+          );
+          functions.logger.info(
+            `Previous Month date: ${lastMonthDate.toDateString()} Time: ${lastMonthDate.toTimeString()}`
+          );
           functions.logger.info(`last balance: ${lastBalance}`);
           functions.logger.info(`paid this month: ${paidThisMonth}`);
           functions.logger.info(`Current Balance: ${currentBalance}`);
