@@ -33,6 +33,7 @@ export const BalanceBoard = ({ month, year }) => {
               <BalanceTotals
                 bankAmount={balance.bankAmount}
                 afterCreditCard={balance.afterCreditCard}
+                monthNet={income.total - currentSpending?.spent}
               />
             </Grid>
 
