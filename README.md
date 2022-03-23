@@ -1,4 +1,4 @@
-## [Life Dashboard]
+## Life Dashboard
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
