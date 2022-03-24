@@ -9,7 +9,10 @@ const uiConfig = {
   signInSuccessUrl: "/",
   // GitHub as the only included Auth Provider.
   // You could add and configure more here!
-  signInOptions: [firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD],
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ],
 };
 
 function SignInScreen() {
