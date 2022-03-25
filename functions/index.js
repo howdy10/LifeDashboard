@@ -13,12 +13,14 @@ exports.endingBalanceSchedule = functions.pubsub
   .timeZone("America/Phoenix")
   .onRun((context) => {
     const today = new Date();
+    today.setDate(today.getDate() - 1);
     const year = today.getFullYear();
     const month = today.getMonth();
-    const lastMonthDate = new Date();
-    lastMonthDate.setMonth(lastMonthDate.getMonth(-1));
-    const prevMonth = lastMonthDate.getMonth();
-    const prevMonthYear = lastMonthDate.getFullYear();
+
+    today.setMonth(today.getMonth() - 1);
+    const prevMonth = today.getMonth();
+    const prevMonthYear = today.getFullYear();
+
     database
       .ref("family/a70b3195-4787-4509-8d08-cfeb49761524/Budget")
       .once("value")
@@ -38,12 +40,9 @@ exports.endingBalanceSchedule = functions.pubsub
           }
           let currentBalance = lastBalance + paidThisMonth - spent;
 
-          functions.logger.info(
-            `Today date: ${today.toDateString()} Time: ${today.toTimeString()}`
-          );
-          functions.logger.info(
-            `Previous Month date: ${lastMonthDate.toDateString()} Time: ${lastMonthDate.toTimeString()}`
-          );
+          functions.logger.info(`Today date: ${month} Year: ${year}`);
+          functions.logger.info(`Previous Month date: ${prevMonth} Year: ${prevMonthYear}`);
+          functions.logger.info(`Context time ${context.timestamp}`);
           functions.logger.info(`last balance: ${lastBalance}`);
           functions.logger.info(`paid this month: ${paidThisMonth}`);
           functions.logger.info(`Current Balance: ${currentBalance}`);
