@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import LinearProgress from "@mui/material/LinearProgress";
+import { MoneyFormatter } from "./numberFormatter";
 
 export function LinearProgressWithLabel(props) {
   return (
@@ -14,7 +15,7 @@ export function LinearProgressWithLabel(props) {
             color="text.secondary"
             align="right"
           >
-            {`$` + props.current}
+            {MoneyFormatter(props.current)}
           </Typography>
         </Box>
       )}
@@ -24,7 +25,7 @@ export function LinearProgressWithLabel(props) {
       {props.showGoalLabel && (
         <Box data-testid="goal-label" sx={{ width: "8%" }}>
           <Typography data-testid="goal-label-text" variant="body2" color="text.secondary">
-            {`$` + props.goal}
+            {MoneyFormatter(props.goal)}
           </Typography>
         </Box>
       )}
