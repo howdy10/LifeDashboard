@@ -57,7 +57,7 @@ export const DashboardTableCell = ({
             label={columnName}
             value={value}
             onChange={(event) => {
-              onUpdateValue(parseInt(event.target.value));
+              onUpdateValue(parseFloat(event.target.value));
             }}
             name="amount"
             id="amount-input"
