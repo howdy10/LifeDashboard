@@ -56,7 +56,7 @@ export function HsaModal() {
   return (
     <div>
       <Button color="primary" variant="contained" onClick={handleClickOpen} sx={{ mr: 1 }}>
-        Add Hsa Transaction
+        Add HSA Transaction
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Transaction</DialogTitle>
