@@ -16,7 +16,7 @@ The purpose of this application is to build a one stop shop for all your life tr
 
 - Function are located in `functions/index.js`
 
-- Functions are deployed to firebase through `firebase deploy --only functions`
+- Functions are deployed to firebase through `firebase deploy --only functions` or `npm run function`
 
 - Ending Balance function: This functino runs every day at 11:30 AZ time. It will update the ending balance for the current month
 

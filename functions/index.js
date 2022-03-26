@@ -8,6 +8,23 @@ var database = admin.database();
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 
+exports.createTestDb = functions.https.onRequest((req, resp) => {
+  database
+    .ref("family/a70b3195-4787-4509-8d08-cfeb49761524")
+    .once("value")
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        database.ref(`family/test`).set(snapshot.val());
+        resp.send("Database has been copied to test profile");
+      } else {
+        resp.send("No data avaliable");
+      }
+    })
+    .catch((error) => {
+      resp.send(`Error pulling data: ${error}`);
+    });
+});
+
 exports.endingBalanceSchedule = functions.pubsub
   .schedule("30 23 * * *")
   .timeZone("America/Phoenix")
