@@ -5,6 +5,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { HsaModal } from "./hsa-transactionModal";
+import { Button } from "@mui/material";
 import AppContext from "src/context/AppContext";
 import { SnackbarStatus } from "../dataDisplay/Snackbar-status";
 import { updateHsaTransaction, createHsaTransaction, deleteHsaTransaction } from "src/api/hsa-api";
@@ -20,6 +21,7 @@ export function HsaTransactions({ transactions, ...rest }) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
+  const [masterEdit, setMasterEdit] = useState(false);
   const value = useContext(AppContext);
 
   const handleSnackbarClose = (event, reason) => {
@@ -56,6 +58,10 @@ export function HsaTransactions({ transactions, ...rest }) {
     setDeletedSnackbar(true);
   };
 
+  const handleEditOpen = () => {
+    setMasterEdit(!masterEdit);
+  };
+
   return (
     <Card>
       <Box
@@ -70,6 +76,7 @@ export function HsaTransactions({ transactions, ...rest }) {
         <Typography sx={{ m: 1 }} variant="h4">
           HSA Transactions
         </Typography>
+        <Button onClick={handleEditOpen}>{masterEdit ? "Cancle Edit" : "Edit"}</Button>
         <Box sx={{ m: 1 }}>
           <HsaModal />
         </Box>
@@ -79,6 +86,7 @@ export function HsaTransactions({ transactions, ...rest }) {
         data={transactions}
         rowEdits={handleUpdateRow}
         rowDelete={handleDeleteRow}
+        showActions={masterEdit}
       />
       <SnackbarStatus
         isUpdateOpen={updatedSnackbar}
