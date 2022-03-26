@@ -18,6 +18,20 @@ The purpose of this application is to build a one stop shop for all your life tr
 
 - Functions are deployed to firebase through `firebase deploy --only functions`
 
+- Ending Balance function: This functino runs every day at 11:30 AZ time. It will update the ending balance for the current month
+
+## Firebase Realtime Database
+
+TBD
+
+## Firebase Authentication
+
+The app currently supports authentication through email and google. All being handleded by firebase.
+
+## Vercel Deployment
+
+The app automatically deploys to vercel when a change is pushed to main branch.
+
 ## Quick start
 
 - Clone the repo: `git clone https://github.com/howdy10/LifeDashboard`
