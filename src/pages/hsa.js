@@ -2,18 +2,17 @@ import Head from "next/head";
 import { Box, Container } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { HsaTransactions } from "src/components/hsa/hsa-transactions";
-import { ref, getDatabase } from "firebase/database";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { getDatabase } from "firebase/database";
 import { firebase } from "../firebase/clientApp";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { HsaTransactionsUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "src/components/loading-component";
+import { GetHsaInfo } from "../hooks/hsa";
 
 export const Hsa = () => {
   const database = getDatabase(firebase);
 
-  const [snapshot, loading, error] = useObjectVal(ref(database, HsaTransactionsUrl()));
+  const [snapshot, loading, error] = GetHsaInfo();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -29,7 +28,7 @@ export const Hsa = () => {
       >
         <Container maxWidth={false}>
           <LoadingComponent loading={loading} error={error}>
-            <HsaTransactions transactions={snapshot} />
+            <HsaTransactions transactions={snapshot.transactions} />
           </LoadingComponent>
         </Container>
       </Box>
