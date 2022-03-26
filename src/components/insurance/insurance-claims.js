@@ -1,4 +1,4 @@
-import { useState, forwardRef, useContext } from "react";
+import { useState, useContext } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -13,9 +13,8 @@ import {
   deleteInsuranceClaim,
   updateInsuranceClaim,
 } from "src/api/insurance-api";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
 import AppContext from "src/context/AppContext";
+import { SnackbarStatus } from "../dataDisplay/Snackbar-status";
 
 function Row(props) {
   const { row } = props;
@@ -36,10 +35,6 @@ const columns = [
   { title: "Bill Recieved", field: "bill", type: "boolean" },
   { title: "Paid", field: "paid", type: "boolean" },
 ];
-
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export function InsuranceClaims({ claims, ...rest }) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
@@ -81,7 +76,7 @@ export function InsuranceClaims({ claims, ...rest }) {
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteInsuranceClaim(value.state.familyIdBaseUrl, index, oldData.bucketId);
+    deleteInsuranceClaim(value.state.familyIdBaseUrl, index);
     setDeletedSnackbar(true);
   };
 
@@ -136,21 +131,13 @@ export function InsuranceClaims({ claims, ...rest }) {
           </Box>
         )}
       />
-      <Snackbar open={updatedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
-          Claim updated
-        </Alert>
-      </Snackbar>
-      <Snackbar open={deletedErrorSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
-          Claim not complete
-        </Alert>
-      </Snackbar>
-      <Snackbar open={deletedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
-          Claim deleted
-        </Alert>
-      </Snackbar>
+      <SnackbarStatus
+        isUpdateOpen={updatedSnackbar}
+        isDeleteOpen={deletedSnackbar}
+        isErrorOpen={deletedErrorSnackbar}
+        closeAll={handleSnackbarClose}
+        type="Claim"
+      />
     </Card>
   );
 }
