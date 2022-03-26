@@ -7,4 +7,5 @@ export const InsuranceUrl = "/HealthInsurance";
 export const InsuranceMembersUrl = "/HealthInsurance/members";
 export const InsuranceProvidersUrl = "/HealthInsurance/providers";
 export const InsuranceClaimsUrl = "/HealthInsurance/claims";
+export const HsaTransactionsUrl = "/hsa/transactions";
 export const BudgetUrl = "/Budget";

@@ -40,6 +40,10 @@ export const InsuranceUrl = () => {
   return GetFamilyId() + "/HealthInsurance";
 };
 
+export const HsaTransactionsUrl = () => {
+  return GetFamilyId() + "/hsa/transactions";
+};
+
 export const InsuranceMembersUrl = () => {
   return GetFamilyId() + "/HealthInsurance/members";
 };
