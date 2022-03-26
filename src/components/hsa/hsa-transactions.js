@@ -7,7 +7,7 @@ import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { HsaModal } from "./hsa-transactionModal";
 import { Button } from "@mui/material";
 import AppContext from "src/context/AppContext";
-import { SnackbarStatus } from "../dataDisplay/Snackbar-status";
+import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import { updateHsaTransaction, createHsaTransaction, deleteHsaTransaction } from "src/api/hsa-api";
 
 const columns = [

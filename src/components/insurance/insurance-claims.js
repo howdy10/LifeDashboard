@@ -14,7 +14,7 @@ import {
   updateInsuranceClaim,
 } from "src/api/insurance-api";
 import AppContext from "src/context/AppContext";
-import { SnackbarStatus } from "../dataDisplay/Snackbar-status";
+import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 
 function Row(props) {
   const { row } = props;
