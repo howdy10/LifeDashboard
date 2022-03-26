@@ -33,7 +33,7 @@ export const DashboardTableCell = ({
       case "nullCurrency":
         return value ? MoneyFormatter(value) : "N/A";
       case "date":
-        return format(value, "MM/dd/yyyy");
+        return value ? format(value, "MM/dd/yyyy") : "N/A";
       case "boolean":
         return value ? (
           <CheckIcon color="success" data-testid="check-icon" />
