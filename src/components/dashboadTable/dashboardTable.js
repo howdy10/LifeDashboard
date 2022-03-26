@@ -13,6 +13,7 @@ export const DashboardTable = ({
   infoRow,
   infoRowVaribles,
   infoRowEditComponent,
+  showActions = true,
 }) => {
   const [rowBeingEdited, setRowBeingEdited] = useState(null);
   const [rowBeingDeleted, setRowBeingDeleted] = useState(null);
@@ -53,6 +54,7 @@ export const DashboardTable = ({
         setInfoRowOpened={setInfoRowOpened}
         infoRowVaribles={infoRowVaribles}
         infoRowEditComponent={infoRowEditComponent}
+        showActions={showActions}
       />
     );
   };
@@ -62,7 +64,9 @@ export const DashboardTable = ({
       <Table data-testid="full-table">
         <TableHead>
           <TableRow>
-            {(rowEdits || rowDelete) && <TableCell data-testid="column-action">Action</TableCell>}
+            {showActions && (rowEdits || rowDelete) && (
+              <TableCell data-testid="column-action">Action</TableCell>
+            )}
             {columns.map((item, index) => (
               <TableCell data-testid={"column-" + index} key={index}>
                 {item.title}
@@ -99,4 +103,5 @@ DashboardTable.propTypes = {
   infoRow: PropTypes.func,
   infoRowVaribles: PropTypes.arrayOf(PropTypes.string),
   infoRowEditComponent: PropTypes.func,
+  showActions: PropTypes.bool,
 };

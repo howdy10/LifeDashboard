@@ -35,12 +35,20 @@ export const DashboardTableRow = ({
   infoRowOpened,
   setInfoRowOpened,
   infoRowVaribles,
+  showActions,
 }) => {
   const [rowData, setRowData] = useState(data[idRow]);
 
   useEffect(() => {
     setRowData(data[idRow]);
   }, [data]);
+  useEffect(() => {
+    if (!showActions) {
+      setRowData({ ...data[idRow] });
+      setRowBeingDeleted(null);
+      setRowBeingEdited(null);
+    }
+  }, [showActions]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -145,7 +153,7 @@ export const DashboardTableRow = ({
   return (
     <>
       <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
-        {(onRowUpdateComplete || onRowDelete) && renderRowEditMenu(indexRow)}
+        {showActions && (onRowUpdateComplete || onRowDelete) && renderRowEditMenu(indexRow)}
         {rowBeingDeleted === indexRow ? (
           <TableCell colSpan={6}>
             <Typography>Are you sure you want to Delete this Entry?</Typography>

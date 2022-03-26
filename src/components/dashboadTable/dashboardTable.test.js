@@ -422,4 +422,25 @@ test("Render Rows Collapsable row with row variables", () => {
   expect(collapseComponent).toHaveTextContent("TestValue0");
 });
 
+test("Render Rows with edit function but actionswitch off", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      rowEdits={() => {}}
+      showActions={false}
+    />
+  );
+
+  const ActionColumn = screen.queryByTestId("column-action");
+  expect(ActionColumn).not.toBeTruthy();
+
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  expect(menuButton).not.toBeTruthy();
+});
+
+test("Test missing coloumn data", () => {});
 test("Test column alignment prop", () => {});
