@@ -441,6 +441,140 @@ test("Render Rows with edit function but actionswitch off", () => {
   const menuButton = screen.queryByTestId("action-menu-icon");
   expect(menuButton).not.toBeTruthy();
 });
+test("Render Without Pagination", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showActions={false}
+    />
+  );
 
+  const Pagination = screen.queryByTestId("table-pagination");
+  expect(Pagination).not.toBeTruthy();
+});
+test("Render With Pagination", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showActions={false}
+      showPagination={true}
+    />
+  );
+
+  const Pagination = screen.queryByTestId("table-pagination");
+  expect(Pagination).toBeTruthy();
+});
+
+test("Render Rows With first 5+ values", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+    />
+  );
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+  expect(Row3).toBeTruthy();
+  expect(Row4).toBeTruthy();
+  expect(Row5).toBeTruthy();
+  expect(Row6).toBeTruthy();
+});
+test("Render Pagination Rows With first 5+ values", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showPagination={true}
+    />
+  );
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+  expect(Row3).toBeTruthy();
+  expect(Row4).toBeTruthy();
+  expect(Row5).toBeTruthy();
+  expect(Row6).not.toBeTruthy();
+});
+
+test("Render Pagination Rows With first 5+ values click next button", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showPagination={true}
+    />
+  );
+
+  const nextButton = screen.queryByTestId("table-pagination-nextButton");
+
+  fireEvent.click(nextButton);
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).not.toBeTruthy();
+  expect(Row2).not.toBeTruthy();
+  expect(Row3).not.toBeTruthy();
+  expect(Row4).not.toBeTruthy();
+  expect(Row5).not.toBeTruthy();
+  expect(Row6).toBeTruthy();
+});
 test("Test missing coloumn data", () => {});
 test("Test column alignment prop", () => {});

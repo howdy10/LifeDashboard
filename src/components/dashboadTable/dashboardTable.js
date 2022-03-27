@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  TablePagination,
+} from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
 export const DashboardTable = ({
@@ -14,10 +22,21 @@ export const DashboardTable = ({
   infoRowVaribles,
   infoRowEditComponent,
   showActions = true,
+  showPagination = false,
 }) => {
   const [rowBeingEditedId, setRowBeingEditedId] = useState(null);
   const [rowBeingDeletedId, setRowBeingDeletedId] = useState(null);
   const [infoRowOpenedId, setInfoRowOpenedId] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   function descendingComparator(a, b, orderBy) {
     if (data[b][orderBy] < data[a][orderBy]) {
@@ -43,7 +62,7 @@ export const DashboardTable = ({
         isRowBeingDeleted={rowBeingDeletedId === firebaseId}
         setRowBeingEditedFirebaseId={setRowBeingEditedId}
         setRowBeingDeletedFirebaseId={setRowBeingDeletedId}
-        rowIndex={rowIndex}
+        rowIndex={rowIndex + rowsPerPage * page}
         columns={columns}
         firebaseRowId={firebaseId}
         rowData={data[firebaseId]}
@@ -59,6 +78,14 @@ export const DashboardTable = ({
     );
   };
 
+  let dataList = Object.keys(data);
+
+  if (order) {
+    dataList = dataList.sort(getComparator(order.direction, order.column));
+  }
+  if (showPagination) {
+    dataList = dataList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  }
   return (
     <PerfectScrollbar>
       <Table data-testid="full-table">
@@ -76,13 +103,25 @@ export const DashboardTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data &&
-            (order
-              ? Object.keys(data)
-                  .sort(getComparator(order.direction, order.column))
-                  .map((firebaseId, indexRow) => row(firebaseId, indexRow))
-              : Object.keys(data).map((firebaseId, indexRow) => row(firebaseId, indexRow)))}
+          {data && dataList.map((firebaseId, indexRow) => row(firebaseId, indexRow))}
         </TableBody>
+
+        {showPagination && (
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                data-testid={"table-pagination"}
+                rowsPerPageOptions={[5, 10, 25]}
+                count={Object.keys(data).length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                nextIconButtonProps={{ "data-testid": "table-pagination-nextButton" }}
+              />
+            </TableRow>
+          </TableFooter>
+        )}
       </Table>
     </PerfectScrollbar>
   );
@@ -104,4 +143,5 @@ DashboardTable.propTypes = {
   infoRowVaribles: PropTypes.arrayOf(PropTypes.string),
   infoRowEditComponent: PropTypes.func,
   showActions: PropTypes.bool,
+  showPagination: PropTypes.bool,
 };
