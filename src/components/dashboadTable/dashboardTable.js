@@ -15,9 +15,9 @@ export const DashboardTable = ({
   infoRowEditComponent,
   showActions = true,
 }) => {
-  const [rowBeingEdited, setRowBeingEdited] = useState(null);
-  const [rowBeingDeleted, setRowBeingDeleted] = useState(null);
-  const [infoRowOpened, setInfoRowOpened] = useState(null);
+  const [rowBeingEditedId, setRowBeingEditedId] = useState(null);
+  const [rowBeingDeletedId, setRowBeingDeletedId] = useState(null);
+  const [infoRowOpenedId, setInfoRowOpenedId] = useState(null);
 
   function descendingComparator(a, b, orderBy) {
     if (data[b][orderBy] < data[a][orderBy]) {
@@ -35,23 +35,23 @@ export const DashboardTable = ({
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
 
-  const row = (item, indexRow) => {
+  const row = (firebaseId, rowIndex) => {
     return (
       <DashboardTableRow
-        key={indexRow}
-        rowBeingEdited={rowBeingEdited}
-        rowBeingDeleted={rowBeingDeleted}
-        indexRow={indexRow}
+        key={rowIndex}
+        rowBeingEditedFirebaseId={rowBeingEditedId}
+        rowBeingDeletedFirebaseId={rowBeingDeletedId}
+        setRowBeingEditedFirebaseId={setRowBeingEditedId}
+        setRowBeingDeletedFirebaseId={setRowBeingDeletedId}
+        rowIndex={rowIndex}
         columns={columns}
-        data={data}
-        idRow={item}
-        setRowBeingEdited={setRowBeingEdited}
-        setRowBeingDeleted={setRowBeingDeleted}
+        firebaseRowId={firebaseId}
+        rowData={data[firebaseId]}
         onRowUpdateComplete={rowEdits}
         onRowDelete={rowDelete}
         infoRow={infoRow}
-        infoRowOpened={infoRowOpened}
-        setInfoRowOpened={setInfoRowOpened}
+        infoRowOpenedFirebaseId={infoRowOpenedId}
+        setInfoRowOpenedFirebaseId={setInfoRowOpenedId}
         infoRowVaribles={infoRowVaribles}
         infoRowEditComponent={infoRowEditComponent}
         showActions={showActions}
@@ -80,8 +80,8 @@ export const DashboardTable = ({
             (order
               ? Object.keys(data)
                   .sort(getComparator(order.direction, order.column))
-                  .map((item, indexRow) => row(item, indexRow))
-              : Object.keys(data).map((item, indexRow) => row(item, indexRow)))}
+                  .map((firebaseId, indexRow) => row(firebaseId, indexRow))
+              : Object.keys(data).map((firebaseId, indexRow) => row(firebaseId, indexRow)))}
         </TableBody>
       </Table>
     </PerfectScrollbar>

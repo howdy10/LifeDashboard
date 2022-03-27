@@ -15,17 +15,15 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 export const DashboardTableCell = ({
-  rowBeingEdited,
   indexColumn,
   indexRow,
-  idRow,
   columnName,
+  isRowBeingEdited,
   isColumnEditable,
   type,
   value,
   onUpdateValue,
 }) => {
-  const [submittionAttempt, setSubmittionAttempt] = useState(false);
   const renderDataFormat = (param, value) => {
     switch (param) {
       case "currency":
@@ -118,7 +116,7 @@ export const DashboardTableCell = ({
     }
   };
 
-  if (rowBeingEdited === indexRow && isColumnEditable) {
+  if (isRowBeingEdited && isColumnEditable) {
     return (
       <TableCell data-testid={"cell-" + indexRow + "-" + indexColumn} key={indexColumn}>
         {renderDataEdit(type, value)}

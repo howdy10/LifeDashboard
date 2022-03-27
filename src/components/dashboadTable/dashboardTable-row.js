@@ -20,33 +20,33 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 export const DashboardTableRow = ({
-  rowBeingEdited,
-  rowBeingDeleted,
-  indexRow,
+  rowData,
+  columns,
+  rowIndex,
+  firebaseRowId,
+  rowBeingEditedFirebaseId,
+  rowBeingDeletedFirebaseId,
+  setRowBeingEditedFirebaseId,
+  setRowBeingDeletedFirebaseId,
   onRowUpdateComplete,
   onRowDelete,
-  data,
-  columns,
-  idRow,
-  setRowBeingEdited,
-  setRowBeingDeleted,
   infoRow,
   infoRowEditComponent,
-  infoRowOpened,
-  setInfoRowOpened,
+  infoRowOpenedFirebaseId,
+  setInfoRowOpenedFirebaseId,
   infoRowVaribles,
   showActions,
 }) => {
-  const [rowData, setRowData] = useState(data[idRow]);
+  const [localRowData, setLocalRowData] = useState(rowData);
 
   useEffect(() => {
-    setRowData(data[idRow]);
-  }, [data]);
+    setLocalRowData(rowData);
+  }, [rowData]);
   useEffect(() => {
     if (!showActions) {
-      setRowData({ ...data[idRow] });
-      setRowBeingDeleted(null);
-      setRowBeingEdited(null);
+      setLocalRowData({ ...rowData });
+      setRowBeingDeletedFirebaseId(null);
+      setRowBeingEditedFirebaseId(null);
     }
   }, [showActions]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,21 +58,21 @@ export const DashboardTableRow = ({
     setAnchorEl(null);
   };
 
-  const renderRowEditMenu = (index) => {
-    if (rowBeingEdited === index || rowBeingDeleted === index) {
+  const renderRowEditMenu = () => {
+    if (rowBeingEditedFirebaseId === firebaseRowId || rowBeingDeletedFirebaseId === firebaseRowId) {
       return (
-        <TableCell data-testid={"cell-" + index + "-action"}>
+        <TableCell data-testid={"cell-" + rowIndex + "-action"}>
           <IconButton
             data-testid="fab-action-confirm"
             onClick={() => {
-              if (rowBeingEdited === index) {
-                onRowUpdateComplete(rowData, data[idRow], idRow);
-              } else if (rowBeingDeleted === index) {
-                onRowDelete(data[idRow], idRow);
+              if (rowBeingEditedFirebaseId === firebaseRowId) {
+                onRowUpdateComplete(localRowData, rowData, firebaseRowId);
+              } else if (rowBeingDeletedFirebaseId === firebaseRowId) {
+                onRowDelete(rowData, firebaseRowId);
               }
-              setRowData({ ...data[idRow] });
-              setRowBeingEdited(null);
-              setRowBeingDeleted(null);
+              setLocalRowData({ ...rowData });
+              setRowBeingEditedFirebaseId(null);
+              setRowBeingDeletedFirebaseId(null);
             }}
           >
             <CheckIcon data-testid={"cell-action-confirm"} />
@@ -80,9 +80,9 @@ export const DashboardTableRow = ({
           <IconButton
             data-testid="fab-action-cancel"
             onClick={() => {
-              setRowData({ ...data[idRow] });
-              setRowBeingEdited(null);
-              setRowBeingDeleted(null);
+              setLocalRowData({ ...rowData });
+              setRowBeingEditedFirebaseId(null);
+              setRowBeingDeletedFirebaseId(null);
             }}
           >
             <CloseIcon data-testid={"cell-action-cancel"} />
@@ -96,7 +96,7 @@ export const DashboardTableRow = ({
         data-testid="fab-action-edit"
         onClick={() => {
           handleClose();
-          setRowBeingEdited(index);
+          setRowBeingEditedFirebaseId(firebaseRowId);
         }}
       >
         <ListItemIcon>
@@ -111,8 +111,8 @@ export const DashboardTableRow = ({
         data-testid="fab-action-delete"
         onClick={() => {
           handleClose();
-          setRowData({ ...data[idRow] });
-          setRowBeingDeleted(index);
+          setLocalRowData({ ...rowData });
+          setRowBeingDeletedFirebaseId(firebaseRowId);
         }}
       >
         <ListItemIcon>
@@ -122,7 +122,7 @@ export const DashboardTableRow = ({
       </MenuItem>
     );
     return (
-      <TableCell data-testid={"cell-" + index + "-action"}>
+      <TableCell data-testid={"cell-" + rowIndex + "-action"}>
         <IconButton
           aria-label="more"
           id="long-button"
@@ -152,30 +152,29 @@ export const DashboardTableRow = ({
 
   return (
     <>
-      <TableRow hover key={indexRow} data-testid={"row-" + indexRow}>
-        {showActions && (onRowUpdateComplete || onRowDelete) && renderRowEditMenu(indexRow)}
-        {rowBeingDeleted === indexRow ? (
+      <TableRow hover key={rowIndex} data-testid={"row-" + rowIndex}>
+        {showActions && (onRowUpdateComplete || onRowDelete) && renderRowEditMenu()}
+        {rowBeingDeletedFirebaseId === firebaseRowId ? (
           <TableCell colSpan={6}>
             <Typography>Are you sure you want to Delete this Entry?</Typography>
           </TableCell>
         ) : (
-          Object.keys(rowData)
+          Object.keys(localRowData)
             .filter((id, index) => columns[index])
             .map((id, index) => (
               <DashboardTableCell
                 key={index}
-                rowBeingEdited={rowBeingEdited}
+                isRowBeingEdited={rowBeingEditedFirebaseId == firebaseRowId}
                 indexColumn={index}
-                indexRow={indexRow}
-                idRow={idRow}
+                indexRow={rowIndex}
                 isColumnEditable={columns[index].edit}
                 columnName={columns[index].title}
                 type={columns[index].type}
-                value={rowData[columns[index].field]}
+                value={localRowData[columns[index].field]}
                 onUpdateValue={(value) => {
-                  const newData = { ...rowData };
+                  const newData = { ...localRowData };
                   newData[columns[index].field] = value;
-                  setRowData(newData);
+                  setLocalRowData(newData);
                 }}
               />
             ))
@@ -183,30 +182,38 @@ export const DashboardTableRow = ({
         {infoRow && (
           <TableCell>
             <IconButton
-              data-testid={"cell-" + indexRow + "-collapseIcon"}
+              data-testid={"cell-" + rowIndex + "-collapseIcon"}
               aria-label="expand row"
               size="small"
-              onClick={() => setInfoRowOpened(indexRow === infoRowOpened ? null : indexRow)}
+              onClick={() =>
+                setInfoRowOpenedFirebaseId(
+                  firebaseRowId === infoRowOpenedFirebaseId ? null : firebaseRowId
+                )
+              }
             >
-              {infoRowOpened === indexRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {infoRowOpenedFirebaseId === firebaseRowId ? (
+                <KeyboardArrowUpIcon />
+              ) : (
+                <KeyboardArrowDownIcon />
+              )}
             </IconButton>
           </TableCell>
         )}
       </TableRow>
       {infoRow && (
-        <TableRow data-testid={"row-" + indexRow + "-collapse"}>
+        <TableRow data-testid={"row-" + rowIndex + "-collapse"}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length + 1}>
-            <Collapse in={infoRowOpened === indexRow} timeout="auto" unmountOnExit>
-              {rowBeingEdited === indexRow && infoRowEditComponent
+            <Collapse in={infoRowOpenedFirebaseId === firebaseRowId} timeout="auto" unmountOnExit>
+              {rowBeingEditedFirebaseId === firebaseRowId && infoRowEditComponent
                 ? infoRowEditComponent(
-                    infoRowVaribles?.map((x) => rowData[x]),
+                    infoRowVaribles?.map((x) => localRowData[x]),
                     (value, objectIndex) => {
-                      const newData = { ...rowData };
+                      const newData = { ...localRowData };
                       newData[infoRowVaribles[objectIndex]] = value;
-                      setRowData(newData);
+                      setLocalRowData(newData);
                     }
                   )
-                : infoRow(infoRowVaribles?.map((x) => rowData[x]))}
+                : infoRow(infoRowVaribles?.map((x) => localRowData[x]))}
             </Collapse>
           </TableCell>
         </TableRow>
