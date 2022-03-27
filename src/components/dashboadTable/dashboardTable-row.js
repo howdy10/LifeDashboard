@@ -24,15 +24,15 @@ export const DashboardTableRow = ({
   columns,
   rowIndex,
   firebaseRowId,
-  rowBeingEditedFirebaseId,
-  rowBeingDeletedFirebaseId,
+  isRowBeingEdited,
+  isRowBeingDeleted,
   setRowBeingEditedFirebaseId,
   setRowBeingDeletedFirebaseId,
   onRowUpdateComplete,
   onRowDelete,
   infoRow,
   infoRowEditComponent,
-  infoRowOpenedFirebaseId,
+  isInfoRowOpened,
   setInfoRowOpenedFirebaseId,
   infoRowVaribles,
   showActions,
@@ -59,15 +59,15 @@ export const DashboardTableRow = ({
   };
 
   const renderRowEditMenu = () => {
-    if (rowBeingEditedFirebaseId === firebaseRowId || rowBeingDeletedFirebaseId === firebaseRowId) {
+    if (isRowBeingEdited || isRowBeingDeleted) {
       return (
         <TableCell data-testid={"cell-" + rowIndex + "-action"}>
           <IconButton
             data-testid="fab-action-confirm"
             onClick={() => {
-              if (rowBeingEditedFirebaseId === firebaseRowId) {
+              if (isRowBeingEdited) {
                 onRowUpdateComplete(localRowData, rowData, firebaseRowId);
-              } else if (rowBeingDeletedFirebaseId === firebaseRowId) {
+              } else if (isRowBeingDeleted) {
                 onRowDelete(rowData, firebaseRowId);
               }
               setLocalRowData({ ...rowData });
@@ -154,7 +154,7 @@ export const DashboardTableRow = ({
     <>
       <TableRow hover key={rowIndex} data-testid={"row-" + rowIndex}>
         {showActions && (onRowUpdateComplete || onRowDelete) && renderRowEditMenu()}
-        {rowBeingDeletedFirebaseId === firebaseRowId ? (
+        {isRowBeingDeleted ? (
           <TableCell colSpan={6}>
             <Typography>Are you sure you want to Delete this Entry?</Typography>
           </TableCell>
@@ -164,7 +164,7 @@ export const DashboardTableRow = ({
             .map((id, index) => (
               <DashboardTableCell
                 key={index}
-                isRowBeingEdited={rowBeingEditedFirebaseId == firebaseRowId}
+                isRowBeingEdited={isRowBeingEdited}
                 indexColumn={index}
                 indexRow={rowIndex}
                 isColumnEditable={columns[index].edit}
@@ -185,17 +185,9 @@ export const DashboardTableRow = ({
               data-testid={"cell-" + rowIndex + "-collapseIcon"}
               aria-label="expand row"
               size="small"
-              onClick={() =>
-                setInfoRowOpenedFirebaseId(
-                  firebaseRowId === infoRowOpenedFirebaseId ? null : firebaseRowId
-                )
-              }
+              onClick={() => setInfoRowOpenedFirebaseId(isInfoRowOpened ? null : firebaseRowId)}
             >
-              {infoRowOpenedFirebaseId === firebaseRowId ? (
-                <KeyboardArrowUpIcon />
-              ) : (
-                <KeyboardArrowDownIcon />
-              )}
+              {isInfoRowOpened ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
         )}
@@ -203,8 +195,8 @@ export const DashboardTableRow = ({
       {infoRow && (
         <TableRow data-testid={"row-" + rowIndex + "-collapse"}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length + 1}>
-            <Collapse in={infoRowOpenedFirebaseId === firebaseRowId} timeout="auto" unmountOnExit>
-              {rowBeingEditedFirebaseId === firebaseRowId && infoRowEditComponent
+            <Collapse in={isInfoRowOpened} timeout="auto" unmountOnExit>
+              {isRowBeingEdited && infoRowEditComponent
                 ? infoRowEditComponent(
                     infoRowVaribles?.map((x) => localRowData[x]),
                     (value, objectIndex) => {

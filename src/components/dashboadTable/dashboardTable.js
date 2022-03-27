@@ -39,8 +39,8 @@ export const DashboardTable = ({
     return (
       <DashboardTableRow
         key={rowIndex}
-        rowBeingEditedFirebaseId={rowBeingEditedId}
-        rowBeingDeletedFirebaseId={rowBeingDeletedId}
+        isRowBeingEdited={rowBeingEditedId === firebaseId}
+        isRowBeingDeleted={rowBeingDeletedId === firebaseId}
         setRowBeingEditedFirebaseId={setRowBeingEditedId}
         setRowBeingDeletedFirebaseId={setRowBeingDeletedId}
         rowIndex={rowIndex}
@@ -50,7 +50,7 @@ export const DashboardTable = ({
         onRowUpdateComplete={rowEdits}
         onRowDelete={rowDelete}
         infoRow={infoRow}
-        infoRowOpenedFirebaseId={infoRowOpenedId}
+        isInfoRowOpened={infoRowOpenedId === firebaseId}
         setInfoRowOpenedFirebaseId={setInfoRowOpenedId}
         infoRowVaribles={infoRowVaribles}
         infoRowEditComponent={infoRowEditComponent}
