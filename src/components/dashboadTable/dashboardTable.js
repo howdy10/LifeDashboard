@@ -37,6 +37,7 @@ export const DashboardTable = ({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - Object.keys(data).length) : 0;
 
   function descendingComparator(a, b, orderBy) {
     if (data[b][orderBy] < data[a][orderBy]) {
@@ -104,6 +105,15 @@ export const DashboardTable = ({
         </TableHead>
         <TableBody>
           {data && dataList.map((firebaseId, indexRow) => row(firebaseId, indexRow))}
+          {emptyRows > 0 && (
+            <TableRow
+              style={{
+                height: 55 * emptyRows,
+              }}
+            >
+              <TableCell colSpan={columns.length} />
+            </TableRow>
+          )}
         </TableBody>
 
         {showPagination && (

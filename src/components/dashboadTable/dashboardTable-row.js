@@ -155,7 +155,7 @@ export const DashboardTableRow = ({
       <TableRow hover key={rowIndex} data-testid={"row-" + rowIndex}>
         {showActions && (onRowUpdateComplete || onRowDelete) && renderRowEditMenu()}
         {isRowBeingDeleted ? (
-          <TableCell colSpan={6}>
+          <TableCell colSpan={columns.length}>
             <Typography>Are you sure you want to Delete this Entry?</Typography>
           </TableCell>
         ) : (
