@@ -576,5 +576,40 @@ test("Render Pagination Rows With first 5+ values click next button", () => {
   expect(Row5).not.toBeTruthy();
   expect(Row6).toBeTruthy();
 });
-test("Test missing coloumn data", () => {});
+test("Test missing coloumn data", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 11 },
+        { ValueTest: 200, Mid: "something", TestValue: 22 },
+        { ValueTest: 300, TestValue: 33 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "MidMoney", field: "Mid" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+    />
+  );
+
+  const cell11 = screen.queryByTestId("cell-0-0");
+  const cell12 = screen.queryByTestId("cell-0-1");
+  const cell13 = screen.queryByTestId("cell-0-2");
+  const cell21 = screen.queryByTestId("cell-1-0");
+  const cell22 = screen.queryByTestId("cell-1-1");
+  const cell23 = screen.queryByTestId("cell-1-2");
+  const cell31 = screen.queryByTestId("cell-2-0");
+  const cell32 = screen.queryByTestId("cell-2-1");
+  const cell33 = screen.queryByTestId("cell-2-2");
+
+  expect(cell11).toBeTruthy();
+  expect(cell12).toBeTruthy();
+  expect(cell13).toBeTruthy();
+  expect(cell21).toBeTruthy();
+  expect(cell22).toBeTruthy();
+  expect(cell23).toBeTruthy();
+  expect(cell31).toBeTruthy();
+  expect(cell32).toBeTruthy();
+  expect(cell33).toBeTruthy();
+});
 test("Test column alignment prop", () => {});

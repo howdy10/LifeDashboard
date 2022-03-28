@@ -159,25 +159,23 @@ export const DashboardTableRow = ({
             <Typography>Are you sure you want to Delete this Entry?</Typography>
           </TableCell>
         ) : (
-          Object.keys(localRowData)
-            .filter((id, index) => columns[index])
-            .map((id, index) => (
-              <DashboardTableCell
-                key={index}
-                isRowBeingEdited={isRowBeingEdited}
-                indexColumn={index}
-                indexRow={rowIndex}
-                isColumnEditable={columns[index].edit}
-                columnName={columns[index].title}
-                type={columns[index].type}
-                value={localRowData[columns[index].field]}
-                onUpdateValue={(value) => {
-                  const newData = { ...localRowData };
-                  newData[columns[index].field] = value;
-                  setLocalRowData(newData);
-                }}
-              />
-            ))
+          columns.map((id, index) => (
+            <DashboardTableCell
+              key={index}
+              isRowBeingEdited={isRowBeingEdited}
+              indexColumn={index}
+              indexRow={rowIndex}
+              isColumnEditable={columns[index].edit}
+              columnName={columns[index].title}
+              type={columns[index].type}
+              value={localRowData[columns[index].field]}
+              onUpdateValue={(value) => {
+                const newData = { ...localRowData };
+                newData[columns[index].field] = value;
+                setLocalRowData(newData);
+              }}
+            />
+          ))
         )}
         {infoRow && (
           <TableCell>
