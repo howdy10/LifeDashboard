@@ -11,6 +11,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import Switch from "@mui/material/Switch";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
@@ -20,6 +21,7 @@ export const DashboardTableCell = ({
   columnName,
   isRowBeingEdited,
   isColumnEditable,
+  columnOptions,
   type,
   value,
   onUpdateValue,
@@ -99,6 +101,28 @@ export const DashboardTableCell = ({
               label=""
             />
           </FormGroup>
+        );
+      case "dropdown":
+        return (
+          <FormControl fullWidth>
+            <InputLabel>{columnName}</InputLabel>
+            <Select
+              value={value ?? 0}
+              label={columnName}
+              onChange={(event) => {
+                onUpdateValue(event.target.value);
+              }}
+            >
+              <MenuItem key={-1} value={0}>
+                Please Select
+              </MenuItem>
+              {columnOptions.map((x) => (
+                <MenuItem key={x} value={x}>
+                  {x}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         );
       default:
         return (

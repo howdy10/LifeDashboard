@@ -169,6 +169,7 @@ export const DashboardTableRow = ({
               columnName={columns[index].title}
               type={columns[index].type}
               value={localRowData[columns[index].field]}
+              columnOptions={columns[index].dropdownOptions}
               onUpdateValue={(value) => {
                 const newData = { ...localRowData };
                 newData[columns[index].field] = value;
