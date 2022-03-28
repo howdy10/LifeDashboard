@@ -41,12 +41,12 @@ export const HsaCategoryChart = ({ categoryMap, spentAmount }) => {
                 {
                   data: Array.from(categoryMap.values()),
                   backgroundColor: [
-                    "rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(255, 205, 86)",
+                    "rgb(184, 0, 0)",
+                    "rgb(118, 112, 235)",
+                    "rgb(249, 173, 160)",
                     "rgb(255, 0, 86)",
-                    "rgb(255, 205, 0)",
-                    "rgb(255, 205, 86)",
+                    "rgb(20, 184, 160)",
+                    "rgb(226, 192, 68)",
                   ],
                   hoverOffset: 4,
                 },
