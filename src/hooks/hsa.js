@@ -1,8 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useObjectVal, useListVals } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { HsaTransactionsUrl } from "src/firebase/databaseLinks";
+import { HsaTransactionsUrl, HsaCategoryUrl } from "src/firebase/databaseLinks";
+
+export const GetHsaCategories = () => {
+  const database = getDatabase(firebase);
+
+  return useListVals(ref(database, HsaCategoryUrl()));
+};
 
 export const GetHsaInfo = () => {
   const database = getDatabase(firebase);
@@ -11,18 +17,34 @@ export const GetHsaInfo = () => {
   const [HsaInfo, setHsaInfo] = useState({
     total: 0,
     transactions: [],
+    categorySplit: [],
   });
 
   useEffect(() => {
     let totalPaid = 0;
-
+    let categoryMap = new Map();
+    categoryMap.set("uncategorized", 0);
     if (snapshot) {
-      Object.keys(snapshot).map((key, index) => (totalPaid += snapshot[key].amount));
+      Object.keys(snapshot).map((key, index) => {
+        totalPaid += snapshot[key].amount;
+        if (snapshot[key].category) {
+          if (!categoryMap.has(snapshot[key].category)) {
+            categoryMap.set(snapshot[key].category, 0);
+          }
+          categoryMap.set(
+            snapshot[key].category,
+            categoryMap.get(snapshot[key].category) + snapshot[key].amount
+          );
+        } else {
+          categoryMap.set("uncategorized", categoryMap.get("uncategorized") + snapshot[key].amount);
+        }
+      });
 
       setHsaInfo({
         ...HsaInfo,
         total: totalPaid,
         transactions: snapshot,
+        categorySplit: categoryMap,
       });
     }
   }, [snapshot]);
