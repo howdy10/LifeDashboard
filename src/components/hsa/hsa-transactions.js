@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -9,11 +9,13 @@ import { Button } from "@mui/material";
 import AppContext from "src/context/AppContext";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import { updateHsaTransaction, createHsaTransaction, deleteHsaTransaction } from "src/api/hsa-api";
+import { GetHsaCategories } from "src/hooks/hsa";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
   { title: "Amount", field: "amount", type: "currency" },
   { title: "Vendor", field: "vendor", edit: false },
+  { title: "Category", field: "category", type: "dropdown", dropdownOptions: [] },
   { title: "Notes", field: "notes" },
 ];
 
@@ -23,6 +25,12 @@ export function HsaTransactions({ transactions, ...rest }) {
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
   const [masterEdit, setMasterEdit] = useState(false);
   const value = useContext(AppContext);
+  const [categories] = GetHsaCategories();
+
+  useEffect(() => {
+    let categoryIndex = columns.findIndex((x) => x.field === "category");
+    columns[categoryIndex].dropdownOptions = categories;
+  }, [categories]);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,6 +53,9 @@ export function HsaTransactions({ transactions, ...rest }) {
       notes: newData.notes,
       vendor: newData.vendor,
     };
+    if (newData.category) {
+      transaction["category"] = newData.category;
+    }
     if (index) {
       updateHsaTransaction(value.state.familyIdBaseUrl, transaction, index);
     } else {
