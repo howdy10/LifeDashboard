@@ -23,7 +23,7 @@ export const GetHsaInfo = () => {
   useEffect(() => {
     let totalPaid = 0;
     let categoryMap = new Map();
-    categoryMap.set("uncategorized", 0);
+    categoryMap.set("Uncategorized", 0);
     if (snapshot) {
       Object.keys(snapshot).map((key, index) => {
         totalPaid += snapshot[key].amount;
@@ -36,7 +36,7 @@ export const GetHsaInfo = () => {
             categoryMap.get(snapshot[key].category) + snapshot[key].amount
           );
         } else {
-          categoryMap.set("uncategorized", categoryMap.get("uncategorized") + snapshot[key].amount);
+          categoryMap.set("Uncategorized", categoryMap.get("Uncategorized") + snapshot[key].amount);
         }
       });
 
