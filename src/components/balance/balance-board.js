@@ -3,6 +3,7 @@ import { BalanceCurrent } from "./balance-current";
 import { GetCurrentBalance, GetCurrentStats, GetPayChecks } from "src/hooks/balance";
 import { BalanceTotals } from "./balance-totals";
 import { BalancePaychecks } from "./balance-paychecks";
+import { LoadingComponent } from "../loading-component";
 
 export const BalanceBoard = ({ month, year }) => {
   const [balance, loading, error] = GetCurrentBalance(year, month);
@@ -38,7 +39,9 @@ export const BalanceBoard = ({ month, year }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <BalancePaychecks income={income.payChecks} month={month} year={year} />
+              <LoadingComponent loading={incomeLoading} error={incomeError}>
+                <BalancePaychecks income={income.payChecks} month={month} year={year} />
+              </LoadingComponent>
             </Grid>
           </Grid>
         </Container>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
@@ -29,6 +29,20 @@ export const DashboardTable = ({
   const [infoRowOpenedId, setInfoRowOpenedId] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [dataList, setDataList] = useState([]);
+
+  useEffect(() => {
+    if (!data) return;
+    let filteredList = Object.keys(data);
+
+    if (order) {
+      filteredList = filteredList.sort(getComparator(order.direction, order.column));
+    }
+    if (showPagination) {
+      filteredList = filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    }
+    setDataList(filteredList);
+  }, [data, order]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -79,14 +93,6 @@ export const DashboardTable = ({
     );
   };
 
-  let dataList = Object.keys(data);
-
-  if (order) {
-    dataList = dataList.sort(getComparator(order.direction, order.column));
-  }
-  if (showPagination) {
-    dataList = dataList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  }
   return (
     <PerfectScrollbar>
       <Table data-testid="full-table">
