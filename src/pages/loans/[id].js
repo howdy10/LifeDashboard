@@ -1,8 +1,5 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
 import { Box, Container } from "@mui/material";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { DashboardLayout } from "src/components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -12,6 +9,7 @@ import { CarloanBoard } from "src/components/carloan/carloan-board";
 import { CarloanTransactions } from "src/components/carloan/carloan-transactions";
 import { HomeloanBoard } from "src/components/homeloan/homeloan-board";
 import { HomeloanTransactions } from "src/components/homeloan/homeloan-transactions";
+import { DashboardContainer } from "src/components/dashboard-container";
 
 const CarLoan = ({ snapshot, loanId }) => {
   return (
@@ -44,24 +42,13 @@ export const Loan = () => {
   const [snapshot, loading, error] = useObjectVal(ref(database, AllLoansUrl() + "/" + id));
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Head>
-        <title>{snapshot?.name} Loan</title>
-      </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        {!loading && snapshot.type === "mortgage" ? (
-          <HouseLoan snapshot={snapshot} loanId={id} />
-        ) : (
-          <CarLoan snapshot={snapshot} loanId={id} />
-        )}
-      </Box>
-    </LocalizationProvider>
+    <DashboardContainer title={snapshot?.name + " Loan"}>
+      {!loading && snapshot.type === "mortgage" ? (
+        <HouseLoan snapshot={snapshot} loanId={id} />
+      ) : (
+        <CarLoan snapshot={snapshot} loanId={id} />
+      )}
+    </DashboardContainer>
   );
 };
 

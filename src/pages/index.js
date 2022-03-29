@@ -1,5 +1,4 @@
-import Head from "next/head";
-import { Box, Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { LoanProgress } from "../components/dashboard/loan-progress";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
@@ -11,6 +10,7 @@ import { SavingsBucketBalance } from "../components/dashboard/bucket-balance";
 import { SavingsBalance } from "src/components/dashboard/savings-balance";
 import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
 import { AccountBalance } from "src/components/dashboard/account-balance";
+import { DashboardContainer } from "src/components/dashboard-container";
 
 const CardResolver = ({ card }) => {
   switch (card.type) {
@@ -28,43 +28,30 @@ const Dashboard = () => {
 
   const [cards, loading, error] = useObjectVal(ref(database, DashboardUrl()));
   return (
-    <>
-      <Head>
-        <title>Life Dashboard</title>
-      </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <Grid container spacing={3}>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <AccountBalance sx={{ height: "100%" }} />
-            </Grid>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <AccountBalance type="cc" sx={{ height: "100%" }} />
-            </Grid>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <SavingsBalance sx={{ height: "100%" }} />
-            </Grid>
-            <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-              <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
-            </Grid>
-            <LoadingComponent loading={loading} error={error}>
-              {cards &&
-                Object.keys(cards).map((id, index) => (
-                  <Grid key={index} item xl={3} lg={6} md={6} sm={12} xs={12}>
-                    <CardResolver card={cards[id]} />
-                  </Grid>
-                ))}
-            </LoadingComponent>
-          </Grid>
-        </Container>
-      </Box>
-    </>
+    <DashboardContainer title={"Life Dashboard"}>
+      <Grid container spacing={3}>
+        <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+          <AccountBalance sx={{ height: "100%" }} />
+        </Grid>
+        <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+          <AccountBalance type="cc" sx={{ height: "100%" }} />
+        </Grid>
+        <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+          <SavingsBalance sx={{ height: "100%" }} />
+        </Grid>
+        <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
+          <InsuranceProgress sx={{ height: "100%" }} href="/insurance" />
+        </Grid>
+        <LoadingComponent loading={loading} error={error}>
+          {cards &&
+            Object.keys(cards).map((id, index) => (
+              <Grid key={index} item xl={3} lg={6} md={6} sm={12} xs={12}>
+                <CardResolver card={cards[id]} />
+              </Grid>
+            ))}
+        </LoadingComponent>
+      </Grid>
+    </DashboardContainer>
   );
 };
 
