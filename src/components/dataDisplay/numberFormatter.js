@@ -7,3 +7,12 @@ export function MoneyFormatter(number) {
     currency: "USD",
   });
 }
+export function WholeMoneyFormatter(number) {
+  if (isNaN(number)) {
+    return "NaN";
+  }
+  return Number(number / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+}
