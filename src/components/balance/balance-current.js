@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
-import { MoneyFormatter } from "src/components/dataDisplay/numberFormatter";
 import { CurrentModal } from "./balance-currentModal";
+import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 
 const monthNames = [
   "January",
@@ -39,36 +39,9 @@ export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, mo
         }}
       >
         <Grid container>
-          <Grid item xs={7}>
-            <Typography color="textSecondary" variant="subtitle1">
-              Spent This Month
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography color="textSecondary" variant="subtitle1" align="right">
-              {MoneyFormatter(spentAmount)}
-            </Typography>
-          </Grid>
-          <Grid item xs={7}>
-            <Typography color="textSecondary" variant="subtitle1">
-              On Credit Card
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography color="textSecondary" variant="subtitle1" align="right">
-              {MoneyFormatter(creditCardAmount)}
-            </Typography>
-          </Grid>
-          <Grid item xs={7}>
-            <Typography color="textSecondary" variant="subtitle1">
-              Income Earned
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography color="textSecondary" variant="subtitle1" align="right">
-              {MoneyFormatter(incomeAmount)}
-            </Typography>
-          </Grid>
+          <CardInfoRowMoney title={"Spent This Month"} value={spentAmount} />
+          <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />
+          <CardInfoRowMoney title={"Income Earned"} value={incomeAmount} />
         </Grid>
       </Box>
     </CardContent>
