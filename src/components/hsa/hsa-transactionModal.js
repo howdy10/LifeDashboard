@@ -21,6 +21,7 @@ const defaultValues = {
   date: new Date(),
   notes: "",
   vendor: "",
+  category: 0,
 };
 
 export function HsaModal() {
@@ -51,6 +52,7 @@ export function HsaModal() {
       date: getTime(data.date),
       notes: data.notes ?? "",
       vendor: data.vendor ?? "",
+      category: data.category,
     };
 
     createHsaTransaction(value.state.familyIdBaseUrl, claim);
@@ -84,6 +86,7 @@ export function HsaModal() {
             <Grid item xs={6}>
               <FormInputDropdown
                 fullWidth
+                rules={{ validate: (value) => value != 0 }}
                 name="category"
                 control={control}
                 label="Category"
