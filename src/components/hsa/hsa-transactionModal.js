@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
 import { FormInputText } from "../forms/text-input";
+import { FormInputDropdown } from "../forms/dropdown-input";
+import { GetHsaCategories } from "src/hooks/hsa";
 
 const defaultValues = {
   amount: 0,
@@ -25,6 +27,8 @@ export function HsaModal() {
   const value = useContext(AppContext);
 
   const [open, setOpen] = useState(false);
+
+  const [categories] = GetHsaCategories();
 
   const methods = useForm({ defaultValues: defaultValues });
   const { handleSubmit, reset, control, setValue } = methods;
@@ -76,6 +80,15 @@ export function HsaModal() {
             </Grid>
             <Grid item xs={6}>
               <FormInputText fullWidth name="vendor" control={control} label="Vendor" />
+            </Grid>
+            <Grid item xs={6}>
+              <FormInputDropdown
+                fullWidth
+                name="category"
+                control={control}
+                label="Category"
+                options={categories}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormInputText
