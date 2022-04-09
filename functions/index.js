@@ -31,6 +31,7 @@ exports.endingBalanceSchedule = functions.pubsub
   .onRun((context) => {
     const today = new Date();
     today.setDate(today.getDate() - 1);
+    today.setDate(1);
     const year = today.getFullYear();
     const month = today.getMonth();
 
