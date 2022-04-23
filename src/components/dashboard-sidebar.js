@@ -9,6 +9,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import SavingsIcon from "@mui/icons-material/Savings";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
@@ -35,6 +36,11 @@ const items = [
     href: "/insurance",
     icon: <LocalHospitalIcon fontSize="small" />,
     title: "Insurance",
+  },
+  {
+    href: "/taxEstimator",
+    icon: <PointOfSaleIcon fontSize="small" />,
+    title: "Tax Estimator",
   },
   {
     href: "/404",
