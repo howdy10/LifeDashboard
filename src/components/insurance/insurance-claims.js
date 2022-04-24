@@ -103,6 +103,7 @@ export function InsuranceClaims({ claims, ...rest }) {
         data={claims}
         rowEdits={handleUpdateRow}
         rowDelete={handleDeleteRow}
+        order={{ column: "date", direction: "asc" }}
         infoRow={(values) => (
           <Box sx={{ margin: 1 }}>
             <Typography variant="h6" gutterBottom component="div">
