@@ -29,7 +29,12 @@ export const DashboardTable = ({
   const [infoRowOpenedId, setInfoRowOpenedId] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [dataList, setDataList] = useState([]);
+  const [dataListIdOrder, setDataListIdOrder] = useState([]);
+  const [localData, setLocalData] = useState([]);
+
+  useEffect(() => {
+    setLocalData(data);
+  }, [data]);
 
   useEffect(() => {
     if (!data) return;
@@ -41,7 +46,7 @@ export const DashboardTable = ({
     if (showPagination) {
       filteredList = filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     }
-    setDataList(filteredList);
+    setDataListIdOrder(filteredList);
   }, [data, order]);
 
   const handleChangePage = (event, newPage) => {
@@ -80,7 +85,7 @@ export const DashboardTable = ({
         rowIndex={rowIndex + rowsPerPage * page}
         columns={columns}
         firebaseRowId={firebaseId}
-        rowData={data[firebaseId]}
+        rowData={localData[firebaseId]}
         onRowUpdateComplete={rowEdits}
         onRowDelete={rowDelete}
         infoRow={infoRow}
@@ -110,7 +115,9 @@ export const DashboardTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && dataList.map((firebaseId, indexRow) => row(firebaseId, indexRow))}
+          {data &&
+            localData &&
+            dataListIdOrder.map((firebaseId, indexRow) => row(firebaseId, indexRow))}
           {emptyRows > 0 && (
             <TableRow
               style={{
