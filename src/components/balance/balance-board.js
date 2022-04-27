@@ -28,6 +28,7 @@ export const BalanceBoard = ({ month, year }) => {
                 creditCardAmount={currentSpending?.creditCard}
                 incomeAmount={income.total}
                 month={month}
+                year={year}
               />
             </Grid>
             <Grid item lg={6} sm={6} xl={6} xs={12}>

@@ -17,7 +17,7 @@ const monthNames = [
   "December",
 ];
 
-export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, month }) => (
+export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, month, year }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
@@ -27,7 +27,12 @@ export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, mo
           </Typography>
         </Grid>
         <Grid item>
-          <CurrentModal spent={spentAmount} creditCard={creditCardAmount} />
+          <CurrentModal
+            spent={spentAmount}
+            creditCard={creditCardAmount}
+            month={month}
+            year={year}
+          />
         </Grid>
       </Grid>
       <Divider />

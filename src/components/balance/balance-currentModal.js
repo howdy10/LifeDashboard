@@ -14,7 +14,7 @@ import { FormInputMoney } from "../forms/money-input";
 
 const defaultValues = { spent: 0, creditCard: 0 };
 
-export function CurrentModal({ spent, creditCard }) {
+export function CurrentModal({ spent, creditCard, month, year }) {
   const database = getDatabase(firebase);
   const budgetUrl = BudgetUrl();
 
@@ -44,7 +44,9 @@ export function CurrentModal({ spent, creditCard }) {
 
     const updates = {};
     updates[budgetUrl + "/current"] = transaction;
+    updates[budgetUrl + "/" + year + "/" + month + "/spent"] = parseFloat(data.spent);
     update(ref(database), updates);
+
     setOpen(false);
   };
 
