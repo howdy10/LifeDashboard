@@ -3,7 +3,6 @@ import { MoneyFormatter } from "src/components/dataDisplay/numberFormatter";
 import { Doughnut } from "react-chartjs-2";
 
 export const HsaCategoryChart = ({ categoryMap, spentAmount }) => {
-  console.log(categoryMap.keys());
   return (
     <Card sx={{ height: "100%" }}>
       <CardContent>
