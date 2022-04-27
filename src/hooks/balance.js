@@ -54,15 +54,19 @@ export const GetCurrentBalance = (year, month) => {
   const [balance, setBalance] = useState({
     bankAmount: 0,
     afterCreditCard: 0,
+    total: 0,
+    payChecks: [],
+    spent: 0,
+    creditCard: 0,
   });
-  const [previousBalance, loading, error] = useObjectVal(
+  const [previousBalance, prevLoading, prevError] = useObjectVal(
     ref(
       database,
       value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + lastMonth + "/endingBalance"
     )
   );
-  const [payChecks, currentLoading, currentError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month + "/payChecks")
+  const [currentMonth, loading, error] = useObjectVal(
+    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month)
   );
   const [currentSpent, infoLoading, infoError] = useObjectVal(
     ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/current")
@@ -70,17 +74,23 @@ export const GetCurrentBalance = (year, month) => {
 
   useEffect(() => {
     let paidThisMonth = 0;
-    if (payChecks) {
-      Object.keys(payChecks).map((key, index) => (paidThisMonth += payChecks[key].amount));
+    if (currentMonth?.payChecks) {
+      Object.keys(currentMonth.payChecks).map(
+        (key, index) => (paidThisMonth += currentMonth.payChecks[key].amount)
+      );
     }
-    let currentBalance = previousBalance + paidThisMonth - currentSpent?.spent;
+    let currentBalance = previousBalance + paidThisMonth - currentMonth?.spent;
 
     setBalance({
       ...balance,
       bankAmount: currentBalance + currentSpent?.creditCard,
       afterCreditCard: currentBalance,
+      total: paidThisMonth,
+      payChecks: currentMonth?.payChecks,
+      spent: currentMonth?.spent,
+      creditCard: currentSpent?.creditCard,
     });
-  }, [previousBalance, currentSpent, payChecks]);
+  }, [previousBalance, currentSpent, currentMonth]);
 
   const resArray = [balance, loading, error];
   return useMemo(() => resArray, resArray);
