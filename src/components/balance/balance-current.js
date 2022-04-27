@@ -17,7 +17,14 @@ const monthNames = [
   "December",
 ];
 
-export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, month, year }) => (
+export const BalanceCurrent = ({
+  spentAmount,
+  creditCardAmount,
+  incomeAmount,
+  month,
+  year,
+  isCurrentMonth,
+}) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
@@ -45,7 +52,7 @@ export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, mo
       >
         <Grid container>
           <CardInfoRowMoney title={"Spent This Month"} value={spentAmount} />
-          <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />
+          {isCurrentMonth && <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />}
           <CardInfoRowMoney title={"Income Earned"} value={incomeAmount} />
         </Grid>
       </Box>

@@ -7,8 +7,9 @@ import { LoadingComponent } from "../loading-component";
 
 export const BalanceBoard = ({ month, year }) => {
   const [balance, loading, error] = GetCurrentBalance(year, month);
-  const [currentSpending, spendingLoading, spendingError] = GetCurrentStats();
-  const [income, incomeLoading, incomeError] = GetPayChecks(year, month);
+
+  const today = new Date();
+  const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
   return (
     <Box>
       <Box
@@ -29,6 +30,7 @@ export const BalanceBoard = ({ month, year }) => {
                 incomeAmount={balance.total}
                 month={month}
                 year={year}
+                isCurrentMonth={isCurrentMonth}
               />
             </Grid>
             <Grid item lg={6} sm={6} xl={6} xs={12}>
@@ -36,6 +38,7 @@ export const BalanceBoard = ({ month, year }) => {
                 bankAmount={balance.bankAmount}
                 afterCreditCard={balance.afterCreditCard}
                 monthNet={balance.total - balance?.spent}
+                isCurrentMonth={isCurrentMonth}
               />
             </Grid>
 

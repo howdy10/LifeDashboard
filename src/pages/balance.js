@@ -3,11 +3,11 @@ import { BalanceBoard } from "src/components/balance/balance-board";
 import { DashboardContainer } from "src/components/dashboard-container";
 
 export const Balance = () => {
-  const today = new Date();
+  const SelectedDate = new Date();
 
   return (
     <DashboardContainer title={"Balance"}>
-      <BalanceBoard month={today.getMonth()} year={today.getFullYear()} />
+      <BalanceBoard month={SelectedDate.getMonth()} year={SelectedDate.getFullYear()} />
     </DashboardContainer>
   );
 };
