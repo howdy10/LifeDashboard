@@ -1,21 +1,7 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 import { CurrentModal } from "./balance-currentModal";
 import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
-
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import { MonthName } from "../dataDisplay/date-util";
 
 export const BalanceCurrent = ({
   spentAmount,
@@ -30,7 +16,7 @@ export const BalanceCurrent = ({
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textPrimary" gutterBottom variant="h4">
-            {monthNames[month]}
+            {MonthName(month)}
           </Typography>
         </Grid>
         <Grid item>
