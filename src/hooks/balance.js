@@ -69,7 +69,7 @@ export const GetCurrentBalance = (year, month) => {
     ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month)
   );
   const [currentSpent, infoLoading, infoError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/current")
+    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/creditCard")
   );
 
   useEffect(() => {
@@ -83,12 +83,12 @@ export const GetCurrentBalance = (year, month) => {
 
     setBalance({
       ...balance,
-      bankAmount: currentBalance + currentSpent?.creditCard,
+      bankAmount: currentBalance + currentSpent,
       afterCreditCard: currentBalance,
       total: paidThisMonth,
       payChecks: currentMonth?.payChecks,
       spent: currentMonth?.spent,
-      creditCard: currentSpent?.creditCard,
+      creditCard: currentSpent,
     });
   }, [previousBalance, currentSpent, currentMonth]);
 

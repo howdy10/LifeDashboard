@@ -25,6 +25,7 @@ export const BalanceCurrent = ({
             creditCard={creditCardAmount}
             month={month}
             year={year}
+            isCurrentMonth={isCurrentMonth}
           />
         </Grid>
       </Grid>

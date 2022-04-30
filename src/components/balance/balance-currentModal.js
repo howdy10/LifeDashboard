@@ -14,7 +14,7 @@ import { FormInputMoney } from "../forms/money-input";
 
 const defaultValues = { spent: 0, creditCard: 0 };
 
-export function CurrentModal({ spent, creditCard, month, year }) {
+export function CurrentModal({ spent, creditCard, month, year, isCurrentMonth }) {
   const database = getDatabase(firebase);
   const budgetUrl = BudgetUrl();
 
@@ -37,13 +37,10 @@ export function CurrentModal({ spent, creditCard, month, year }) {
   };
 
   const onSubmit = (data) => {
-    let transaction = {
-      spent: parseFloat(data.spent),
-      creditCard: parseFloat(data.creditCard),
-    };
-
     const updates = {};
-    updates[budgetUrl + "/current"] = transaction;
+    if (isCurrentMonth) {
+      updates[budgetUrl + "/creditCard"] = parseFloat(data.creditCard);
+    }
     updates[budgetUrl + "/" + year + "/" + month + "/spent"] = parseFloat(data.spent);
     update(ref(database), updates);
 
@@ -68,15 +65,17 @@ export function CurrentModal({ spent, creditCard, month, year }) {
                 label="Spent"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormInputMoney
-                rules={{ required: true, validate: (value) => value != 0 }}
-                fullWidth
-                name="creditCard"
-                control={control}
-                label="Credit Card"
-              />
-            </Grid>
+            {isCurrentMonth && (
+              <Grid item xs={12}>
+                <FormInputMoney
+                  rules={{ required: true, validate: (value) => value != 0 }}
+                  fullWidth
+                  name="creditCard"
+                  control={control}
+                  label="Credit Card"
+                />
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>
