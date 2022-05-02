@@ -25,22 +25,27 @@ exports.createTestDb = functions.https.onRequest((req, resp) => {
     });
 });
 
-exports.endingBalanceSchedule = functions.pubsub
-  .schedule("30 23 * * *")
-  .timeZone("America/Phoenix")
-  .onRun((context) => {
-    const today = new Date();
-    today.setDate(today.getDate() - 1);
-    today.setDate(1);
-    const year = today.getFullYear();
-    const month = today.getMonth();
+exports.endingBalanceUpdate = functions.database
+  .ref("family/{familyId}/Budget/{year}/{month}/spent")
+  .onWrite((change, context) => {
+    if (!change.after.exists()) {
+      //if deleted
+      functions.logger.info(`Was being deleted`);
+      return null;
+    }
+    const familyId = context.params.familyId;
+    const year = context.params.year;
+    const month = context.params.month;
+    const today = new Date(year, month, 1);
 
     today.setMonth(today.getMonth() - 1);
     const prevMonth = today.getMonth();
     const prevMonthYear = today.getFullYear();
 
+    const spent = change.after.val();
+
     database
-      .ref("family/a70b3195-4787-4509-8d08-cfeb49761524/Budget")
+      .ref(`family/${familyId}/Budget`)
       .once("value")
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -49,7 +54,6 @@ exports.endingBalanceSchedule = functions.pubsub
             .child(prevMonth)
             .child("endingBalance")
             .val();
-          var spent = snapshot.child("current").child("spent").val();
           var payChecks = snapshot.child(year).child(month).child("payChecks").val();
 
           let paidThisMonth = 0;
@@ -59,22 +63,17 @@ exports.endingBalanceSchedule = functions.pubsub
           let currentBalance = lastBalance + paidThisMonth - spent;
 
           functions.logger.info(`Today date: ${month} Year: ${year}`);
-          functions.logger.info(`Previous Month date: ${prevMonth} Year: ${prevMonthYear}`);
-          functions.logger.info(`Context time ${context.timestamp}`);
           functions.logger.info(`last balance: ${lastBalance}`);
           functions.logger.info(`paid this month: ${paidThisMonth}`);
-          functions.logger.info(`Current Balance: ${currentBalance}`);
+          functions.logger.info(`Ending Balance: ${currentBalance}`);
           database
-            .ref(
-              `family/a70b3195-4787-4509-8d08-cfeb49761524/Budget/${year}/${month}/endingBalance`
-            )
+            .ref(`family/${familyId}/Budget/${year}/${month}/endingBalance`)
             .set(Math.round((currentBalance + Number.EPSILON) * 100) / 100);
         } else {
-          functions.logger.error("No data avaliable");
+          functions.logger.error(`Did not find paychecks for month ${month}, year ${year}`);
         }
       })
       .catch((error) => {
         functions.logger.error(`Error pulling data: ${error}`);
       });
-    return null;
   });
