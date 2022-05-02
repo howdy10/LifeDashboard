@@ -1,6 +1,6 @@
 import { Box, Container, Grid } from "@mui/material";
 import { BalanceCurrent } from "./balance-current";
-import { GetCurrentBalance, GetCurrentStats, GetPayChecks } from "src/hooks/balance";
+import { GetCurrentBalance } from "src/hooks/balance";
 import { BalanceTotals } from "./balance-totals";
 import { BalancePaychecks } from "./balance-paychecks";
 import { LoadingComponent } from "../loading-component";
@@ -10,8 +10,10 @@ export const BalanceBoard = ({ month, year }) => {
 
   const today = new Date();
   const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const isLastMonth = lastMonth.getMonth() === month && lastMonth.getFullYear() === year;
   return (
-    <Box>
+    <LoadingComponent loading={loading} error={error}>
       <Box
         sx={{
           alignItems: "center",
@@ -31,6 +33,7 @@ export const BalanceBoard = ({ month, year }) => {
                 month={month}
                 year={year}
                 isCurrentMonth={isCurrentMonth}
+                isLastMonth={isLastMonth}
               />
             </Grid>
             <Grid item lg={6} sm={6} xl={6} xs={12}>
@@ -43,13 +46,11 @@ export const BalanceBoard = ({ month, year }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <LoadingComponent loading={loading} error={error}>
-                <BalancePaychecks income={balance.payChecks} month={month} year={year} />
-              </LoadingComponent>
+              <BalancePaychecks income={balance.payChecks} month={month} year={year} />
             </Grid>
           </Grid>
         </Container>
       </Box>
-    </Box>
+    </LoadingComponent>
   );
 };

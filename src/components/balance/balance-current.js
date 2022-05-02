@@ -10,6 +10,7 @@ export const BalanceCurrent = ({
   month,
   year,
   isCurrentMonth,
+  isLastMonth,
 }) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
@@ -19,15 +20,17 @@ export const BalanceCurrent = ({
             {MonthName(month)}
           </Typography>
         </Grid>
-        <Grid item>
-          <CurrentModal
-            spent={spentAmount}
-            creditCard={creditCardAmount}
-            month={month}
-            year={year}
-            isCurrentMonth={isCurrentMonth}
-          />
-        </Grid>
+        {(isLastMonth || isCurrentMonth) && (
+          <Grid item>
+            <CurrentModal
+              spent={spentAmount}
+              creditCard={creditCardAmount}
+              month={month}
+              year={year}
+              isCurrentMonth={isCurrentMonth}
+            />
+          </Grid>
+        )}
       </Grid>
       <Divider />
       <Box
