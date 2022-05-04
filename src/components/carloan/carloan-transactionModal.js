@@ -53,7 +53,7 @@ export function TransactionModal({ loanId }) {
     const updates = {};
     updates[transactionUrl + "/" + newTransactionsKey] = transaction;
     update(ref(database), updates);
-    setOpen(false);
+    handleClose();
   };
 
   return (

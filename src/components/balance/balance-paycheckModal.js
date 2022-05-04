@@ -51,7 +51,7 @@ export function PaycheckModal({ year, month }) {
     const updates = {};
     updates[budgetUrl + "/" + newTransactionsKey] = transaction;
     update(ref(database), updates);
-    setOpen(false);
+    handleClose();
   };
 
   return (

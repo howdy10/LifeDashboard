@@ -60,7 +60,6 @@ export function TransactionForm({ bucketId, bucketName, open, setOpen, preId }) 
     }
     setCompletedSnackbar(true);
     handleClose();
-    setOpen(false);
   };
 
   const methods = useForm({ defaultValues: defaultValues });
