@@ -1,14 +1,17 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import LinearProgress from "@mui/material/LinearProgress";
 import { MoneyFormatter } from "./numberFormatter";
 
 export function LinearProgressWithLabel(props) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Grid container spacing={1} direction="row" justifyContent="space-between">
+      <Grid xs={12} sx={{ paddingLeft: 1, paddingTop: 2 }}>
+        <LinearProgress variant="determinate" value={(props.current / props.goal) * 100} />
+      </Grid>
       {props.showCurrentLabel && (
-        <Box data-testid="current-label" sx={{ width: "8%" }}>
+        <Grid data-testid="current-label" item xs="auto">
           <Typography
             data-testid="current-label-text"
             variant="body2"
@@ -17,19 +20,16 @@ export function LinearProgressWithLabel(props) {
           >
             {MoneyFormatter(props.current)}
           </Typography>
-        </Box>
+        </Grid>
       )}
-      <Box sx={{ width: "100%", mr: 1, ml: 1 }}>
-        <LinearProgress variant="determinate" value={(props.current / props.goal) * 100} />
-      </Box>
       {props.showGoalLabel && (
-        <Box data-testid="goal-label" sx={{ width: "8%" }}>
+        <Grid item data-testid="goal-label" xs="auto">
           <Typography data-testid="goal-label-text" variant="body2" color="text.secondary">
             {MoneyFormatter(props.goal)}
           </Typography>
-        </Box>
+        </Grid>
       )}
-    </Box>
+    </Grid>
   );
 }
 LinearProgressWithLabel.defaultProps = {
