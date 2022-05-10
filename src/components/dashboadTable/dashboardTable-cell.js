@@ -14,6 +14,7 @@ import Switch from "@mui/material/Switch";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { Box } from "@mui/system";
 
 export const DashboardTableCell = ({
   indexColumn,
@@ -36,9 +37,13 @@ export const DashboardTableCell = ({
         return value ? format(value, "MM/dd/yyyy") : "N/A";
       case "boolean":
         return value ? (
-          <CheckIcon color="success" data-testid="check-icon" />
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+            <CheckIcon color="success" data-testid="check-icon" />
+          </Box>
         ) : (
-          <CloseIcon color="error" data-testid="close-icon" />
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+            <CloseIcon color="error" data-testid="close-icon" />
+          </Box>
         );
       default:
         return value;

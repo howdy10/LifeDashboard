@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -106,11 +107,18 @@ export const DashboardTable = ({
             {showActions && (rowEdits || rowDelete) && (
               <TableCell data-testid="column-action">Action</TableCell>
             )}
-            {columns.map((item, index) => (
-              <TableCell data-testid={"column-" + index} key={index}>
-                {item.title}
-              </TableCell>
-            ))}
+            {columns.map((item, index) => {
+              let text = item.title;
+
+              if (item.type === "boolean") {
+                text = <Box sx={{ textAlign: "center" }}>{text}</Box>;
+              }
+              return (
+                <TableCell data-testid={"column-" + index} key={index}>
+                  {text}
+                </TableCell>
+              );
+            })}
             {infoRow && <TableCell data-testid={"column-collapse"} />}
           </TableRow>
         </TableHead>
