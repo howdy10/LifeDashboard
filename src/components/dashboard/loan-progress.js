@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import { GetLoanDetails } from "src/hooks/loan";
+import { GetLoanDetails } from "../../hooks/loan";
 
 export const LoanProgress = ({ loanId, ...props }) => {
   const router = useRouter();

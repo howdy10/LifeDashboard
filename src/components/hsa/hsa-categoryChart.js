@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
-import { MoneyFormatter } from "src/components/dataDisplay/numberFormatter";
+import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { Doughnut } from "react-chartjs-2";
 
 export const HsaCategoryChart = ({ categoryMap, spentAmount }) => {

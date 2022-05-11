@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
 import { Box, Container } from "@mui/material";
-import { DashboardLayout } from "src/components/dashboard-layout";
+import { DashboardLayout } from "../../components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../../firebase/clientApp";
-import { AllLoansUrl } from "src/firebase/databaseLinks";
-import { CarloanBoard } from "src/components/carloan/carloan-board";
-import { CarloanTransactions } from "src/components/carloan/carloan-transactions";
-import { HomeloanBoard } from "src/components/homeloan/homeloan-board";
-import { HomeloanTransactions } from "src/components/homeloan/homeloan-transactions";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { AllLoansUrl } from "../../firebase/databaseLinks";
+import { CarloanBoard } from "../../components/carloan/carloan-board";
+import { CarloanTransactions } from "../../components/carloan/carloan-transactions";
+import { HomeloanBoard } from "../../components/homeloan/homeloan-board";
+import { HomeloanTransactions } from "../../components/homeloan/homeloan-transactions";
+import { DashboardContainer } from "../../components/dashboard-container";
 
 const CarLoan = ({ snapshot, loanId }) => {
   return (

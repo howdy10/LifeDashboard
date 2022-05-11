@@ -3,7 +3,7 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { GetSavingsTotalOfBucket } from "src/hooks/savings";
+import { GetSavingsTotalOfBucket } from "../../hooks/savings";
 
 export const SavingsBucketBalance = ({ href, bucketId, ...props }) => {
   const router = useRouter();

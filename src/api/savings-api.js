@@ -1,6 +1,6 @@
 import { firebase } from "../firebase/clientApp";
 import { ref, getDatabase, push, child, update, remove } from "firebase/database";
-import { SavingsUrl } from "src/firebase/databaseConstants";
+import { SavingsUrl } from "../firebase/databaseConstants";
 
 export function createSavingTransaction(baseUrl, transaction) {
   const database = getDatabase(firebase);

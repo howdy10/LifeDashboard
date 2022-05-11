@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect, useContext } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { RemindersUrl } from "src/firebase/databaseConstants";
-import AppContext from "src/context/AppContext";
+import { RemindersUrl } from "../firebase/databaseConstants";
+import AppContext from "../context/AppContext";
 
 export const GetReminders = () => {
   const database = getDatabase(firebase);

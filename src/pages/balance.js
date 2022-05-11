@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { BalanceBoard } from "src/components/balance/balance-board";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { BalanceBoard } from "../components/balance/balance-board";
+import { DashboardContainer } from "../components/dashboard-container";
 import { Button } from "@mui/material";
 
 export const Balance = () => {

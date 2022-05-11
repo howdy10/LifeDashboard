@@ -8,9 +8,9 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseConstants";
 import { LoadingComponent } from "../components/loading-component";
-import { GetSavingsTotal } from "src/hooks/savings";
-import AppContext from "src/context/AppContext";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { GetSavingsTotal } from "../hooks/savings";
+import AppContext from "../context/AppContext";
+import { DashboardContainer } from "../components/dashboard-container";
 
 const Savings = () => {
   const database = getDatabase(firebase);

@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect, useContext } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { BudgetUrl } from "src/firebase/databaseConstants";
-import AppContext from "src/context/AppContext";
+import { BudgetUrl } from "../firebase/databaseConstants";
+import AppContext from "../context/AppContext";
 
 export const GetPayChecks = (year, month) => {
   const database = getDatabase(firebase);

@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect, useContext } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { BucketsUrl, SavingsTransactionsUrl, SavingsUrl } from "src/firebase/databaseConstants";
-import AppContext from "src/context/AppContext";
+import { BucketsUrl, SavingsTransactionsUrl, SavingsUrl } from "../firebase/databaseConstants";
+import AppContext from "../context/AppContext";
 
 export const GetSavingsTotal = () => {
   const database = getDatabase(firebase);

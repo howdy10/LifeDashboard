@@ -1,6 +1,6 @@
 import { firebase } from "../firebase/clientApp";
 import { ref, getDatabase, push, child, update, remove } from "firebase/database";
-import { BucketsUrl } from "src/firebase/databaseConstants";
+import { BucketsUrl } from "../firebase/databaseConstants";
 
 export function createSavingBucket(baseUrl, bucket) {
   const database = getDatabase(firebase);

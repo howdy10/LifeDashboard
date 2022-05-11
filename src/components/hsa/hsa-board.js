@@ -1,6 +1,5 @@
 import { Box, Container, Grid } from "@mui/material";
-import { GetCurrentBalance, GetCurrentStats, GetPayChecks } from "src/hooks/balance";
-import { HsaTransactions } from "src/components/hsa/hsa-transactions";
+import { HsaTransactions } from "./hsa-transactions";
 import { HsaCategoryChart } from "./hsa-categoryChart";
 
 export const HsaBoard = ({ hsaInfo }) => {

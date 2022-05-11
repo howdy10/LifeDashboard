@@ -10,7 +10,7 @@ import {
 } from "../../api/savings-api";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import AppContext from "src/context/AppContext";
+import AppContext from "../../context/AppContext";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },

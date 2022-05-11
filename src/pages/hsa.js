@@ -1,8 +1,8 @@
 import { DashboardLayout } from "../components/dashboard-layout";
-import { LoadingComponent } from "src/components/loading-component";
+import { LoadingComponent } from "../components/loading-component";
 import { GetHsaInfo } from "../hooks/hsa";
-import { HsaBoard } from "src/components/hsa/hsa-board";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { HsaBoard } from "../components/hsa/hsa-board";
+import { DashboardContainer } from "../components/dashboard-container";
 
 export const Hsa = () => {
   const [snapshot, loading, error] = GetHsaInfo();

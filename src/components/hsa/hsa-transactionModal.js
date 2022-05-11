@@ -7,14 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { getTime } from "date-fns";
 import Grid from "@mui/material/Grid";
-import AppContext from "src/context/AppContext";
-import { createHsaTransaction } from "src/api/hsa-api";
+import AppContext from "../../context/AppContext";
+import { createHsaTransaction } from "../../api/hsa-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDropdown } from "../forms/dropdown-input";
-import { GetHsaCategories } from "src/hooks/hsa";
+import { GetHsaCategories } from "../../hooks/hsa";
 
 const defaultValues = {
   amount: 0,

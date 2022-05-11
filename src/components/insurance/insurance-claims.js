@@ -12,8 +12,8 @@ import {
   createInsuranceClaim,
   deleteInsuranceClaim,
   updateInsuranceClaim,
-} from "src/api/insurance-api";
-import AppContext from "src/context/AppContext";
+} from "../../api/insurance-api";
+import AppContext from "../../context/AppContext";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 
 function Row(props) {

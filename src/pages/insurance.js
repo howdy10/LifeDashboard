@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { InsuranceClaims } from "src/components/insurance/insurance-claims";
+import { InsuranceClaims } from "../components/insurance/insurance-claims";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { InsuranceBoard } from "../components/insurance/insurance-board";
 import { InsuranceUrl } from "../firebase/databaseLinks";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { DashboardContainer } from "../components/dashboard-container";
 
 export const Insurance = () => {
   const database = getDatabase(firebase);

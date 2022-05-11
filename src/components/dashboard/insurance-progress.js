@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import { GetInsurancePaid } from "src/hooks/insurance";
+import { GetInsurancePaid } from "../../hooks/insurance";
 import { LoadingComponent } from "../loading-component";
 
 export const InsuranceProgress = ({ href, props }) => {

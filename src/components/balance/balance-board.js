@@ -1,6 +1,6 @@
 import { Box, Container, Grid } from "@mui/material";
 import { BalanceCurrent } from "./balance-current";
-import { GetCurrentBalance } from "src/hooks/balance";
+import { GetCurrentBalance } from "../../hooks/balance";
 import { BalanceTotals } from "./balance-totals";
 import { BalancePaychecks } from "./balance-paychecks";
 import { LoadingComponent } from "../loading-component";

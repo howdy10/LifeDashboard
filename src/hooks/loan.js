@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useContext } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { AllLoansUrl } from "src/firebase/databaseLinks";
+import { AllLoansUrl } from "../firebase/databaseLinks";
 
 export const GetLoanDetails = (loanId) => {
   const database = getDatabase(firebase);

@@ -7,10 +7,10 @@ import { firebase } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import { SavingsBucketBalance } from "../components/dashboard/bucket-balance";
-import { SavingsBalance } from "src/components/dashboard/savings-balance";
-import { InsuranceProgress } from "src/components/dashboard/insurance-progress";
-import { AccountBalance } from "src/components/dashboard/account-balance";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { SavingsBalance } from "../components/dashboard/savings-balance";
+import { InsuranceProgress } from "../components/dashboard/insurance-progress";
+import { AccountBalance } from "../components/dashboard/account-balance";
+import { DashboardContainer } from "../components/dashboard-container";
 
 const CardResolver = ({ card }) => {
   switch (card.type) {
