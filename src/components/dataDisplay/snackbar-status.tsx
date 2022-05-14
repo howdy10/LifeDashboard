@@ -1,12 +1,26 @@
-import { useState, forwardRef, useContext } from "react";
+import { forwardRef } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-const Alert = forwardRef(function Alert(props, ref) {
+type SnackbarStatusProps = {
+  isUpdateOpen: boolean;
+  isErrorOpen: boolean;
+  isDeleteOpen: boolean;
+  closeAll: (event: React.SyntheticEvent) => void;
+  type: string;
+};
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export function SnackbarStatus({ isUpdateOpen, isErrorOpen, isDeleteOpen, closeAll, type }) {
+export function SnackbarStatus({
+  isUpdateOpen,
+  isErrorOpen,
+  isDeleteOpen,
+  closeAll,
+  type,
+}: SnackbarStatusProps) {
   return (
     <>
       <Snackbar open={isUpdateOpen} autoHideDuration={3000} onClose={closeAll}>

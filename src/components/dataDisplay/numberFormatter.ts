@@ -1,4 +1,4 @@
-export function MoneyFormatter(number) {
+export function MoneyFormatter(number: any) {
   if (isNaN(number)) {
     return "NaN";
   }
@@ -7,7 +7,7 @@ export function MoneyFormatter(number) {
     currency: "USD",
   });
 }
-export function WholeMoneyFormatter(number) {
+export function WholeMoneyFormatter(number: any) {
   if (isNaN(number)) {
     return "NaN";
   }

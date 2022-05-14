@@ -1,16 +1,30 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
-import PropTypes from "prop-types";
 import LinearProgress from "@mui/material/LinearProgress";
 import { MoneyFormatter } from "./numberFormatter";
 
-export function LinearProgressWithLabel(props) {
+type LinearProgressWithLabelProps = {
+  current: number;
+  goal: number;
+  showCurrentLabel?: boolean;
+  showGoalLabel?: boolean;
+};
+
+const defaultProps = {
+  showCurrentLabel: false,
+  showGoalLabel: false,
+};
+
+export const LinearProgressWithLabel = (
+  { current, goal, showCurrentLabel, showGoalLabel }: LinearProgressWithLabelProps,
+  ...props: any
+) => {
   return (
     <Grid container spacing={1} direction="row" justifyContent="space-between">
       <Grid xs={12} sx={{ paddingLeft: 1, paddingTop: 2 }}>
-        <LinearProgress variant="determinate" value={(props.current / props.goal) * 100} />
+        <LinearProgress variant="determinate" value={(current / goal) * 100} />
       </Grid>
-      {props.showCurrentLabel && (
+      {showCurrentLabel && (
         <Grid data-testid="current-label" item xs="auto">
           <Typography
             data-testid="current-label-text"
@@ -18,27 +32,19 @@ export function LinearProgressWithLabel(props) {
             color="text.secondary"
             align="right"
           >
-            {MoneyFormatter(props.current)}
+            {MoneyFormatter(current)}
           </Typography>
         </Grid>
       )}
-      {props.showGoalLabel && (
+      {showGoalLabel && (
         <Grid item data-testid="goal-label" xs="auto">
           <Typography data-testid="goal-label-text" variant="body2" color="text.secondary">
-            {MoneyFormatter(props.goal)}
+            {MoneyFormatter(goal)}
           </Typography>
         </Grid>
       )}
     </Grid>
   );
-}
-LinearProgressWithLabel.defaultProps = {
-  showCurrentLabel: false,
-  showGoalLabel: false,
 };
-LinearProgressWithLabel.propTypes = {
-  current: PropTypes.number.isRequired,
-  goal: PropTypes.number.isRequired,
-  showCurrentLabel: PropTypes.bool,
-  showGoalLabel: PropTypes.bool,
-};
+
+LinearProgressWithLabel.defaultProps = defaultProps;
