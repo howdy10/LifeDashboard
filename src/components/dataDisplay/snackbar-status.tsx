@@ -2,13 +2,13 @@ import { forwardRef } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-type SnackbarStatusProps = {
+export interface SnackbarStatusProps {
   isUpdateOpen: boolean;
   isErrorOpen: boolean;
   isDeleteOpen: boolean;
   closeAll: (event: React.SyntheticEvent) => void;
   type: string;
-};
+}
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
