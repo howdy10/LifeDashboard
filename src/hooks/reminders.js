@@ -3,19 +3,18 @@ import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { RemindersUrl } from "../firebase/databaseConstants";
-import AppContext from "../context/AppContext";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 export const GetReminders = () => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [total, setTotal] = useState({
     reminders: [],
   });
 
-  const [list, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + RemindersUrl)
-  );
+  const [list, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + RemindersUrl));
 
   useEffect(() => {
     // if (payChecks) {

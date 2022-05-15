@@ -13,7 +13,7 @@ const clientCredentials = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// const app = initializeApp(clientCredentials);
+export const firebaseApp = initializeApp(clientCredentials);
 firebase.initializeApp(clientCredentials);
 
 // Get a reference to the database service

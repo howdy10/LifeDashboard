@@ -3,11 +3,12 @@ import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
 import { BudgetUrl } from "../firebase/databaseConstants";
-import AppContext from "../context/AppContext";
+import { useAppSelector } from "../app/hooks";
+import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
 export const GetPayChecks = (year, month) => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [total, setTotal] = useState({
     total: 0,
@@ -15,7 +16,7 @@ export const GetPayChecks = (year, month) => {
   });
 
   const [payChecks, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month + "/payChecks")
+    ref(database, familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month + "/payChecks")
   );
 
   useEffect(() => {
@@ -36,9 +37,9 @@ export const GetPayChecks = (year, month) => {
 
 export const GetCurrentStats = () => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const [currentSpent, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/current")
+    ref(database, familyIdBaseUrl + BudgetUrl + "/current")
   );
 
   const resArray = [currentSpent, loading, error];
@@ -47,7 +48,7 @@ export const GetCurrentStats = () => {
 
 export const GetCurrentBalance = (year, month) => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const lastMonth = month - 1;
 
@@ -60,16 +61,13 @@ export const GetCurrentBalance = (year, month) => {
     creditCard: 0,
   });
   const [previousBalance, prevLoading, prevError] = useObjectVal(
-    ref(
-      database,
-      value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + lastMonth + "/endingBalance"
-    )
+    ref(database, familyIdBaseUrl + BudgetUrl + "/" + year + "/" + lastMonth + "/endingBalance")
   );
   const [currentMonth, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month)
+    ref(database, familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month)
   );
   const [currentSpent, infoLoading, infoError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BudgetUrl + "/creditCard")
+    ref(database, familyIdBaseUrl + BudgetUrl + "/creditCard")
   );
 
   useEffect(() => {

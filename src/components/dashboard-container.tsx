@@ -3,7 +3,12 @@ import { Container } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
-export const DashboardContainer = ({ title, children }) => {
+export interface DashboardContainerProps {
+  title: string;
+  children: JSX.Element;
+}
+
+export const DashboardContainer = ({ title, children }: DashboardContainerProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Head>

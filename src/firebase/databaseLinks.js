@@ -1,11 +1,8 @@
-import { useMemo, useContext } from "react";
-
-import AppContext from "../context/AppContext";
+import { useAppSelector } from "../app/hooks";
+import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
 export const GetFamilyId = () => {
-  const value = useContext(AppContext);
-
-  return value.state.familyIdBaseUrl;
+  return useAppSelector(selectFamilyBaseUrl);
 };
 
 export const DashboardUrl = () => {

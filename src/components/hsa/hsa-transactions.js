@@ -6,7 +6,8 @@ import Typography from "@mui/material/Typography";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { HsaModal } from "./hsa-transactionModal";
 import { Button } from "@mui/material";
-import AppContext from "../../context/AppContext";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import {
   updateHsaTransaction,
@@ -28,7 +29,7 @@ export function HsaTransactions({ transactions, ...rest }) {
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
   const [masterEdit, setMasterEdit] = useState(false);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const [categories] = GetHsaCategories();
 
   useEffect(() => {
@@ -61,15 +62,15 @@ export function HsaTransactions({ transactions, ...rest }) {
       transaction["category"] = newData.category;
     }
     if (index) {
-      updateHsaTransaction(value.state.familyIdBaseUrl, transaction, index);
+      updateHsaTransaction(familyIdBaseUrl, transaction, index);
     } else {
-      createHsaTransaction(value.state.familyIdBaseUrl, transaction);
+      createHsaTransaction(familyIdBaseUrl, transaction);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteHsaTransaction(value.state.familyIdBaseUrl, index);
+    deleteHsaTransaction(familyIdBaseUrl, index);
     setDeletedSnackbar(true);
   };
 

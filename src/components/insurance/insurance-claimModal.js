@@ -11,7 +11,6 @@ import { firebase } from "../../firebase/clientApp";
 import { useObject } from "react-firebase-hooks/database";
 import Grid from "@mui/material/Grid";
 import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../../firebase/databaseLinks";
-import AppContext from "../../context/AppContext";
 import { createInsuranceClaim } from "../../api/insurance-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
@@ -19,6 +18,8 @@ import { FormInputMoney } from "../forms/money-input";
 import { FormInputSwitch } from "../forms/switch-input";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDropdown } from "../forms/dropdown-input";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 const defaultValues = {
   amount: 0,
@@ -31,7 +32,7 @@ const defaultValues = {
 
 export function ClaimModal() {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [open, setOpen] = useState(false);
   const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
@@ -66,7 +67,7 @@ export function ClaimModal() {
       insurance: data.checkboxValue.includes(1),
     };
 
-    createInsuranceClaim(value.state.familyIdBaseUrl, claim);
+    createInsuranceClaim(familyIdBaseUrl, claim);
     handleClose();
   };
 

@@ -1,0 +1,19 @@
+import CircularProgress from "@mui/material/CircularProgress";
+import { Typography } from "@mui/material";
+import { useEffect } from "react";
+
+export interface LoadingComponentProps {
+  loading: boolean;
+  error: Error;
+  children: JSX.Element;
+}
+
+export const LoadingComponent = ({ loading, error, children }: LoadingComponentProps) => {
+  useEffect(() => {
+    if (error && !loading) {
+      console.error(error);
+    }
+  }, [error, loading]);
+
+  return loading ? <CircularProgress /> : error ? <Typography>Error</Typography> : children;
+};

@@ -4,14 +4,13 @@ import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
-import firebase from "../firebase/clientApp";
+import { firebaseApp } from "../firebase/clientApp";
+import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
 import { LoadingComponent } from "./loading-component";
-import AppContext from "../context/AppContext";
-import { getAuth } from "firebase/auth";
-import { ref, getDatabase } from "firebase/database";
-import { useListKeys } from "react-firebase-hooks/database";
-import { firebase as DBfire } from "../firebase/clientApp";
+import { GetFamilyBaseUrl } from "../hooks/account";
+import { useAppDispatch } from "../app/hooks";
+import { setUser, setFamilyIdBaseUrl } from "../app/sessionSlice";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -25,17 +24,18 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 
 export const DashboardLayout = (props) => {
   const { children } = props;
-  const value = useContext(AppContext);
+
+  const dispatch = useAppDispatch();
 
   const router = useRouter();
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [user, userLoading, error] = useAuthState(firebase.auth());
+  const [user, userLoading, error] = useAuthState(getAuth(firebaseApp));
 
   useEffect(() => {
     if (!(user || userLoading)) {
       router.push("/auth");
     } else {
-      value.setUser(user);
+      dispatch(setUser(user));
     }
   }, [user, userLoading]);
   return (
@@ -63,32 +63,16 @@ export const DashboardLayout = (props) => {
     </>
   );
 };
-export const GetFamilyBaseUrl = () => {
-  const database = getDatabase(DBfire);
-  const auth = getAuth();
-  const user = auth.currentUser;
-
-  const [snapshots, loading, error] = useListKeys(ref(database, "userGroups/" + user?.uid));
-
-  const values = useMemo(() => (snapshots[0] ? "family/" + snapshots[0] : null), [snapshots]);
-  const userErrors = useMemo(
-    () => (snapshots[0] ? undefined : "No family assosiated with user"),
-    [snapshots]
-  );
-
-  const resArray = [values, loading, userErrors];
-  return useMemo(() => resArray, resArray);
-};
 
 const DashboardLayout2 = ({ user, ...props }) => {
   const { children } = props;
 
   const [keys, loading, error] = GetFamilyBaseUrl();
-  const value = useContext(AppContext);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (keys && !loading) {
-      value.setFamilyIdBaseUrl(keys);
+      dispatch(setFamilyIdBaseUrl(keys));
     } else if (error && !loading) {
       console.error("No family id set to account");
     }

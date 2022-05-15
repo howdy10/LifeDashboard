@@ -13,8 +13,9 @@ import {
   deleteInsuranceClaim,
   updateInsuranceClaim,
 } from "../../api/insurance-api";
-import AppContext from "../../context/AppContext";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 function Row(props) {
   const { row } = props;
@@ -40,7 +41,7 @@ export function InsuranceClaims({ claims, ...rest }) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -68,15 +69,15 @@ export function InsuranceClaims({ claims, ...rest }) {
       insurance: newData.insurance,
     };
     if (index) {
-      updateInsuranceClaim(value.state.familyIdBaseUrl, claim, index);
+      updateInsuranceClaim(familyIdBaseUrl, claim, index);
     } else {
-      createInsuranceClaim(value.state.familyIdBaseUrl, claim);
+      createInsuranceClaim(familyIdBaseUrl, claim);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteInsuranceClaim(value.state.familyIdBaseUrl, index);
+    deleteInsuranceClaim(familyIdBaseUrl, index);
     setDeletedSnackbar(true);
   };
 

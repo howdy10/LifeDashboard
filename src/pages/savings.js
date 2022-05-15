@@ -9,18 +9,19 @@ import { firebase } from "../firebase/clientApp";
 import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseConstants";
 import { LoadingComponent } from "../components/loading-component";
 import { GetSavingsTotal } from "../hooks/savings";
-import AppContext from "../context/AppContext";
+import { useAppSelector } from "../app/hooks";
+import { selectFamilyBaseUrl } from "../app/sessionSlice";
 import { DashboardContainer } from "../components/dashboard-container";
 
 const Savings = () => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [snapshot, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + EmergencyBucketUrl)
+    ref(database, familyIdBaseUrl + EmergencyBucketUrl)
   );
   const [buckets, bucketsLoading, bucketsError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BucketsUrl)
+    ref(database, familyIdBaseUrl + BucketsUrl)
   );
 
   const [savings, savingsLoading, savingsError] = GetSavingsTotal();
