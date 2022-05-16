@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,19 +11,12 @@ import { GetFamilyBaseUrl } from "../hooks/account";
 import { useAppDispatch } from "../app/hooks";
 import { setUser, setFamilyIdBaseUrl } from "../app/sessionSlice";
 
-const DashboardLayoutRoot = styled("div")(({ theme }) => ({
-  display: "flex",
-  flex: "1 1 auto",
-  maxWidth: "100%",
-  paddingTop: 64,
-  [theme.breakpoints.up("lg")]: {
-    paddingLeft: 280,
-  },
-}));
+export interface DashboardLayoutProps {
+  children: JSX.Element;
+  props?: any[];
+}
 
-export const DashboardLayout = (props) => {
-  const { children } = props;
-
+export const DashboardLayout = ({ children, ...props }: DashboardLayoutProps) => {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -40,7 +32,17 @@ export const DashboardLayout = (props) => {
   }, [user, userLoading]);
   return (
     <>
-      <DashboardLayoutRoot>
+      <Box
+        sx={{
+          display: "flex",
+          flex: "1 1 auto",
+          maxWidth: "100%",
+          paddingTop: 8,
+          paddingLeft: {
+            lg: 35,
+          },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -50,23 +52,17 @@ export const DashboardLayout = (props) => {
           }}
         >
           <LoadingComponent loading={userLoading} error={error}>
-            {user && (
-              <DashboardLayout2 {...props} user={user}>
-                {children}
-              </DashboardLayout2>
-            )}
+            {user && <DashboardLayout2 {...props}>{children}</DashboardLayout2>}
           </LoadingComponent>
         </Box>
-      </DashboardLayoutRoot>
+      </Box>
       <DashboardNavbar onSidebarOpen={() => setSidebarOpen(true)} />
       <DashboardSidebar onClose={() => setSidebarOpen(false)} open={isSidebarOpen} />
     </>
   );
 };
 
-const DashboardLayout2 = ({ user, ...props }) => {
-  const { children } = props;
-
+const DashboardLayout2 = ({ children, ...props }: DashboardLayoutProps) => {
   const [keys, loading, error] = GetFamilyBaseUrl();
   const dispatch = useAppDispatch();
 

@@ -6,7 +6,7 @@ export interface NavItemProps {
   href: string;
   icon: JSX.Element;
   title: string;
-  others: any[];
+  others?: any[];
 }
 
 export const NavItem = ({ href, icon, title, ...others }: NavItemProps) => {
