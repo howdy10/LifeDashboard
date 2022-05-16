@@ -1,6 +1,12 @@
 import { Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "./numberFormatter";
-export function CardInfoRowMoney({ title, value }) {
+
+export interface CardInfoProps {
+  title: string;
+  value: any;
+}
+
+export function CardInfoRowMoney({ title, value }: CardInfoProps) {
   return (
     <>
       <Grid item xs={7}>
@@ -16,7 +22,7 @@ export function CardInfoRowMoney({ title, value }) {
     </>
   );
 }
-export function CardInfoRow({ title, value }) {
+export function CardInfoRow({ title, value }: CardInfoProps) {
   return (
     <>
       <Grid item xs={7}>
