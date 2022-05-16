@@ -13,14 +13,7 @@ const monthNames = [
   "December",
 ];
 
-interface Date {
-  addDays(days: number): Date;
-  addMonths(months: number): Date;
-  nextMonth(): Date;
-  monthName(): string;
-}
-
-Date.prototype.addDays = function (days: number) {
+Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
   return date;
@@ -31,7 +24,7 @@ Date.prototype.nextMonth = function () {
   return date.addMonths(1);
 };
 
-Date.prototype.addMonths = function (months: number) {
+Date.prototype.addMonths = function (months) {
   var date = new Date(this.valueOf());
   date.setMonth(date.getMonth() + months);
   return date;

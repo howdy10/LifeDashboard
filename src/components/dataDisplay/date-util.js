@@ -1,5 +1,5 @@
 import "./date.extensions";
-export type Occurance = "days" | "monthDay" | "dayOfWeek";
+
 const monthNames = [
   "January",
   "February",
@@ -15,7 +15,7 @@ const monthNames = [
   "December",
 ];
 
-export function MonthName(month: number) {
+export function MonthName(month) {
   return monthNames[month];
 }
 
@@ -24,7 +24,7 @@ export function DaysBetweenDate(firstDate, secondDate) {
   return Math.round((secondDate - firstDate) / oneDay);
 }
 
-export function getNextOccurance(date: Date, typeOfOccurance: Occurance, day: number) {
+export function getNextOccurance(date, typeOfOccurance, day) {
   switch (typeOfOccurance) {
     case "days":
       return date.addDays(day);
