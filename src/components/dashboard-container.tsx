@@ -5,7 +5,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 export interface DashboardContainerProps {
   title: string;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
 }
 
 export const DashboardContainer = ({ title, children }: DashboardContainerProps) => {

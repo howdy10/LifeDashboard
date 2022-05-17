@@ -1,9 +1,9 @@
 import "./date.extensions";
 
 export enum TypeOfOccuranceType {
-  days,
-  monthDay,
-  dayOfWeek,
+  days = "days",
+  monthDay = "monthDay",
+  dayOfWeek = "dayOfWeek",
 }
 
 const monthNames = [

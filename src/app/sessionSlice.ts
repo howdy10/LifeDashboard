@@ -4,7 +4,7 @@ import type { RootState } from "./store";
 
 // Define a type for the slice state
 interface SessionState {
-  user: User;
+  user: string;
   familyIdBaseUrl: string;
 }
 
@@ -19,7 +19,7 @@ export const sessionSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setUser: (state, name: PayloadAction<User>) => {
+    setUser: (state, name: PayloadAction<string>) => {
       state.user = name.payload;
     },
     setFamilyIdBaseUrl: (state, baseUrl: PayloadAction<string>) => {

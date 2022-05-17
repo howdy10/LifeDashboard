@@ -26,8 +26,6 @@ export const DashboardLayout = ({ children, ...props }: DashboardLayoutProps) =>
   useEffect(() => {
     if (!(user || userLoading)) {
       router.push("/auth");
-    } else {
-      dispatch(setUser(user));
     }
   }, [user, userLoading]);
   return (
