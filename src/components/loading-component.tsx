@@ -16,5 +16,5 @@ export const LoadingComponent = ({ loading, error, children }: LoadingComponentP
     }
   }, [error, loading]);
   const output = loading ? <CircularProgress /> : error ? <Typography>Error</Typography> : children;
-  return <React.Fragment>output</React.Fragment>;
+  return <React.Fragment>{output}</React.Fragment>;
 };
