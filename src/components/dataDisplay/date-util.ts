@@ -45,11 +45,12 @@ export function getNextOccurance(
       date.setDate(day);
       return date;
     case TypeOfOccuranceType.dayOfWeek:
+      const currentDate = new Date(date);
       date.setDate(1);
       while (date.getDay() !== day) {
         date.setDate(date.getDate() + 1);
       }
-      if (date.getDate() > day) {
+      if (date.getDate() < currentDate.getDate()) {
         date = date.nextMonth();
         date.setDate(1);
         while (date.getDay() !== day) {

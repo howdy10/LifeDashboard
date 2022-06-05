@@ -64,3 +64,9 @@ test("Get first saturday of the month", () => {
     new Date(2022, 5, 4)
   );
 });
+
+test("Get first saturday of the month when it was yesterday", () => {
+  expect(getNextOccurance(new Date(2022, 5, 5), TypeOfOccuranceType.dayOfWeek, 6)).toStrictEqual(
+    new Date(2022, 6, 2)
+  );
+});
