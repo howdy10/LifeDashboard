@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { Box, Grid, CardContent } from "@mui/material";
+import React from "react";
+import { Grid } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { DashboardContainer } from "../components/dashboard-container";
 import { Typography } from "@mui/material";
 import { GetReminders } from "../hooks/reminders";
 import { LoadingComponent } from "../components/loading-component";
 import { ReminderCard } from "../components/reminders/reminders-card";
+import { ReminderAddDialog } from "../components/reminders/reminders-addModal";
 
 export const Reminders = () => {
   const [reminders, loading, error] = GetReminders();
@@ -24,10 +25,11 @@ export const Reminders = () => {
             <Typography>There is no reminders</Typography>
           )}
         </Grid>
+        <ReminderAddDialog />
       </LoadingComponent>
     </DashboardContainer>
   );
 };
-Reminders.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Reminders.getLayout = (page: JSX.Element) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Reminders;
