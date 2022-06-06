@@ -2,11 +2,20 @@ import React, { useEffect, useState } from "react";
 import { FormControl, FormControlLabel, Switch } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-export const FormInputSwitch = ({ name, control, setValue, label, options }) => {
+export interface SwitchFormProps<T> {
+  name: string;
+  control: any;
+  label: any;
+  setValue: any;
+  options: T[];
+  rules?: any;
+}
+
+export const FormInputSwitch = ({ name, control, setValue, options }: SwitchFormProps<any>) => {
   const [selectedItems, setSelectedItems] = useState([]);
 
   // we are handling the selection manually here
-  const handleSelect = (value) => {
+  const handleSelect = (value: any) => {
     const isPresent = selectedItems.indexOf(value);
     if (isPresent !== -1) {
       const remaining = selectedItems.filter((item) => item !== value);

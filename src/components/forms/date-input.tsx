@@ -6,7 +6,14 @@ import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 const DATE_FORMAT = "MM/dd/yyyy";
 
-export const FormInputDate = ({ name, control, label, rules, ...props }) => {
+export interface dateFormProps {
+  name: string;
+  control: any;
+  label: any;
+  rules?: any;
+}
+
+export const FormInputDate = ({ name, control, label, rules }: dateFormProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Controller

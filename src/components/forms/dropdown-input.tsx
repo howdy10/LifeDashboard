@@ -1,10 +1,26 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useFormContext, Controller } from "react-hook-form";
+import { FormControl, FormControlTypeMap, InputLabel, MenuItem, Select } from "@mui/material";
+import { Controller } from "react-hook-form";
+import { DefaultComponentProps } from "@mui/material/OverridableComponent";
 
-export const FormInputDropdown = ({ name, control, label, options, rules, ...props }) => {
+export interface DropDownFormProps<T> extends DefaultComponentProps<FormControlTypeMap> {
+  name: string;
+  control: any;
+  label: any;
+  options: T[];
+  rules?: any;
+}
+
+export const FormInputDropdown = ({
+  name,
+  control,
+  label,
+  options,
+  rules,
+  ...props
+}: DropDownFormProps<any>) => {
   const generateSelectOptions = () => {
-    return options.map((option) => {
+    return options.map((option: any) => {
       return (
         <MenuItem key={option} value={option}>
           {option}
