@@ -56,9 +56,3 @@ export const InsuranceProvidersUrl = () => {
 export const InsuranceClaimsUrl = () => {
   return GetFamilyId() + "/HealthInsurance/claims";
 };
-
-export const BudgetUrl = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  return "family/" + GetFamilyId() + "/Budget";
-};
