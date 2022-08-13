@@ -10,7 +10,8 @@ import Snackbar from "@mui/material/Snackbar";
 import { getTime } from "date-fns";
 import { createSavingTransaction, updateSavingTransaction } from "../../api/savings-api";
 import MuiAlert from "@mui/material/Alert";
-import AppContext from "src/context/AppContext";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDate } from "../forms/date-input";
@@ -23,7 +24,7 @@ const defaultValues = {
 };
 export function TransactionForm({ bucketId, bucketName, open, setOpen, preId }) {
   const [completedSnackbar, setCompletedSnackbar] = useState(false);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -54,13 +55,12 @@ export function TransactionForm({ bucketId, bucketName, open, setOpen, preId }) 
     };
 
     if (preId) {
-      updateSavingTransaction(value.state.familyIdBaseUrl, transaction, preId);
+      updateSavingTransaction(familyIdBaseUrl, transaction, preId);
     } else {
-      createSavingTransaction(value.state.familyIdBaseUrl, transaction);
+      createSavingTransaction(familyIdBaseUrl, transaction);
     }
     setCompletedSnackbar(true);
     handleClose();
-    setOpen(false);
   };
 
   const methods = useForm({ defaultValues: defaultValues });

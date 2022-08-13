@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { InsuranceUrl } from "src/firebase/databaseLinks";
+import { InsuranceUrl } from "../firebase/databaseLinks";
 
 export const GetInsurancePaid = () => {
   const database = getDatabase(firebase);

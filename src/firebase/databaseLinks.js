@@ -1,11 +1,8 @@
-import { useMemo, useContext } from "react";
-
-import AppContext from "src/context/AppContext";
+import { useAppSelector } from "../app/hooks";
+import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
 export const GetFamilyId = () => {
-  const value = useContext(AppContext);
-
-  return value.state.familyIdBaseUrl;
+  return useAppSelector(selectFamilyBaseUrl);
 };
 
 export const DashboardUrl = () => {
@@ -32,8 +29,20 @@ export const AllLoansUrl = () => {
   return GetFamilyId() + "/Loans";
 };
 
+export const BudgetUrl = () => {
+  return GetFamilyId() + "/Budget";
+};
+
 export const InsuranceUrl = () => {
   return GetFamilyId() + "/HealthInsurance";
+};
+
+export const HsaTransactionsUrl = () => {
+  return GetFamilyId() + "/hsa/transactions";
+};
+
+export const HsaCategoryUrl = () => {
+  return GetFamilyId() + "/hsa/categories";
 };
 
 export const InsuranceMembersUrl = () => {

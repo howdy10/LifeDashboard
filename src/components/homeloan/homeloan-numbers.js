@@ -1,4 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 
 export const HomeloanNumbers = ({ totalPaid, principalPaid, interestPaid, escrowBalance }) => (
   <Card sx={{ height: "100%" }}>
@@ -18,31 +19,12 @@ export const HomeloanNumbers = ({ totalPaid, principalPaid, interestPaid, escrow
           alignItems: "center",
         }}
       >
-        <Typography color="textSecondary" variant="caption">
-          Total Paid{": "}
-          {totalPaid.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-          <br />
-          Principal Paid{": "}
-          {principalPaid.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-          <br />
-          Interest Paid{": "}
-          {interestPaid.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-          <br />
-          Escrow Balance{": "}
-          {escrowBalance.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-        </Typography>
+        <Grid container>
+          <CardInfoRowMoney title={"Total Paid"} value={totalPaid} />
+          <CardInfoRowMoney title={"Principal Paid"} value={principalPaid} />
+          <CardInfoRowMoney title={"Interest Paid"} value={interestPaid} />
+          <CardInfoRowMoney title={"Escrow Balance"} value={escrowBalance} />
+        </Grid>
       </Box>
     </CardContent>
   </Card>

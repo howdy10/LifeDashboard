@@ -15,28 +15,14 @@ export const InsuranceBoard = ({ insurance, ...rest }) => {
     setClaimsAmount(totalPaid);
   }, [insurance]);
   return (
-    <Box>
-      <Box
-        sx={{
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          m: -1,
-        }}
-      >
-        <Container maxWidth={false}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <InsuranceDeductable
-                paid={claimsAmount}
-                deductible={insurance.deductible}
-                outOfPocket={insurance.outOfPocket}
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </Box>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <InsuranceDeductable
+          paid={claimsAmount}
+          deductible={insurance.deductible}
+          outOfPocket={insurance.outOfPocket}
+        />
+      </Grid>
+    </Grid>
   );
 };

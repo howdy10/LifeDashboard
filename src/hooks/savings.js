@@ -2,18 +2,19 @@ import { useState, useMemo, useEffect, useContext } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { BucketsUrl, SavingsTransactionsUrl, SavingsUrl } from "src/firebase/databaseConstants";
-import AppContext from "src/context/AppContext";
+import { BucketsUrl, SavingsTransactionsUrl, SavingsUrl } from "../firebase/databaseConstants";
+import { useAppSelector } from "../app/hooks";
+import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
 export const GetSavingsTotal = () => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [snapshot, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + SavingsTransactionsUrl)
+    ref(database, familyIdBaseUrl + SavingsTransactionsUrl)
   );
   const [buckets, bucketsLoading, bucketsError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + BucketsUrl)
+    ref(database, familyIdBaseUrl + BucketsUrl)
   );
 
   const [savingsTotal, setSavingsTotal] = useState({
@@ -43,7 +44,7 @@ export const GetSavingsTotal = () => {
 
 export const GetSavingsTotalOfBucket = (bucketId) => {
   const database = getDatabase(firebase);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [savingsTotal, setSavingsTotal] = useState({
     amount: 0,
@@ -51,10 +52,10 @@ export const GetSavingsTotalOfBucket = (bucketId) => {
     name: null,
   });
   const [bucketTransactions, loading, error] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/bucketTransactions/" + bucketId)
+    ref(database, familyIdBaseUrl + SavingsUrl + "/bucketTransactions/" + bucketId)
   );
   const [bucketInfo, infoLoading, infoError] = useObjectVal(
-    ref(database, value.state.familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
+    ref(database, familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
   );
 
   useEffect(() => {

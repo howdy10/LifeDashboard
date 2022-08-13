@@ -1,4 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 
 export const CarloanBalances = ({ remaning, initial }) => (
   <Card sx={{ height: "100%" }}>
@@ -18,19 +19,10 @@ export const CarloanBalances = ({ remaning, initial }) => (
           alignItems: "center",
         }}
       >
-        <Typography color="textSecondary" variant="caption">
-          Initial Balance{": "}
-          {initial.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-          <br />
-          Remaining Balance{": "}
-          {remaning.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-        </Typography>
+        <Grid container>
+          <CardInfoRowMoney title={"Initial Balance"} value={initial} />
+          <CardInfoRowMoney title={"Remaining Balance"} value={remaning} />
+        </Grid>
       </Box>
     </CardContent>
   </Card>

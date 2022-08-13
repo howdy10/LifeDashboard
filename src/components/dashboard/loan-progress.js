@@ -1,8 +1,8 @@
 import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import HouseIcon from "@mui/icons-material/House";
 import { useRouter } from "next/router";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import { GetLoanDetails } from "src/hooks/loan";
+import { GetLoanDetails } from "../../hooks/loan";
 
 export const LoanProgress = ({ loanId, ...props }) => {
   const router = useRouter();
@@ -18,7 +18,7 @@ export const LoanProgress = ({ loanId, ...props }) => {
           width: 56,
         }}
       >
-        <DirectionsCarIcon />
+        <HouseIcon />
       </Avatar>
     );
 

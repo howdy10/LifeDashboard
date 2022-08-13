@@ -3,12 +3,9 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
-import AppContext from "src/context/AppContext";
-import { GetSavingsTotalOfBucket } from "src/hooks/savings";
+import { GetSavingsTotalOfBucket } from "../../hooks/savings";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
-  const value = useContext(AppContext);
-
   const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
 
   return (

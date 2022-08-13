@@ -422,4 +422,194 @@ test("Render Rows Collapsable row with row variables", () => {
   expect(collapseComponent).toHaveTextContent("TestValue0");
 });
 
+test("Render Rows with edit function but actionswitch off", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      rowEdits={() => {}}
+      showActions={false}
+    />
+  );
+
+  const ActionColumn = screen.queryByTestId("column-action");
+  expect(ActionColumn).not.toBeTruthy();
+
+  const menuButton = screen.queryByTestId("action-menu-icon");
+  expect(menuButton).not.toBeTruthy();
+});
+test("Render Without Pagination", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showActions={false}
+    />
+  );
+
+  const Pagination = screen.queryByTestId("table-pagination");
+  expect(Pagination).not.toBeTruthy();
+});
+test("Render With Pagination", () => {
+  render(
+    <DashboardTable
+      data={[{ ValueTest: "test", TestValue: "test" }]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showActions={false}
+      showPagination={true}
+    />
+  );
+
+  const Pagination = screen.queryByTestId("table-pagination");
+  expect(Pagination).toBeTruthy();
+});
+
+test("Render Rows With first 5+ values", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+    />
+  );
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+  expect(Row3).toBeTruthy();
+  expect(Row4).toBeTruthy();
+  expect(Row5).toBeTruthy();
+  expect(Row6).toBeTruthy();
+});
+test("Render Pagination Rows With first 5+ values", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showPagination={true}
+    />
+  );
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).toBeTruthy();
+  expect(Row2).toBeTruthy();
+  expect(Row3).toBeTruthy();
+  expect(Row4).toBeTruthy();
+  expect(Row5).toBeTruthy();
+  expect(Row6).not.toBeTruthy();
+});
+
+test("Render Pagination Rows With first 5+ values click next button", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 0 },
+        { ValueTest: 200, TestValue: 0 },
+        { ValueTest: 300, TestValue: 0 },
+        { ValueTest: 400, TestValue: 0 },
+        { ValueTest: 500, TestValue: 0 },
+        { ValueTest: 600, TestValue: 0 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+      showPagination={true}
+    />
+  );
+
+  const nextButton = screen.queryByTestId("table-pagination-nextButton");
+
+  fireEvent.click(nextButton);
+
+  const Row1 = screen.queryByTestId("row-0");
+  const Row2 = screen.queryByTestId("row-1");
+  const Row3 = screen.queryByTestId("row-2");
+  const Row4 = screen.queryByTestId("row-3");
+  const Row5 = screen.queryByTestId("row-4");
+  const Row6 = screen.queryByTestId("row-5");
+
+  expect(Row1).not.toBeTruthy();
+  expect(Row2).not.toBeTruthy();
+  expect(Row3).not.toBeTruthy();
+  expect(Row4).not.toBeTruthy();
+  expect(Row5).not.toBeTruthy();
+  expect(Row6).toBeTruthy();
+});
+test("Test missing coloumn data", () => {
+  render(
+    <DashboardTable
+      data={[
+        { ValueTest: 100, TestValue: 11 },
+        { ValueTest: 200, Mid: "something", TestValue: 22 },
+        { ValueTest: 300, TestValue: 33 },
+      ]}
+      columns={[
+        { title: "FirstMoney", field: "ValueTest" },
+        { title: "MidMoney", field: "Mid" },
+        { title: "SecondMoney", field: "TestValue" },
+      ]}
+    />
+  );
+
+  const cell11 = screen.queryByTestId("cell-0-0");
+  const cell12 = screen.queryByTestId("cell-0-1");
+  const cell13 = screen.queryByTestId("cell-0-2");
+  const cell21 = screen.queryByTestId("cell-1-0");
+  const cell22 = screen.queryByTestId("cell-1-1");
+  const cell23 = screen.queryByTestId("cell-1-2");
+  const cell31 = screen.queryByTestId("cell-2-0");
+  const cell32 = screen.queryByTestId("cell-2-1");
+  const cell33 = screen.queryByTestId("cell-2-2");
+
+  expect(cell11).toBeTruthy();
+  expect(cell12).toBeTruthy();
+  expect(cell13).toBeTruthy();
+  expect(cell21).toBeTruthy();
+  expect(cell22).toBeTruthy();
+  expect(cell23).toBeTruthy();
+  expect(cell31).toBeTruthy();
+  expect(cell32).toBeTruthy();
+  expect(cell33).toBeTruthy();
+});
 test("Test column alignment prop", () => {});
