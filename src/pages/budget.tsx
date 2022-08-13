@@ -5,14 +5,14 @@ import { DashboardLayout } from "../components/dashboard-layout";
 import { BudgetCategory } from "../components/budget/budget-category";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { firebase } from "../firebase/clientApp";
+import { firebaseApp } from "../firebase/clientApp";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { BudgetUrl } from "../firebase/databaseLinks";
 
 export const Budget = () => {
   // Get a reference to the database service
-  const database = getDatabase(firebase);
+  const database = getDatabase(firebaseApp);
   const date = new Date();
 
   const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
