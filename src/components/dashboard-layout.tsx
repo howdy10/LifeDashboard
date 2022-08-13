@@ -37,7 +37,7 @@ export const DashboardLayout = ({ children, ...props }: DashboardLayoutProps) =>
           maxWidth: "100%",
           paddingTop: 8,
           paddingLeft: {
-            lg: 35,
+            lg: 30,
           },
         }}
       >

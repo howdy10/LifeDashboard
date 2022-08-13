@@ -31,10 +31,10 @@ export const DashboardNavbar = ({ onSidebarOpen, ...props }: DashboardNavbarProp
     <AppBar
       sx={{
         left: {
-          lg: 280,
+          lg: 240,
         },
         width: {
-          lg: "calc(100% - 280px)",
+          lg: "calc(100% - 240px)",
         },
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[3],
