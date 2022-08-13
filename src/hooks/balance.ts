@@ -1,13 +1,14 @@
-import { useState, useMemo, useEffect, useContext } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { firebase } from "../firebase/clientApp";
+import { firebaseApp } from "../firebase/clientApp";
 import { BudgetUrl } from "../firebase/databaseConstants";
 import { useAppSelector } from "../app/hooks";
 import { selectFamilyBaseUrl } from "../app/sessionSlice";
+import { HookReponse } from "./types";
 
-export const GetPayChecks = (year, month) => {
-  const database = getDatabase(firebase);
+export const GetPayChecks = (year: number, month: number): HookReponse<any> => {
+  const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [total, setTotal] = useState({
@@ -31,23 +32,23 @@ export const GetPayChecks = (year, month) => {
     });
   }, [payChecks]);
 
-  const resArray = [total, loading, error];
+  const resArray: HookReponse<any> = [total, loading, error];
   return useMemo(() => resArray, resArray);
 };
 
-export const GetCurrentStats = () => {
-  const database = getDatabase(firebase);
+export const GetCurrentStats = (): HookReponse<any> => {
+  const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const [currentSpent, loading, error] = useObjectVal(
     ref(database, familyIdBaseUrl + BudgetUrl + "/current")
   );
 
-  const resArray = [currentSpent, loading, error];
+  const resArray: HookReponse<any> = [currentSpent, loading, error];
   return useMemo(() => resArray, resArray);
 };
 
-export const GetCurrentBalance = (year, month) => {
-  const database = getDatabase(firebase);
+export const GetCurrentBalance = (year: number, month: number): HookReponse<any> => {
+  const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const lastMonth = month - 1;
@@ -90,6 +91,6 @@ export const GetCurrentBalance = (year, month) => {
     });
   }, [previousBalance, currentSpent, currentMonth]);
 
-  const resArray = [balance, loading, error];
+  const resArray: HookReponse<any> = [balance, loading, error];
   return useMemo(() => resArray, resArray);
 };
