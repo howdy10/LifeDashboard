@@ -144,6 +144,7 @@ export const GetSavingsTotal = (): HookReponse<SavingsBucket> => {
   return useMemo(() => resArray, resArray);
 };
 
+//TODO: Not being used
 export const GetSavingsTotalOfBucket = (bucketId: string): HookReponse<any> => {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);

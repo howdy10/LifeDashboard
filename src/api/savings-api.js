@@ -41,7 +41,7 @@ export function deleteSavingTransaction(baseUrl, transactionId, bucketId) {
   remove(ref(database, savingsUrl + "/transactions/" + transactionId));
   remove(ref(database, savingsUrl + "/bucketTransactions/" + bucketId + "/" + transactionId));
 }
-
+//TODO: Not being used. Use it to create or update a bucket
 export function updateSavingsBucketTotal(baseUrl, bucket, id) {
   const database = getDatabase(firebase);
   const savingsUrl = baseUrl + SavingsUrl;
