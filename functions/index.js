@@ -77,3 +77,25 @@ exports.endingBalanceUpdate = functions.database
         functions.logger.error(`Error pulling data: ${error}`);
       });
   });
+
+exports.savingBucketAmountUpdate = functions.database
+  .ref("family/{familyId}/Savings/bucketTransactions/{bucketId}")
+  .onWrite((change, context) => {
+    const familyId = context.params.familyId;
+    const bucketId = context.params.bucketId;
+
+    let bucketSum = 0;
+    const transactionList = change.after.val();
+    Object.keys(transactionList).map(
+      (key, index) => (bucketSum += transactionList[key].amount ?? 0)
+    );
+
+    functions.logger.info(`Family Id updating: ${familyId}`);
+    functions.logger.info(`Bucket Id: ${bucketId}`);
+    functions.logger.info(`Amount updating: ${bucketSum}`);
+    return change.after.ref.parent.parent
+      .child("buckets")
+      .child(bucketId)
+      .child("amount")
+      .set(bucketSum);
+  });
