@@ -1,12 +1,14 @@
-import { useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 import { TransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
-import { GetSavingsTotalOfBucket } from "../../hooks/savings";
+import { SavingsUrl } from "../../firebase/databaseConstants";
+import { GetFromDatabase } from "../../hooks/baseHook";
 
 export const SavingBucket = ({ bucket, bucketId }) => {
-  const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
+  const [bucketTransactions, transactionsLoading, transactionsError] = GetFromDatabase(
+    SavingsUrl + "/bucketTransactions/" + bucketId
+  );
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -17,7 +19,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
               {bucket.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(total.amount)}
+              {MoneyFormatter(bucket.amount)}
             </Typography>
 
             <Box
@@ -38,7 +40,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
           </Grid>
           <Grid item>
             <SavingsTransactions
-              transactions={total.transactions}
+              transactions={bucketTransactions}
               bucketId={bucketId}
               bucketName={bucket.name}
             />

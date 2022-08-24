@@ -32,21 +32,26 @@ const Savings = () => {
         <Grid item xs={12}>
           <SavingsBoard savingsTotal={savings.amount} goalTotal={savings.goal} />
         </Grid>
-        <Grid item lg={3} sm={6} xl={3} xs={12}>
-          <LoadingComponent loading={loading} error={error}>
-            <SavingBucket bucket={snapshot} bucketId={"emergencyFund"} />
-          </LoadingComponent>
-        </Grid>
+
+        <LoadingComponent loading={bucketsLoading} error={bucketsError}>
+          {buckets && (
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <SavingBucket bucket={buckets["emergencyFund"]} bucketId={"emergencyFund"} />
+            </Grid>
+          )}
+        </LoadingComponent>
         <LoadingComponent loading={bucketsLoading} error={bucketsError}>
           {buckets &&
-            Object.keys(buckets).map(
-              (id, index) =>
-                !buckets[id].completed && (
-                  <Grid item xl={3} lg={3} sm={6} xs={12} key={index}>
-                    <SavingBucket bucket={buckets[id]} bucketId={id} />
-                  </Grid>
-                )
-            )}
+            Object.keys(buckets)
+              .filter((x) => x !== "emergencyFund")
+              .map(
+                (id, index) =>
+                  !buckets[id].completed && (
+                    <Grid item xl={3} lg={3} sm={6} xs={12} key={index}>
+                      <SavingBucket bucket={buckets[id]} bucketId={id} />
+                    </Grid>
+                  )
+              )}
         </LoadingComponent>
       </Grid>
     </DashboardContainer>
