@@ -61,12 +61,12 @@ export const GetSavingsAccountDashboardCard = (): HookReponse<SavingsDashboardCa
     let sumOfBuckets = 0;
     let sumOfGoals = 0;
     if (buckets) {
-      Object.keys(buckets).map(
-        (key, index) => (sumOfBuckets += buckets[key].completed ? 0 : buckets[key].amount ?? 0)
-      );
-      Object.keys(buckets).map(
-        (key, index) => (sumOfGoals += buckets[key].completed ? 0 : buckets[key].goal ?? 0)
-      );
+      Object.keys(buckets).map((key, index) => {
+        if (!buckets[key].completed) {
+          sumOfBuckets += buckets[key].amount;
+          sumOfGoals += buckets[key].goal;
+        }
+      });
     }
 
     setSavingsTotal({
