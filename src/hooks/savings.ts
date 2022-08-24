@@ -115,12 +115,7 @@ export const GetSavingsTotal = (): HookReponse<SavingsBucket> => {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
-  const [savingsTransactions, loading, error] = useObjectVal(
-    ref(database, familyIdBaseUrl + SavingsTransactionsUrl)
-  );
-  const [buckets, bucketsLoading, bucketsError] = useObjectVal(
-    ref(database, familyIdBaseUrl + BucketsUrl)
-  );
+  const [buckets, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + BucketsUrl));
 
   const [savingsTotal, setSavingsTotal] = useState<SavingsBucket>({
     amount: 0,
@@ -128,28 +123,24 @@ export const GetSavingsTotal = (): HookReponse<SavingsBucket> => {
   });
 
   useEffect(() => {
-    let savingsTotal = 0;
     let goalTotal = 0;
     let sumOfBuckets = 0;
-    if (buckets && savingsTransactions) {
-      Object.keys(savingsTransactions).map(
-        (key, index) => (savingsTotal += savingsTransactions[key].amount ?? 0)
-      );
-      Object.keys(buckets).map((key, index) => (goalTotal += buckets[key].goal ?? 0));
-      Object.keys(buckets).map(
-        (key, index) => (sumOfBuckets += buckets[key].completed ? 0 : buckets[key].amount ?? 0)
-      );
+    if (buckets) {
+      Object.keys(buckets).map((key, index) => {
+        if (!buckets[key].completed) {
+          goalTotal += buckets[key].goal;
+          sumOfBuckets += buckets[key].amount;
+        }
+      });
     }
     setSavingsTotal({
       ...setSavingsTotal,
       amount: sumOfBuckets,
       goal: goalTotal,
     });
-  }, [savingsTransactions, buckets]);
+  }, [buckets]);
 
-  //   const values = useMemo(() => (snapshot && buckets ? savingsTotal : null), [snapshot, buckets]);
-
-  const resArray: HookReponse<SavingsBucket> = [savingsTotal, loading || bucketsLoading, error];
+  const resArray: HookReponse<SavingsBucket> = [savingsTotal, loading, error];
   return useMemo(() => resArray, resArray);
 };
 
