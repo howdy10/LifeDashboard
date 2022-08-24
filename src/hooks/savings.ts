@@ -128,7 +128,7 @@ export const GetSavingsTotal = (): HookReponse<SavingsBucket> => {
     if (buckets) {
       Object.keys(buckets).map((key, index) => {
         if (!buckets[key].completed) {
-          goalTotal += buckets[key].goal;
+          goalTotal += key === "emergencyFund" ? 0 : buckets[key].goal;
           sumOfBuckets += buckets[key].amount;
         }
       });
