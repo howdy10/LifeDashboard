@@ -2,7 +2,11 @@ import { useState } from "react";
 import ListIcon from "@mui/icons-material/List";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Fab } from "@mui/material";
 import { getTime } from "date-fns";
-import { DashboardTable } from "../dashboadTable/dashboardTable";
+import {
+  DashboardTable,
+  DashboardTableColumn,
+  DashboardTableColumnOrder,
+} from "../dashboadTable/dashboardTable";
 import {
   createSavingTransaction,
   updateSavingTransaction,
@@ -12,12 +16,12 @@ import { useAppSelector } from "../../app/hooks";
 import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 
-const columns = [
+const columns: DashboardTableColumn[] = [
   { title: "Date", field: "date", type: "date" },
   { title: "Amount", field: "amount", type: "currency" },
   { title: "Note", field: "note" },
 ];
-const order = {
+const order: DashboardTableColumnOrder = {
   column: "date",
   direction: "desc",
 };
