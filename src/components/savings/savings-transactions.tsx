@@ -1,4 +1,4 @@
-import { useState, forwardRef, useContext } from "react";
+import { useState } from "react";
 import ListIcon from "@mui/icons-material/List";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Fab } from "@mui/material";
 import { getTime } from "date-fns";
@@ -8,10 +8,9 @@ import {
   updateSavingTransaction,
   deleteSavingTransaction,
 } from "../../api/savings-api";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
 import { useAppSelector } from "../../app/hooks";
 import { selectFamilyBaseUrl } from "../../app/sessionSlice";
+import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -22,9 +21,6 @@ const order = {
   column: "date",
   direction: "desc",
 };
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...rest }) => {
   const [open, setOpen] = useState(false);
@@ -34,7 +30,7 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
 
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
-  const handleSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (event: React.SyntheticEvent, reason: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -97,21 +93,14 @@ export const SavingsTransactions = ({ transactions, bucketName, bucketId, ...res
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar open={updatedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: "100%" }}>
-          Transaction updated
-        </Alert>
-      </Snackbar>
-      <Snackbar open={deletedErrorSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
-          Transaction not complete
-        </Alert>
-      </Snackbar>
-      <Snackbar open={deletedSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
-          Transaction deleted
-        </Alert>
-      </Snackbar>
+
+      <SnackbarStatus
+        isUpdateOpen={updatedSnackbar}
+        isDeleteOpen={deletedSnackbar}
+        isErrorOpen={deletedErrorSnackbar}
+        closeAll={handleSnackbarClose}
+        type="Transaction"
+      />
     </>
   );
 };

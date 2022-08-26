@@ -1,14 +1,19 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { TransactionModal } from "./savings-transactionModel";
+import { SavingsTransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
 import { SavingsUrl } from "../../firebase/databaseConstants";
 import { GetFromDatabase } from "../../hooks/baseHook";
+import { TransactionDB } from "../../hooks/savings";
 
-export const SavingBucket = ({ bucket, bucketId }) => {
-  const [bucketTransactions, transactionsLoading, transactionsError] = GetFromDatabase(
-    SavingsUrl + "/bucketTransactions/" + bucketId
-  );
+export interface SavingBucketInput {
+  bucket: any;
+  bucketId: string;
+}
+
+export const SavingBucket = ({ bucket, bucketId }: SavingBucketInput) => {
+  const [bucketTransactions, transactionsLoading, transactionsError] =
+    GetFromDatabase<TransactionDB>(SavingsUrl + "/bucketTransactions/" + bucketId);
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -36,7 +41,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
         </Grid>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
-            <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
+            <SavingsTransactionModal bucketId={bucketId} bucketName={bucket.name} />
           </Grid>
           <Grid item>
             <SavingsTransactions

@@ -22,11 +22,11 @@ interface Bucket {
   transactions: TransactionDB[];
   name: string;
 }
-interface TransactionDB {
+export interface TransactionDB {
   amount: number;
   bucket: string;
   bucketId: string;
-  date: Date;
+  date: number;
   note: string;
 }
 
