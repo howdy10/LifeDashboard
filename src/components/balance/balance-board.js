@@ -46,7 +46,13 @@ export const BalanceBoard = ({ month, year }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <BalancePaychecks income={balance.payChecks} month={month} year={year} />
+              <BalancePaychecks
+                income={balance.payChecks}
+                month={month}
+                year={year}
+                isCurrentMonth={isCurrentMonth}
+                isLastMonth={isLastMonth}
+              />
             </Grid>
           </Grid>
         </Container>
