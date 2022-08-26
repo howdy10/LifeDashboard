@@ -6,12 +6,12 @@ import { useAppSelector } from "../app/hooks";
 import { HookReponse } from "./types";
 import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
-export const GetFromDatabase = (url: string): HookReponse<any> => {
+export const GetFromDatabase = <T>(url: string): HookReponse<T> => {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [response, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + url));
 
-  const resArray: HookReponse<any> = [response, loading, error];
+  const resArray: HookReponse<T> = [response, loading, error];
   return useMemo(() => resArray, resArray);
 };

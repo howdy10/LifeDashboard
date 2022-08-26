@@ -3,26 +3,14 @@ import { Grid } from "@mui/material";
 import { SavingsBoard } from "../components/savings/savings-board";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { SavingBucket } from "../components/savings/savings-bucket";
-import { ref, getDatabase } from "firebase/database";
-import { useObjectVal } from "react-firebase-hooks/database";
-import { firebase } from "../firebase/clientApp";
-import { EmergencyBucketUrl, BucketsUrl } from "../firebase/databaseConstants";
+import { BucketsUrl } from "../firebase/databaseConstants";
 import { LoadingComponent } from "../components/loading-component";
 import { GetSavingsTotal } from "../hooks/savings";
-import { useAppSelector } from "../app/hooks";
-import { selectFamilyBaseUrl } from "../app/sessionSlice";
+import { GetFromDatabase } from "../hooks/baseHook";
 import { DashboardContainer } from "../components/dashboard-container";
 
 const Savings = () => {
-  const database = getDatabase(firebase);
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
-
-  const [snapshot, loading, error] = useObjectVal(
-    ref(database, familyIdBaseUrl + EmergencyBucketUrl)
-  );
-  const [buckets, bucketsLoading, bucketsError] = useObjectVal(
-    ref(database, familyIdBaseUrl + BucketsUrl)
-  );
+  const [buckets, bucketsLoading, bucketsError] = GetFromDatabase(BucketsUrl);
 
   const [savings, savingsLoading, savingsError] = GetSavingsTotal();
 
@@ -30,7 +18,9 @@ const Savings = () => {
     <DashboardContainer title={"Savings"}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <SavingsBoard savingsTotal={savings.amount} goalTotal={savings.goal} />
+          <LoadingComponent loading={savingsLoading} error={savingsError}>
+            <SavingsBoard savingsTotal={savings.amount} goalTotal={savings.goal} />
+          </LoadingComponent>
         </Grid>
 
         <LoadingComponent loading={bucketsLoading} error={bucketsError}>
