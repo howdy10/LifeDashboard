@@ -1,7 +1,8 @@
 import React from "react";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
+import { getTime } from "date-fns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 const DATE_FORMAT = "MM/dd/yyyy";
@@ -19,12 +20,12 @@ export const FormInputDate = ({ name, control, label, rules }: dateFormProps) =>
       <Controller
         name={name}
         control={control}
-        rules={rules}
+        rules={{ validate: (value) => !isNaN(value), ...rules }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <DatePicker
             label={label}
             value={value}
-            onChange={onChange}
+            onChange={(v) => onChange(getTime(v))}
             renderInput={(params) => {
               return <TextField fullWidth {...params} />;
             }}

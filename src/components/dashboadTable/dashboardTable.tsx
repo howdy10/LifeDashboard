@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { PropTypes } from "prop-types";
+import React, { FC, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Box,
@@ -10,10 +9,35 @@ import {
   TableRow,
   TableFooter,
   TablePagination,
+  IconButtonProps,
 } from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
-export const DashboardTable = ({
+export interface DashboardTableColumn {
+  title: string;
+  field: string;
+  type?: string;
+}
+
+export interface DashboardTableColumnOrder {
+  column: string;
+  direction: "desc" | "asc";
+}
+
+export interface DashboardTableProps {
+  columns: DashboardTableColumn[];
+  data: any[] | any;
+  rowEdits?: (oldData: any, newData: any, index: string) => void;
+  rowDelete?: (oldData: any, index: string) => void;
+  order?: DashboardTableColumnOrder;
+  infoRow?;
+  infoRowVaribles?: string[];
+  infoRowEditComponent?;
+  showActions?: boolean;
+  showPagination?: boolean;
+}
+
+export const DashboardTable: FC<DashboardTableProps> = ({
   columns,
   data,
   rowEdits,
@@ -108,7 +132,7 @@ export const DashboardTable = ({
               <TableCell data-testid="column-action">Action</TableCell>
             )}
             {columns.map((item, index) => {
-              let text = item.title;
+              let text: any = item.title;
 
               if (item.type === "boolean") {
                 text = <Box sx={{ textAlign: "center" }}>{text}</Box>;
@@ -148,7 +172,9 @@ export const DashboardTable = ({
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                nextIconButtonProps={{ "data-testid": "table-pagination-nextButton" }}
+                nextIconButtonProps={
+                  { "data-testid": "table-pagination-nextButton" } as IconButtonProps
+                }
               />
             </TableRow>
           </TableFooter>
@@ -156,23 +182,4 @@ export const DashboardTable = ({
       </Table>
     </PerfectScrollbar>
   );
-};
-
-DashboardTable.propTypes = {
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({ title: PropTypes.string, field: PropTypes.string, type: PropTypes.string })
-  ),
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  action: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, onClick: PropTypes.func })),
-  rowEdits: PropTypes.func,
-  rowDelete: PropTypes.func,
-  order: PropTypes.shape({
-    column: PropTypes.string,
-    direction: PropTypes.oneOfType[("desc", "asc")],
-  }),
-  infoRow: PropTypes.func,
-  infoRowVaribles: PropTypes.arrayOf(PropTypes.string),
-  infoRowEditComponent: PropTypes.func,
-  showActions: PropTypes.bool,
-  showPagination: PropTypes.bool,
 };

@@ -1,7 +1,12 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
 
-export const SavingsBoard = ({ savingsTotal, goalTotal }) => {
+export interface SavingsBoardInput {
+  savingsTotal: number;
+  goalTotal: number;
+}
+
+export const SavingsBoard = ({ savingsTotal, goalTotal }: SavingsBoardInput) => {
   return (
     <Card sx={{ height: "100%" }}>
       <CardContent>

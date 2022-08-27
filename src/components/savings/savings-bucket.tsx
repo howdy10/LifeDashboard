@@ -1,12 +1,19 @@
-import { useContext } from "react";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { TransactionModal } from "./savings-transactionModel";
+import { SavingsTransactionModal } from "./savings-transactionModel";
 import { SavingsTransactions } from "./savings-transactions";
-import { GetSavingsTotalOfBucket } from "../../hooks/savings";
+import { SavingsUrl } from "../../firebase/databaseConstants";
+import { GetFromDatabase } from "../../hooks/baseHook";
+import { TransactionDB } from "../../hooks/savings";
 
-export const SavingBucket = ({ bucket, bucketId }) => {
-  const [total, loading, error] = GetSavingsTotalOfBucket(bucketId);
+export interface SavingBucketInput {
+  bucket: any;
+  bucketId: string;
+}
+
+export const SavingBucket = ({ bucket, bucketId }: SavingBucketInput) => {
+  const [bucketTransactions, transactionsLoading, transactionsError] =
+    GetFromDatabase<TransactionDB>(SavingsUrl + "/bucketTransactions/" + bucketId);
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -17,7 +24,7 @@ export const SavingBucket = ({ bucket, bucketId }) => {
               {bucket.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(total.amount)}
+              {MoneyFormatter(bucket.amount)}
             </Typography>
 
             <Box
@@ -34,11 +41,11 @@ export const SavingBucket = ({ bucket, bucketId }) => {
         </Grid>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
-            <TransactionModal bucketId={bucketId} bucketName={bucket.name} />
+            <SavingsTransactionModal bucketId={bucketId} bucketName={bucket.name} />
           </Grid>
           <Grid item>
             <SavingsTransactions
-              transactions={total.transactions}
+              transactions={bucketTransactions}
               bucketId={bucketId}
               bucketName={bucket.name}
             />

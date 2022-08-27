@@ -12,7 +12,7 @@ const order = {
   direction: "asc",
 };
 
-export const BalancePaychecks = ({ income, year, month, ...rest }) => {
+export const BalancePaychecks = ({ income, year, month, isCurrentMonth, isLastMonth, ...rest }) => {
   return (
     <Card>
       <Box
@@ -27,9 +27,11 @@ export const BalancePaychecks = ({ income, year, month, ...rest }) => {
         <Typography sx={{ m: 1 }} variant="h4">
           Income
         </Typography>
-        <Box sx={{ m: 1 }}>
-          <PaycheckModal year={year} month={month} />
-        </Box>
+        {(isLastMonth || isCurrentMonth) && (
+          <Box sx={{ m: 1 }}>
+            <PaycheckModal year={year} month={month} />
+          </Box>
+        )}
       </Box>
       <DashboardTable columns={columns} data={income} order={order} />
     </Card>

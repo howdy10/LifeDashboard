@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { Fab } from "@mui/material";
 import PropTypes from "prop-types";
 import AddIcon from "@mui/icons-material/Add";
-import { TransactionForm } from "./savings-transactionForm";
+import { SavingsTransactionForm } from "./savings-transactionForm";
 
-export function TransactionModal({ bucketId, bucketName }) {
+export interface savingsTransactionModalInput {
+  bucketId: string;
+  bucketName: string;
+}
+
+export function SavingsTransactionModal({ bucketId, bucketName }: savingsTransactionModalInput) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -16,12 +21,17 @@ export function TransactionModal({ bucketId, bucketName }) {
       <Fab color="primary" size="small" onClick={handleClickOpen}>
         <AddIcon />
       </Fab>
-      <TransactionForm bucketId={bucketId} bucketName={bucketName} open={open} setOpen={setOpen} />
+      <SavingsTransactionForm
+        bucketId={bucketId}
+        bucketName={bucketName}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }
 
-TransactionModal.propTypes = {
+SavingsTransactionModal.propTypes = {
   bucketId: PropTypes.string.isRequired,
   bucketName: PropTypes.string.isRequired,
 };

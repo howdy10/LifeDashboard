@@ -103,6 +103,7 @@ export function HsaTransactions({ transactions, ...rest }) {
         rowEdits={handleUpdateRow}
         rowDelete={handleDeleteRow}
         showActions={masterEdit}
+        order={{ column: "date", direction: "asc" }}
       />
       <SnackbarStatus
         isUpdateOpen={updatedSnackbar}
