@@ -72,7 +72,7 @@ export const DashboardTable: FC<DashboardTableProps> = ({
       filteredList = filteredList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     }
     setDataListIdOrder(filteredList);
-  }, [data, order]);
+  }, [data, order, page]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -172,6 +172,8 @@ export const DashboardTable: FC<DashboardTableProps> = ({
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                showFirstButton={true}
+                showLastButton={true}
                 nextIconButtonProps={
                   { "data-testid": "table-pagination-nextButton" } as IconButtonProps
                 }

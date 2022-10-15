@@ -44,7 +44,7 @@ export function HsaModal() {
     setOpen(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     if (isNaN(data.date)) {
       return;
     }
