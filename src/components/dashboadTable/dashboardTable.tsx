@@ -10,6 +10,8 @@ import {
   TableFooter,
   TablePagination,
   IconButtonProps,
+  Typography,
+  Grid,
 } from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
@@ -35,6 +37,7 @@ export interface DashboardTableProps {
   infoRowEditComponent?;
   showActions?: boolean;
   showPagination?: boolean;
+  showCount?: boolean;
 }
 
 export const DashboardTable: FC<DashboardTableProps> = ({
@@ -48,6 +51,7 @@ export const DashboardTable: FC<DashboardTableProps> = ({
   infoRowEditComponent,
   showActions = true,
   showPagination = false,
+  showCount = false,
 }) => {
   const [rowBeingEditedId, setRowBeingEditedId] = useState(null);
   const [rowBeingDeletedId, setRowBeingDeletedId] = useState(null);
@@ -182,6 +186,13 @@ export const DashboardTable: FC<DashboardTableProps> = ({
           </TableFooter>
         )}
       </Table>
+      {showCount && (
+        <Grid container direction="row-reverse" sx={{ padding: "0 15px 5px 0" }}>
+          <Grid item>
+            <Typography variant="body2">{"Count: " + Object.keys(data).length}</Typography>
+          </Grid>
+        </Grid>
+      )}
     </PerfectScrollbar>
   );
 };
