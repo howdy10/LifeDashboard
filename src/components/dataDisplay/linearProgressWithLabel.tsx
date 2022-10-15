@@ -21,7 +21,7 @@ export const LinearProgressWithLabel = (
 ) => {
   return (
     <Grid container spacing={1} direction="row" justifyContent="space-between">
-      <Grid xs={12} sx={{ paddingLeft: 1, paddingTop: 2 }}>
+      <Grid item xs={12} sx={{ paddingLeft: 1, paddingTop: 2 }}>
         <LinearProgress variant="determinate" value={(current / goal) * 100} />
       </Grid>
       {showCurrentLabel && (
