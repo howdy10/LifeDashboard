@@ -113,6 +113,7 @@ export function InsuranceClaims({ claims, ...rest }) {
             <Typography>{values[0]}</Typography>
           </Box>
         )}
+        showPagination={true}
         infoRowVaribles={["notes"]}
         infoRowEditComponent={(values, onChange) => (
           <Box sx={{ margin: 1 }}>
