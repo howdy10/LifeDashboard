@@ -72,12 +72,13 @@ export const GetCurrentBalance = (year, month) => {
 
   useEffect(() => {
     let paidThisMonth = 0;
+    let monthSpent = currentMonth?.spent ?? 0;
     if (currentMonth?.payChecks) {
       Object.keys(currentMonth.payChecks).map(
         (key, index) => (paidThisMonth += currentMonth.payChecks[key].amount)
       );
     }
-    let currentBalance = previousBalance + paidThisMonth - currentMonth?.spent;
+    let currentBalance = previousBalance + paidThisMonth - monthSpent;
 
     setBalance({
       ...balance,
@@ -85,7 +86,7 @@ export const GetCurrentBalance = (year, month) => {
       afterCreditCard: currentBalance,
       total: paidThisMonth,
       payChecks: currentMonth?.payChecks,
-      spent: currentMonth?.spent,
+      spent: monthSpent,
       creditCard: currentSpent,
     });
   }, [previousBalance, currentSpent, currentMonth]);
