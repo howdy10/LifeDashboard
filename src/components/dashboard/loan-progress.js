@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import HouseIcon from "@mui/icons-material/House";
 import { useRouter } from "next/router";
 import { GetLoanDetails } from "../../hooks/loan";
+import { LoadingComponent } from "../loading-component";
 
 export const LoanProgress = ({ loanId, ...props }) => {
   const router = useRouter();
@@ -26,23 +27,25 @@ export const LoanProgress = ({ loanId, ...props }) => {
   };
 
   return (
-    <Card sx={{ height: "100%" }} {...props}>
-      <CardContent>
-        <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
-          <Grid item>
-            <Typography color="textSecondary" gutterBottom variant="overline">
-              {loan.name}
-            </Typography>
-            <Typography color="textPrimary" variant="h4">
-              {loan.percentPaid}%
-            </Typography>
+    <LoadingComponent loading={loading} error={error}>
+      <Card sx={{ height: "100%" }} {...props}>
+        <CardContent>
+          <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+            <Grid item>
+              <Typography color="textSecondary" gutterBottom variant="overline">
+                {loan.name}
+              </Typography>
+              <Typography color="textPrimary" variant="h4">
+                {loan.percentPaid}%
+              </Typography>
+            </Grid>
+            <Grid item>{Icon()}</Grid>
           </Grid>
-          <Grid item>{Icon()}</Grid>
-        </Grid>
-        <Box sx={{ pt: 3 }}>
-          <LinearProgress value={loan.percentPaid} variant="determinate" />
-        </Box>
-      </CardContent>
-    </Card>
+          <Box sx={{ pt: 3 }}>
+            <LinearProgress value={loan.percentPaid} variant="determinate" />
+          </Box>
+        </CardContent>
+      </Card>
+    </LoadingComponent>
   );
 };
