@@ -19,7 +19,7 @@ export const GetLoanDetails = (loanId: string): HookReponse<any> => {
 
   const [resArray, setResArray] = useState<HookReponse<any>>([defaultValues, true, undefined]);
 
-  const [loan, loading, error] = useObjectVal(ref(database, AllLoansUrl() + "/" + loanId));
+  const [loan, loading, error] = useObjectVal<any>(ref(database, AllLoansUrl() + "/" + loanId));
 
   useEffect(() => {
     let totalPaid = 0;

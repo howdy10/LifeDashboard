@@ -11,7 +11,7 @@ export const GetFromDatabase = <T>(url: string): HookReponse<T> => {
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [resArray, setResArray] = useState<HookReponse<T>>([undefined, true, undefined]);
-  const [response, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + url));
+  const [response, loading, error] = useObjectVal<T>(ref(database, familyIdBaseUrl + url));
 
   useEffect(() => {
     setResArray([response, loading, error]);

@@ -92,7 +92,7 @@ export const GetSavingsBucketDashboardCard = (
     name: null,
   });
 
-  const [bucketInfo, loading, error] = useObjectVal(
+  const [bucketInfo, loading, error] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
   );
 
@@ -154,10 +154,10 @@ export const GetSavingsTotalOfBucket = (bucketId: string): HookReponse<any> => {
     transactions: [],
     name: null,
   });
-  const [bucketTransactions, loading, error] = useObjectVal(
+  const [bucketTransactions, loading, error] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/bucketTransactions/" + bucketId)
   );
-  const [bucketInfo, infoLoading, infoError] = useObjectVal(
+  const [bucketInfo, infoLoading, infoError] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
   );
 
