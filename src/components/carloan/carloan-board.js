@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { CarloanBalances } from "./carloan-balances";
 import { CarloanPercent } from "./carloan-percent";
 import { CarloanNumbers } from "./carloan-numbers";
