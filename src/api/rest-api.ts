@@ -3,7 +3,7 @@ import { ref, getDatabase, push, child, update, remove } from "firebase/database
 import { useAppSelector } from "../app/hooks";
 import { selectFamilyBaseUrl } from "../app/sessionSlice";
 
-export function baseCreate<T>(object: T, url: string) {
+export function BaseCreate<T>(object: T, url: string) {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const wholeUrl = familyIdBaseUrl + url;
@@ -19,7 +19,7 @@ export function baseCreate<T>(object: T, url: string) {
   });
 }
 
-export function baseUpdate<T>(object: T, objectId: string, url: string) {
+export function BaseUpdate<T>(object: T, objectId: string, url: string) {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const wholeUrl = familyIdBaseUrl + url;
@@ -33,7 +33,7 @@ export function baseUpdate<T>(object: T, objectId: string, url: string) {
   });
 }
 
-export function baseDelete(objectId: string, url: string) {
+export function BaseDelete(objectId: string, url: string) {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
   const wholeUrl = familyIdBaseUrl + url;
