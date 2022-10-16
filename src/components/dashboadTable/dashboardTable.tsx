@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Box,
   Table,
@@ -9,9 +8,11 @@ import {
   TableRow,
   TableFooter,
   TablePagination,
+  TableContainer,
   IconButtonProps,
   Typography,
   Grid,
+  Paper,
 } from "@mui/material";
 import { DashboardTableRow } from "./dashboardTable-row";
 
@@ -128,7 +129,7 @@ export const DashboardTable: FC<DashboardTableProps> = ({
   };
 
   return (
-    <PerfectScrollbar>
+    <TableContainer component={Paper}>
       <Table data-testid="full-table">
         <TableHead>
           <TableRow>
@@ -189,10 +190,12 @@ export const DashboardTable: FC<DashboardTableProps> = ({
       {showCount && (
         <Grid container direction="row-reverse" sx={{ padding: "0 15px 5px 0" }}>
           <Grid item>
-            <Typography variant="body2">{"Count: " + Object.keys(data).length}</Typography>
+            <Typography variant="body2">
+              {"Count: " + (data ? Object.keys(data).length : 0)}
+            </Typography>
           </Grid>
         </Grid>
       )}
-    </PerfectScrollbar>
+    </TableContainer>
   );
 };
