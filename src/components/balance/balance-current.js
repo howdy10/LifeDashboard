@@ -1,34 +1,36 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 import { CurrentModal } from "./balance-currentModal";
 import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
+import { MonthName } from "../dataDisplay/date-util";
 
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, month }) => (
+export const BalanceCurrent = ({
+  spentAmount,
+  creditCardAmount,
+  incomeAmount,
+  month,
+  year,
+  isCurrentMonth,
+  isLastMonth,
+}) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textPrimary" gutterBottom variant="h4">
-            {monthNames[month]}
+            {MonthName(month)}
           </Typography>
         </Grid>
-        <Grid item>
-          <CurrentModal spent={spentAmount} creditCard={creditCardAmount} />
-        </Grid>
+        {(isLastMonth || isCurrentMonth) && (
+          <Grid item>
+            <CurrentModal
+              spent={spentAmount}
+              creditCard={creditCardAmount}
+              month={month}
+              year={year}
+              isCurrentMonth={isCurrentMonth}
+            />
+          </Grid>
+        )}
       </Grid>
       <Divider />
       <Box
@@ -40,7 +42,7 @@ export const BalanceCurrent = ({ spentAmount, creditCardAmount, incomeAmount, mo
       >
         <Grid container>
           <CardInfoRowMoney title={"Spent This Month"} value={spentAmount} />
-          <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />
+          {isCurrentMonth && <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />}
           <CardInfoRowMoney title={"Income Earned"} value={incomeAmount} />
         </Grid>
       </Box>

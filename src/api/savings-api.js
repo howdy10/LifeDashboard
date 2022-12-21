@@ -1,6 +1,6 @@
 import { firebase } from "../firebase/clientApp";
 import { ref, getDatabase, push, child, update, remove } from "firebase/database";
-import { SavingsUrl } from "src/firebase/databaseConstants";
+import { SavingsUrl } from "../firebase/databaseConstants";
 
 export function createSavingTransaction(baseUrl, transaction) {
   const database = getDatabase(firebase);
@@ -41,7 +41,7 @@ export function deleteSavingTransaction(baseUrl, transactionId, bucketId) {
   remove(ref(database, savingsUrl + "/transactions/" + transactionId));
   remove(ref(database, savingsUrl + "/bucketTransactions/" + bucketId + "/" + transactionId));
 }
-
+//TODO: Not being used. Use it to create or update a bucket
 export function updateSavingsBucketTotal(baseUrl, bucket, id) {
   const database = getDatabase(firebase);
   const savingsUrl = baseUrl + SavingsUrl;

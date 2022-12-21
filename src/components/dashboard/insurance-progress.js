@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import { GetInsurancePaid } from "src/hooks/insurance";
+import { GetInsurancePaid } from "../../hooks/insurance";
 import { LoadingComponent } from "../loading-component";
 
 export const InsuranceProgress = ({ href, props }) => {
@@ -45,7 +45,10 @@ export const InsuranceProgress = ({ href, props }) => {
             <Grid item>{Icon()}</Grid>
           </Grid>
           <Box sx={{ pt: 3 }}>
-            <LinearProgress value={paid?.percentPaid} variant="determinate" />
+            <LinearProgress
+              value={paid?.percentPaid > 100 ? 100 : paid?.percentPaid}
+              variant="determinate"
+            />
           </Box>
         </CardContent>
       </Card>

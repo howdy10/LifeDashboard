@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,7 +15,7 @@ import { FormInputMoney } from "../forms/money-input";
 
 const defaultValues = {
   amount: 0,
-  date: new Date(),
+  date: getTime(new Date()),
 };
 
 export function PaycheckModal({ year, month }) {
@@ -38,12 +37,9 @@ export function PaycheckModal({ year, month }) {
   };
 
   const onSubmit = (data) => {
-    if (isNaN(data.date)) {
-      return;
-    }
     let transaction = {
       amount: parseFloat(data.amount),
-      date: getTime(data.date),
+      date: data.date,
     };
 
     const newTransactionsKey = push(child(ref(database), budgetUrl)).key;
@@ -51,7 +47,7 @@ export function PaycheckModal({ year, month }) {
     const updates = {};
     updates[budgetUrl + "/" + newTransactionsKey] = transaction;
     update(ref(database), updates);
-    setOpen(false);
+    handleClose();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { CarloanBalances } from "./carloan-balances";
 import { CarloanPercent } from "./carloan-percent";
 import { CarloanNumbers } from "./carloan-numbers";
@@ -27,34 +27,20 @@ export const CarloanBoard = ({ loan, ...rest }) => {
     setRemaining(loan.loanAmount - totalPaid + interestPaid);
   }, [loan]);
   return (
-    <Box>
-      <Box
-        sx={{
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          m: -1,
-        }}
-      >
-        <Container maxWidth={false}>
-          <Grid container spacing={3}>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              <CarloanBalances remaning={remaining} initial={loan.loanAmount} />
-            </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              <CarloanPercent remaning={remaining} initial={loan.loanAmount} />
-            </Grid>
-            <Grid item lg={4} sm={4} xl={4} xs={12}>
-              <CarloanNumbers
-                interestPaid={interest}
-                totalPaid={totalPaid}
-                principalPaid={principalPaid}
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </Box>
+    <Grid container spacing={3}>
+      <Grid item lg={4} sm={4} xl={4} xs={12}>
+        <CarloanBalances remaning={remaining} initial={loan.loanAmount} />
+      </Grid>
+      <Grid item lg={4} sm={4} xl={4} xs={12}>
+        <CarloanPercent remaning={remaining} initial={loan.loanAmount} />
+      </Grid>
+      <Grid item lg={4} sm={4} xl={4} xs={12}>
+        <CarloanNumbers
+          interestPaid={interest}
+          totalPaid={totalPaid}
+          principalPaid={principalPaid}
+        />
+      </Grid>
+    </Grid>
   );
 };

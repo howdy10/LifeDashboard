@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal, useListVals } from "react-firebase-hooks/database";
 import { firebase } from "../firebase/clientApp";
-import { HsaTransactionsUrl, HsaCategoryUrl } from "src/firebase/databaseLinks";
+import { HsaTransactionsUrl, HsaCategoryUrl } from "../firebase/databaseLinks";
 
 export const GetHsaCategories = () => {
   const database = getDatabase(firebase);

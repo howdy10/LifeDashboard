@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -14,7 +13,7 @@ import { FormInputMoney } from "../forms/money-input";
 
 const defaultValues = { spent: 0, creditCard: 0 };
 
-export function CurrentModal({ spent, creditCard }) {
+export function CurrentModal({ spent, creditCard, month, year, isCurrentMonth }) {
   const database = getDatabase(firebase);
   const budgetUrl = BudgetUrl();
 
@@ -37,14 +36,13 @@ export function CurrentModal({ spent, creditCard }) {
   };
 
   const onSubmit = (data) => {
-    let transaction = {
-      spent: parseFloat(data.spent),
-      creditCard: parseFloat(data.creditCard),
-    };
-
     const updates = {};
-    updates[budgetUrl + "/current"] = transaction;
+    if (isCurrentMonth) {
+      updates[budgetUrl + "/creditCard"] = parseFloat(data.creditCard);
+    }
+    updates[budgetUrl + "/" + year + "/" + month + "/spent"] = parseFloat(data.spent);
     update(ref(database), updates);
+
     setOpen(false);
   };
 
@@ -66,15 +64,17 @@ export function CurrentModal({ spent, creditCard }) {
                 label="Spent"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormInputMoney
-                rules={{ required: true, validate: (value) => value != 0 }}
-                fullWidth
-                name="creditCard"
-                control={control}
-                label="Credit Card"
-              />
-            </Grid>
+            {isCurrentMonth && (
+              <Grid item xs={12}>
+                <FormInputMoney
+                  rules={{ required: true, validate: (value) => value != 0 }}
+                  fullWidth
+                  name="creditCard"
+                  control={control}
+                  label="Credit Card"
+                />
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>

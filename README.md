@@ -11,6 +11,7 @@ The purpose of this application is to build a one stop shop for all your life tr
 - Savings balances while being split into savings buckets
 - Car and home loans progress
 - Insurance claims and deductable progress
+- HSA transaction tracking
 
 ## Firebase Function
 
@@ -18,7 +19,7 @@ The purpose of this application is to build a one stop shop for all your life tr
 
 - Functions are deployed to firebase through `firebase deploy --only functions` or `npm run function`
 
-- Ending Balance function: This functino runs every day at 11:30 AZ time. It will update the ending balance for the current month
+- Ending Balance function: This function is triggered by a change in the months spent amount. It will update the ending balance for the month that the update was selected. Notes: Front end app only allows spent value update for the current month and one before.
 
 ## Firebase Realtime Database
 

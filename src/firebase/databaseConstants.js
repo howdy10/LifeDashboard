@@ -9,3 +9,4 @@ export const InsuranceProvidersUrl = "/HealthInsurance/providers";
 export const InsuranceClaimsUrl = "/HealthInsurance/claims";
 export const HsaTransactionsUrl = "/hsa/transactions";
 export const BudgetUrl = "/Budget";
+export const RemindersUrl = "/Reminders";

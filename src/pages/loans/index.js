@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
-import { DashboardLayout } from "src/components/dashboard-layout";
+import { DashboardLayout } from "../../components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebase } from "../../firebase/clientApp";
-import { AllLoansUrl } from "src/firebase/databaseLinks";
-import { LoanSummary } from "src/components/loans/loan-summary";
-import { DashboardContainer } from "src/components/dashboard-container";
+import { AllLoansUrl } from "../../firebase/databaseLinks";
+import { LoanSummary } from "../../components/loans/loan-summary";
+import { DashboardContainer } from "../../components/dashboard-container";
 
 export const Loans = () => {
   const database = getDatabase(firebase);

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -12,9 +12,10 @@ import {
   createInsuranceClaim,
   deleteInsuranceClaim,
   updateInsuranceClaim,
-} from "src/api/insurance-api";
-import AppContext from "src/context/AppContext";
+} from "../../api/insurance-api";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
+import { useAppSelector } from "../../app/hooks";
+import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 function Row(props) {
   const { row } = props;
@@ -40,7 +41,7 @@ export function InsuranceClaims({ claims, ...rest }) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
-  const value = useContext(AppContext);
+  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -68,15 +69,15 @@ export function InsuranceClaims({ claims, ...rest }) {
       insurance: newData.insurance,
     };
     if (index) {
-      updateInsuranceClaim(value.state.familyIdBaseUrl, claim, index);
+      updateInsuranceClaim(familyIdBaseUrl, claim, index);
     } else {
-      createInsuranceClaim(value.state.familyIdBaseUrl, claim);
+      createInsuranceClaim(familyIdBaseUrl, claim);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteInsuranceClaim(value.state.familyIdBaseUrl, index);
+    deleteInsuranceClaim(familyIdBaseUrl, index);
     setDeletedSnackbar(true);
   };
 
@@ -103,6 +104,7 @@ export function InsuranceClaims({ claims, ...rest }) {
         data={claims}
         rowEdits={handleUpdateRow}
         rowDelete={handleDeleteRow}
+        order={{ column: "date", direction: "asc" }}
         infoRow={(values) => (
           <Box sx={{ margin: 1 }}>
             <Typography variant="h6" gutterBottom component="div">
@@ -111,6 +113,7 @@ export function InsuranceClaims({ claims, ...rest }) {
             <Typography>{values[0]}</Typography>
           </Box>
         )}
+        showPagination={true}
         infoRowVaribles={["notes"]}
         infoRowEditComponent={(values, onChange) => (
           <Box sx={{ margin: 1 }}>
