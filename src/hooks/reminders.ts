@@ -13,14 +13,13 @@ export const GetReminders = (): HookReponse<any> => {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
-  const [list, setList] = useState(null);
+  const [resArray, setResArray] = useState<HookReponse<any>>([undefined, true, undefined]);
 
   const [response, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + RemindersUrl));
 
   useEffect(() => {
-    setList(response);
-  }, [response]);
+    setResArray([response, loading, error]);
+  }, [response, loading, error]);
 
-  const resArray: HookReponse<any> = [list, loading, error];
   return useMemo(() => resArray, resArray);
 };

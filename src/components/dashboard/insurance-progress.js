@@ -45,7 +45,10 @@ export const InsuranceProgress = ({ href, props }) => {
             <Grid item>{Icon()}</Grid>
           </Grid>
           <Box sx={{ pt: 3 }}>
-            <LinearProgress value={paid?.percentPaid} variant="determinate" />
+            <LinearProgress
+              value={paid?.percentPaid > 100 ? 100 : paid?.percentPaid}
+              variant="determinate"
+            />
           </Box>
         </CardContent>
       </Card>

@@ -1,23 +1,25 @@
-import { useState, useMemo, useEffect, useContext } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { firebase } from "../firebase/clientApp";
+import { firebaseApp } from "../firebase/clientApp";
 import { AllLoansUrl } from "../firebase/databaseLinks";
+import { HookReponse } from "./types";
 
-export const GetLoanDetails = (loanId) => {
-  const database = getDatabase(firebase);
+const defaultValues = {
+  remainingBalance: 0,
+  interestPaid: 0,
+  totalPaid: 0,
+  principalPaid: 0,
+  escrowBalance: 0,
+  name: null,
+  percentPaid: 0,
+};
+export const GetLoanDetails = (loanId: string): HookReponse<any> => {
+  const database = getDatabase(firebaseApp);
 
-  const [loanTotal, setLoanTotal] = useState({
-    remainingBalance: 0,
-    interestPaid: 0,
-    totalPaid: 0,
-    principalPaid: 0,
-    escrowBalance: 0,
-    name: null,
-    percentPaid: 0,
-  });
+  const [resArray, setResArray] = useState<HookReponse<any>>([defaultValues, true, undefined]);
 
-  const [loan, loading, error] = useObjectVal(ref(database, AllLoansUrl() + "/" + loanId));
+  const [loan, loading, error] = useObjectVal<any>(ref(database, AllLoansUrl() + "/" + loanId));
 
   useEffect(() => {
     let totalPaid = 0;
@@ -31,8 +33,7 @@ export const GetLoanDetails = (loanId) => {
         escrowPaid += loan.transactions[key].escrow ?? 0;
       });
 
-      setLoanTotal({
-        ...setLoanTotal,
+      let loanTotal = {
         remainingBalance: loan.loanAmount - totalPaid + interestPaid + escrowPaid,
         interestPaid: interestPaid,
         totalPaid: totalPaid,
@@ -44,10 +45,11 @@ export const GetLoanDetails = (loanId) => {
             loan.loanAmount) *
             100
         ),
-      });
-    }
-  }, [loan]);
+      };
 
-  const resArray = [loanTotal, loading, error];
-  return useMemo(() => resArray, resArray);
+      setResArray([loanTotal, loading, error]);
+    }
+  }, [loan, loading, error]);
+
+  return useMemo(() => resArray, [resArray]);
 };

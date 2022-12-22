@@ -1,8 +1,8 @@
-import { useState, useMemo, useEffect, useContext } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
-import { BucketsUrl, SavingsTransactionsUrl, SavingsUrl } from "../firebase/databaseConstants";
+import { BucketsUrl, SavingsUrl } from "../firebase/databaseConstants";
 import { useAppSelector } from "../app/hooks";
 import { selectFamilyBaseUrl } from "../app/sessionSlice";
 import { HookReponse } from "./types";
@@ -92,7 +92,7 @@ export const GetSavingsBucketDashboardCard = (
     name: null,
   });
 
-  const [bucketInfo, loading, error] = useObjectVal(
+  const [bucketInfo, loading, error] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
   );
 
@@ -154,10 +154,10 @@ export const GetSavingsTotalOfBucket = (bucketId: string): HookReponse<any> => {
     transactions: [],
     name: null,
   });
-  const [bucketTransactions, loading, error] = useObjectVal(
+  const [bucketTransactions, loading, error] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/bucketTransactions/" + bucketId)
   );
-  const [bucketInfo, infoLoading, infoError] = useObjectVal(
+  const [bucketInfo, infoLoading, infoError] = useObjectVal<any>(
     ref(database, familyIdBaseUrl + SavingsUrl + "/buckets/" + bucketId)
   );
 

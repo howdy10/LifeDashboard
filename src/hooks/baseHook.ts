@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
@@ -10,8 +10,12 @@ export const GetFromDatabase = <T>(url: string): HookReponse<T> => {
   const database = getDatabase(firebaseApp);
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
-  const [response, loading, error] = useObjectVal(ref(database, familyIdBaseUrl + url));
+  const [resArray, setResArray] = useState<HookReponse<T>>([undefined, true, undefined]);
+  const [response, loading, error] = useObjectVal<T>(ref(database, familyIdBaseUrl + url));
 
-  const resArray: HookReponse<T> = [response, loading, error];
-  return useMemo(() => resArray, resArray);
+  useEffect(() => {
+    setResArray([response, loading, error]);
+  }, [response, loading, error]);
+
+  return useMemo(() => resArray, [resArray]);
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { InsuranceDeductable } from "./insurance-deductable";
 
 export const InsuranceBoard = ({ insurance, ...rest }) => {

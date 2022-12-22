@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -113,6 +113,7 @@ export function InsuranceClaims({ claims, ...rest }) {
             <Typography>{values[0]}</Typography>
           </Box>
         )}
+        showPagination={true}
         infoRowVaribles={["notes"]}
         infoRowEditComponent={(values, onChange) => (
           <Box sx={{ margin: 1 }}>

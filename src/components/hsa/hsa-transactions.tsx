@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -37,7 +37,7 @@ export function HsaTransactions({ transactions, ...rest }) {
     columns[categoryIndex].dropdownOptions = categories;
   }, [categories]);
 
-  const handleSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -47,7 +47,7 @@ export function HsaTransactions({ transactions, ...rest }) {
     setDeletedSnackbar(false);
   };
 
-  const handleUpdateRow = (newData, oldData, index) => {
+  const handleUpdateRow = (newData: any, oldData: any, index: string) => {
     if (newData.date === null) {
       setDeletedErrorSnackbar(true);
       return;
@@ -69,7 +69,7 @@ export function HsaTransactions({ transactions, ...rest }) {
     setUpdatedSnackbar(true);
   };
 
-  const handleDeleteRow = (oldData, index) => {
+  const handleDeleteRow = (oldData: any, index: string) => {
     deleteHsaTransaction(familyIdBaseUrl, index);
     setDeletedSnackbar(true);
   };
@@ -104,6 +104,7 @@ export function HsaTransactions({ transactions, ...rest }) {
         rowDelete={handleDeleteRow}
         showActions={masterEdit}
         order={{ column: "date", direction: "asc" }}
+        showPagination={true}
       />
       <SnackbarStatus
         isUpdateOpen={updatedSnackbar}
