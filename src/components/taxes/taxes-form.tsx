@@ -1,6 +1,7 @@
 import { Button, Grid, Card, CardContent, Typography, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { FormInputMoney } from "src/components/forms/money-input";
+import { FormInputMoney } from "../forms/money-input";
+import { Income } from "../../pages/taxEstimator";
 
 const defaultValues = {
   hsa: 0,
@@ -14,7 +15,7 @@ export const IncomeForm = ({ setIncome }) => {
   const { handleSubmit, reset, control, setValue } = methods;
 
   const onSubmit = (data) => {
-    let format = {
+    let format: Income = {
       income: parseFloat(data.income) * 100,
       fedWithheld: parseFloat(data.fedWithheld) * 100,
       preTaxDeductions:
@@ -66,19 +67,25 @@ export const IncomeForm = ({ setIncome }) => {
             <Divider />
           </Grid>
           <Grid item xs={6}>
-            <FormInputMoney fullWidth name="hsa" control={control} label="HSA" />
+            <FormInputMoney fullWidth name="hsa" control={control} label="HSA" rules={{}} />
           </Grid>
           <Grid item xs={6}>
-            <FormInputMoney fullWidth name="healthcare" control={control} label="Health Care" />
+            <FormInputMoney
+              fullWidth
+              name="healthcare"
+              control={control}
+              label="Health Care"
+              rules={{}}
+            />
           </Grid>
           <Grid item xs={6}>
-            <FormInputMoney fullWidth name="dental" control={control} label="Dental" />
+            <FormInputMoney fullWidth name="dental" control={control} label="Dental" rules={{}} />
           </Grid>
           <Grid item xs={6}>
-            <FormInputMoney fullWidth name="vision" control={control} label="Vision" />
+            <FormInputMoney fullWidth name="vision" control={control} label="Vision" rules={{}} />
           </Grid>
           <Grid item xs={6}>
-            <FormInputMoney fullWidth name="preTax401" control={control} label="401k" />
+            <FormInputMoney fullWidth name="preTax401" control={control} label="401k" rules={{}} />
           </Grid>
           <Grid item xs={12}>
             <Divider />
