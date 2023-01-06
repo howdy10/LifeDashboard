@@ -3,7 +3,7 @@ import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
 import { InsuranceUrl } from "../firebase/databaseLinks";
-import { InsuranceMembersUrl } from "../firebase/databaseConstants";
+import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../firebase/databaseConstants";
 import { HookReponse } from "./types";
 import { GetFromDatabase } from "./baseHook";
 
@@ -77,4 +77,7 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
 
 export const GetInsuranceMembers = (): HookReponse<membersDB> => {
   return GetFromDatabase<membersDB>(InsuranceMembersUrl);
+};
+export const GetInsuranceProviders = (): HookReponse<providersDB> => {
+  return GetFromDatabase<providersDB>(InsuranceProvidersUrl);
 };
