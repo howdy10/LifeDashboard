@@ -3,9 +3,11 @@ import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
 import { InsuranceUrl } from "../firebase/databaseLinks";
+import { InsuranceMembersUrl } from "../firebase/databaseConstants";
 import { HookReponse } from "./types";
+import { GetFromDatabase } from "./baseHook";
 
-interface insuranceDb {
+export interface insuranceDb {
   deductible: number;
   outOfPocket: number;
   claims: calimsDB;
@@ -71,4 +73,8 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
 
   const resArray: HookReponse<insuranceInfo> = [insuranceInfo, loading, error];
   return useMemo(() => resArray, resArray);
+};
+
+export const GetInsuranceMembers = (): HookReponse<membersDB> => {
+  return GetFromDatabase<membersDB>(InsuranceMembersUrl);
 };

@@ -9,7 +9,8 @@ import { ref, getDatabase } from "firebase/database";
 import { firebase } from "../../firebase/clientApp";
 import { useObject } from "react-firebase-hooks/database";
 import Grid from "@mui/material/Grid";
-import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../../firebase/databaseLinks";
+import { InsuranceProvidersUrl } from "../../firebase/databaseLinks";
+import { GetInsuranceMembers } from "../../hooks/insurance";
 import { createInsuranceClaim } from "../../api/insurance-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
@@ -34,7 +35,7 @@ export function ClaimModal() {
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [open, setOpen] = useState(false);
-  const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
+  const [members, membersLoading, membersError] = GetInsuranceMembers();
   const [providers, providersLoading, providersError] = useObject(
     ref(database, InsuranceProvidersUrl())
   );
@@ -102,7 +103,7 @@ export function ClaimModal() {
                 name="member"
                 control={control}
                 label="Member"
-                options={members?.val()}
+                options={members}
               />
             </Grid>
             <Grid item xs={6}>
