@@ -2,8 +2,6 @@ import { useState } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
 import { ClaimModal } from "./insurance-claimModal";
@@ -16,16 +14,6 @@ import {
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import { useAppSelector } from "../../app/hooks";
 import { selectFamilyBaseUrl } from "../../app/sessionSlice";
-
-function Row(props) {
-  const { row } = props;
-
-  return (
-    <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
-      <TableCell>{row.provider}</TableCell>
-    </TableRow>
-  );
-}
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
