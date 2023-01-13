@@ -14,6 +14,7 @@ import {
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import { useAppSelector } from "../../app/hooks";
 import { selectFamilyBaseUrl } from "../../app/sessionSlice";
+import { claimDB } from "../../hooks/insurance";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -25,7 +26,11 @@ const columns = [
   { title: "Paid", field: "paid", type: "boolean" },
 ];
 
-export function InsuranceClaims({ claims, ...rest }) {
+interface InsuranceClaimsInput {
+  claims: claimDB[];
+}
+
+export function InsuranceClaims({ claims, ...rest }: InsuranceClaimsInput) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);

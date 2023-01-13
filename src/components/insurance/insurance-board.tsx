@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { InsuranceDeductable } from "./insurance-deductable";
+import { insuranceDb } from "../../hooks/insurance";
+import { forEachFirebase } from "../../firebase/utils";
 
-export const InsuranceBoard = ({ insurance, ...rest }) => {
+interface InsuranceBoardInput {
+  insurance: insuranceDb;
+}
+export const InsuranceBoard = ({ insurance, ...rest }: InsuranceBoardInput) => {
   const [claimsAmount, setClaimsAmount] = useState(0);
 
   useEffect(() => {
     let totalPaid = 0;
-
     if (insurance.claims) {
-      Object.keys(insurance.claims).map((key, index) => (totalPaid += insurance.claims[key].cost));
+      forEachFirebase(insurance.claims, (value) => (totalPaid += value.cost));
     }
 
     setClaimsAmount(totalPaid);

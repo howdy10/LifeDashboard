@@ -16,7 +16,7 @@ export interface insuranceDb {
   providers: string[];
 }
 
-interface claimDB {
+export interface claimDB {
   bill: boolean;
   cost: number;
   date: number;
