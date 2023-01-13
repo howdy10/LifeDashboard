@@ -5,7 +5,7 @@ import { firebaseApp } from "../firebase/clientApp";
 import { InsuranceUrl } from "../firebase/databaseLinks";
 import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../firebase/databaseConstants";
 import { HookReponse } from "./types";
-import { GetFromDatabase } from "./baseHook";
+import { GetFromDatabaseList } from "./baseHook";
 
 export interface insuranceDb {
   deductible: number;
@@ -75,9 +75,9 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
   return useMemo(() => resArray, resArray);
 };
 
-export const GetInsuranceMembers = (): HookReponse<membersDB> => {
-  return GetFromDatabase<membersDB>(InsuranceMembersUrl);
+export const GetInsuranceMembers = (): HookReponse<string[]> => {
+  return GetFromDatabaseList<string>(InsuranceMembersUrl);
 };
-export const GetInsuranceProviders = (): HookReponse<providersDB> => {
-  return GetFromDatabase<providersDB>(InsuranceProvidersUrl);
+export const GetInsuranceProviders = (): HookReponse<string[]> => {
+  return GetFromDatabaseList<string>(InsuranceProvidersUrl);
 };
