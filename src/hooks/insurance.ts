@@ -6,25 +6,14 @@ import { InsuranceUrl } from "../firebase/databaseLinks";
 import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../firebase/databaseConstants";
 import { HookReponse } from "./types";
 import { GetFromDatabaseList } from "./baseHook";
+import { forEachFirebase } from "../firebase/utils";
 
 export interface insuranceDb {
   deductible: number;
   outOfPocket: number;
-  claims: calimsDB;
-  members: membersDB;
-  providers: providersDB;
-}
-
-interface membersDB {
-  [key: string]: string;
-}
-
-interface providersDB {
-  [key: string]: string;
-}
-
-interface calimsDB {
-  [key: string]: claimDB;
+  claims: claimDB[];
+  members: string[];
+  providers: string[];
 }
 
 interface claimDB {
@@ -59,7 +48,7 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
     let percentPaid = 0;
 
     if (insurance?.claims) {
-      Object.keys(insurance.claims).map((key, index) => (totalPaid += insurance.claims[key].cost));
+      forEachFirebase(insurance.claims, (value) => (totalPaid += value.cost));
       percentPaid = Math.trunc((totalPaid * 100) / insurance.deductible);
 
       setInsuranceInfo({
