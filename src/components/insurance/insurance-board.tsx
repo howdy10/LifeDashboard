@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { InsuranceDeductable } from "./insurance-deductable";
 import { insuranceInfo } from "../../hooks/insurance";
-import { forEachFirebase } from "../../firebase/utils";
 
 interface InsuranceBoardInput {
   insurance: insuranceInfo;
