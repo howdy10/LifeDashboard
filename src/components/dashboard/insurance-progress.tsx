@@ -4,11 +4,13 @@ import { useRouter } from "next/router";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { GetInsuranceInfo } from "../../hooks/insurance";
 import { LoadingComponent } from "../loading-component";
+import { getYear } from "date-fns";
 
-export const InsuranceProgress = ({ href, props }) => {
+export const InsuranceProgress = ({ href, ...rest }) => {
   const router = useRouter();
+  const today = new Date();
 
-  const [paid, loading, error] = GetInsuranceInfo();
+  const [paid, loading, error] = GetInsuranceInfo(getYear(today));
   const Icon = () => {
     let base = (
       <Avatar
@@ -31,7 +33,7 @@ export const InsuranceProgress = ({ href, props }) => {
 
   return (
     <LoadingComponent loading={loading} error={error}>
-      <Card sx={{ height: "100%" }} {...props}>
+      <Card sx={{ height: "100%" }} {...rest}>
         <CardContent>
           <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
             <Grid item>
