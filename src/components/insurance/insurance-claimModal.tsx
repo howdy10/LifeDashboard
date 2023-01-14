@@ -7,15 +7,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { getTime } from "date-fns";
 import Grid from "@mui/material/Grid";
 import { GetInsuranceMembers, GetInsuranceProviders } from "../../hooks/insurance";
-import { createInsuranceClaim } from "../../api/insurance-api";
+import { InsuranceClaimsUrl } from "../../firebase/databaseLinks";
+import { createListResource } from "../../api/rest-list-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
 import { FormInputSwitch } from "../forms/switch-input";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDropdown } from "../forms/dropdown-input";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 const defaultValues = {
   amount: 0,
@@ -29,7 +28,7 @@ interface ClaimModalInput {
   year: number;
 }
 export function ClaimModal({ year }: ClaimModalInput) {
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+  const claimUrl = InsuranceClaimsUrl(year);
 
   const [open, setOpen] = useState(false);
   const [members, membersLoading, membersError] = GetInsuranceMembers();
@@ -62,7 +61,7 @@ export function ClaimModal({ year }: ClaimModalInput) {
       insurance: data.checkboxValue.includes(1),
     };
 
-    createInsuranceClaim(familyIdBaseUrl, claim);
+    createListResource(claimUrl, claim);
     handleClose();
   };
 

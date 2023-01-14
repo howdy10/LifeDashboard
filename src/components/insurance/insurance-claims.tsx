@@ -7,13 +7,12 @@ import { TextField } from "@mui/material";
 import { ClaimModal } from "./insurance-claimModal";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import {
-  createInsuranceClaim,
-  deleteInsuranceClaim,
-  updateInsuranceClaim,
-} from "../../api/insurance-api";
+  createListResource,
+  deleteListResource,
+  updateListResource,
+} from "../../api/rest-list-api";
+import { InsuranceClaimsUrl } from "../../firebase/databaseLinks";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 import { claimDB } from "../../hooks/insurance";
 
 const columns = [
@@ -35,7 +34,7 @@ export function InsuranceClaims({ claims, year, ...rest }: InsuranceClaimsInput)
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+  const claimUrl = InsuranceClaimsUrl(year);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -63,15 +62,15 @@ export function InsuranceClaims({ claims, year, ...rest }: InsuranceClaimsInput)
       insurance: newData.insurance,
     };
     if (index) {
-      updateInsuranceClaim(familyIdBaseUrl, claim, index);
+      updateListResource(claimUrl, claim, index);
     } else {
-      createInsuranceClaim(familyIdBaseUrl, claim);
+      createListResource(claimUrl, claim);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteInsuranceClaim(familyIdBaseUrl, index);
+    deleteListResource(claimUrl, index);
     setDeletedSnackbar(true);
   };
 
