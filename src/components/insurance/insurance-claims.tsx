@@ -28,9 +28,10 @@ const columns = [
 
 interface InsuranceClaimsInput {
   claims: claimDB[];
+  year: number;
 }
 
-export function InsuranceClaims({ claims, ...rest }: InsuranceClaimsInput) {
+export function InsuranceClaims({ claims, year, ...rest }: InsuranceClaimsInput) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
@@ -89,7 +90,7 @@ export function InsuranceClaims({ claims, ...rest }: InsuranceClaimsInput) {
           Claims
         </Typography>
         <Box sx={{ m: 1 }}>
-          <ClaimModal />
+          <ClaimModal year={year} />
         </Box>
       </Box>
       <DashboardTable

@@ -2,8 +2,11 @@ import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
-import { InsuranceUrl } from "../firebase/databaseLinks";
-import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../firebase/databaseConstants";
+import {
+  InsuranceUrl,
+  InsuranceMembersUrl,
+  InsuranceProvidersUrl,
+} from "../firebase/databaseLinks";
 import { HookReponse } from "./types";
 import { GetFromDatabaseList } from "./baseHook";
 import { forEachFirebase } from "../firebase/utils";
@@ -32,10 +35,10 @@ export interface insuranceInfo extends insuranceDb {
   percentPaid: number;
 }
 
-export const GetInsuranceInfo = (): HookReponse<insuranceInfo> => {
+export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
   const database = getDatabase(firebaseApp);
 
-  const [insurance, loading, error] = useObjectVal<insuranceDb>(ref(database, InsuranceUrl()));
+  const [insurance, loading, error] = useObjectVal<insuranceDb>(ref(database, InsuranceUrl(year)));
   const [insuranceInfo, setInsuranceInfo] = useState<insuranceInfo>({
     totalPaid: 0,
     percentPaid: 0,
@@ -72,8 +75,8 @@ export const GetInsuranceInfo = (): HookReponse<insuranceInfo> => {
 };
 
 export const GetInsuranceMembers = (): HookReponse<string[]> => {
-  return GetFromDatabaseList<string>(InsuranceMembersUrl);
+  return GetFromDatabaseList<string>(InsuranceMembersUrl(false));
 };
-export const GetInsuranceProviders = (): HookReponse<string[]> => {
-  return GetFromDatabaseList<string>(InsuranceProvidersUrl);
+export const GetInsuranceProviders = (year: number): HookReponse<string[]> => {
+  return GetFromDatabaseList<string>(InsuranceProvidersUrl(year, false));
 };

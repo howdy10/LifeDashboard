@@ -8,11 +8,10 @@ import { GetInsuranceInfo } from "../hooks/insurance";
 import { subYears, getYear, addYears } from "date-fns";
 
 export const Insurance = () => {
-  const [snapshot, loading, error] = GetInsuranceInfo();
-
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+  const [snapshot, loading, error] = GetInsuranceInfo(selectedYear);
 
   const handlePreviousYear = () => {
     let changeDate = subYears(selectedDate, 1);
@@ -49,7 +48,9 @@ export const Insurance = () => {
         </Button>
       </Box>
       {!loading && snapshot && <InsuranceBoard insurance={snapshot} year={selectedYear} />}
-      <Box sx={{ mt: 3 }}>{snapshot && <InsuranceClaims claims={snapshot.claims} />}</Box>
+      <Box sx={{ mt: 3 }}>
+        {snapshot && <InsuranceClaims claims={snapshot.claims} year={selectedYear} />}
+      </Box>
     </DashboardContainer>
   );
 };

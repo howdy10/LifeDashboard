@@ -5,54 +5,70 @@ export const GetFamilyId = () => {
   return useAppSelector(selectFamilyBaseUrl);
 };
 
-export const DashboardUrl = () => {
-  return GetFamilyId() + "/Dashboard";
+export const DashboardUrl = (base: boolean = true) => {
+  let url = "/Dashboard";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const EmergencyBucketUrl = () => {
-  return GetFamilyId() + "/Savings/emergencyFund";
+export const EmergencyBucketUrl = (base: boolean = true) => {
+  let url = "/Savings/emergencyFund";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const BucketsUrl = () => {
-  return GetFamilyId() + "/Savings/buckets";
+export const BucketsUrl = (base: boolean = true) => {
+  let url = "/Savings/buckets";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const SavingsUrl = () => {
-  return GetFamilyId() + "/Savings";
+export const SavingsUrl = (base: boolean = true) => {
+  let url = "/Savings";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const SavingsTransactionsUrl = () => {
-  return GetFamilyId() + "/Savings/transactions";
+export const SavingsTransactionsUrl = (base: boolean = true) => {
+  let url = "/Savings/transactions";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const AllLoansUrl = () => {
-  return GetFamilyId() + "/Loans";
+export const AllLoansUrl = (base: boolean = true) => {
+  let url = "/Loans";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const BudgetUrl = () => {
-  return GetFamilyId() + "/Budget";
+export const BudgetUrl = (base: boolean = true) => {
+  let url = "/Budget";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const InsuranceUrl = () => {
-  return GetFamilyId() + "/HealthInsurance";
+export const InsuranceUrl = (year: number, base: boolean = true) => {
+  console.log("whole: " + year);
+  let url = "/HealthInsurance";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const HsaTransactionsUrl = () => {
-  return GetFamilyId() + "/hsa/transactions";
+export const HsaTransactionsUrl = (base: boolean = true) => {
+  let url = "/hsa/transactions";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const HsaCategoryUrl = () => {
-  return GetFamilyId() + "/hsa/categories";
+export const HsaCategoryUrl = (base: boolean = true) => {
+  let url = "/hsa/categories";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const InsuranceMembersUrl = () => {
-  return GetFamilyId() + "/HealthInsurance/members";
+export const InsuranceMembersUrl = (base: boolean = true) => {
+  let url = "/HealthInsurance/members";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const InsuranceProvidersUrl = () => {
-  return GetFamilyId() + "/HealthInsurance/providers";
+export const InsuranceProvidersUrl = (year: number, base: boolean = true) => {
+  console.log("providers: " + year);
+  let url = "/HealthInsurance/providers";
+  return base ? GetFamilyId() + url : url;
 };
 
-export const InsuranceClaimsUrl = () => {
-  return GetFamilyId() + "/HealthInsurance/claims";
+export const InsuranceClaimsUrl = (year: number, base: boolean = true) => {
+  console.log("claims: " + year);
+  let url = "/HealthInsurance/claims";
+  return base ? GetFamilyId() + url : url;
 };

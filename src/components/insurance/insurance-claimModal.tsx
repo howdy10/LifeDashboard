@@ -25,13 +25,15 @@ const defaultValues = {
   provider: 0,
   checkboxValue: [],
 };
-
-export function ClaimModal() {
+interface ClaimModalInput {
+  year: number;
+}
+export function ClaimModal({ year }: ClaimModalInput) {
   const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
 
   const [open, setOpen] = useState(false);
   const [members, membersLoading, membersError] = GetInsuranceMembers();
-  const [providers, providersLoading, providersError] = GetInsuranceProviders();
+  const [providers, providersLoading, providersError] = GetInsuranceProviders(year);
 
   const methods = useForm({ defaultValues: defaultValues });
   const { handleSubmit, reset, control, setValue } = methods;
