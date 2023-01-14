@@ -27,13 +27,12 @@ export interface claimDB {
   provider: string;
 }
 
-interface insuranceInfo {
+export interface insuranceInfo extends insuranceDb {
   totalPaid: number;
   percentPaid: number;
-  deductible: number;
 }
 
-export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
+export const GetInsuranceInfo = (): HookReponse<insuranceInfo> => {
   const database = getDatabase(firebaseApp);
 
   const [insurance, loading, error] = useObjectVal<insuranceDb>(ref(database, InsuranceUrl()));
@@ -41,6 +40,10 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
     totalPaid: 0,
     percentPaid: 0,
     deductible: 0,
+    claims: [],
+    members: [],
+    outOfPocket: 0,
+    providers: [],
   });
 
   useEffect(() => {
@@ -56,6 +59,10 @@ export const GetInsurancePaid = (): HookReponse<insuranceInfo> => {
         totalPaid: totalPaid,
         percentPaid: percentPaid,
         deductible: insurance.deductible,
+        outOfPocket: insurance.outOfPocket,
+        claims: insurance.claims,
+        members: insurance.members,
+        providers: insurance.providers,
       });
     }
   }, [insurance]);
