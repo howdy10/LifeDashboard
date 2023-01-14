@@ -6,6 +6,7 @@ import { InsuranceBoard } from "../components/insurance/insurance-board";
 import { DashboardContainer } from "../components/dashboard-container";
 import { GetInsuranceInfo } from "../hooks/insurance";
 import { subYears, getYear, addYears } from "date-fns";
+import { LoadingComponent } from "../components/loading-component";
 
 export const Insurance = () => {
   const today = new Date();
@@ -47,10 +48,12 @@ export const Insurance = () => {
           Next
         </Button>
       </Box>
-      {!loading && snapshot && <InsuranceBoard insurance={snapshot} year={selectedYear} />}
-      <Box sx={{ mt: 3 }}>
-        {snapshot && <InsuranceClaims claims={snapshot.claims} year={selectedYear} />}
-      </Box>
+      <LoadingComponent loading={loading} error={error}>
+        {snapshot && <InsuranceBoard insurance={snapshot} year={selectedYear} />}
+        <Box sx={{ mt: 3 }}>
+          {snapshot && <InsuranceClaims claims={snapshot.claims} year={selectedYear} />}
+        </Box>
+      </LoadingComponent>
     </DashboardContainer>
   );
 };
