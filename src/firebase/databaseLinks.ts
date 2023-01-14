@@ -6,69 +6,66 @@ export const GetFamilyId = () => {
 };
 
 export const DashboardUrl = (base: boolean = true) => {
-  let url = "/Dashboard";
+  let url = `/Dashboard`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const EmergencyBucketUrl = (base: boolean = true) => {
-  let url = "/Savings/emergencyFund";
+  let url = `/Savings/emergencyFund`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const BucketsUrl = (base: boolean = true) => {
-  let url = "/Savings/buckets";
+  let url = `/Savings/buckets`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const SavingsUrl = (base: boolean = true) => {
-  let url = "/Savings";
+  let url = `/Savings`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const SavingsTransactionsUrl = (base: boolean = true) => {
-  let url = "/Savings/transactions";
+  let url = `/Savings/transactions`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const AllLoansUrl = (base: boolean = true) => {
-  let url = "/Loans";
+  let url = `/Loans`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const BudgetUrl = (base: boolean = true) => {
-  let url = "/Budget";
+  let url = `/Budget`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const InsuranceUrl = (year: number, base: boolean = true) => {
-  console.log("whole: " + year);
-  let url = "/HealthInsurance";
+  let url = `/HealthInsurance/${year}`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const HsaTransactionsUrl = (base: boolean = true) => {
-  let url = "/hsa/transactions";
+  let url = `/hsa/transactions`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const HsaCategoryUrl = (base: boolean = true) => {
-  let url = "/hsa/categories";
+  let url = `/hsa/categories`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const InsuranceMembersUrl = (base: boolean = true) => {
-  let url = "/HealthInsurance/members";
+  let url = `/HealthInsurance/members`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const InsuranceProvidersUrl = (year: number, base: boolean = true) => {
-  console.log("providers: " + year);
-  let url = "/HealthInsurance/providers";
+  let url = `/HealthInsurance/${year}/providers`;
   return base ? GetFamilyId() + url : url;
 };
 
 export const InsuranceClaimsUrl = (year: number, base: boolean = true) => {
-  console.log("claims: " + year);
-  let url = "/HealthInsurance/claims";
+  let url = `/HealthInsurance/${year}/claims`;
   return base ? GetFamilyId() + url : url;
 };
