@@ -1,18 +1,54 @@
-import { Box } from "@mui/material";
+import { useState } from "react";
+import { Box, Button } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { InsuranceClaims } from "../components/insurance/insurance-claims";
 import { InsuranceBoard } from "../components/insurance/insurance-board";
-import { InsuranceUrl } from "../firebase/databaseConstants";
 import { DashboardContainer } from "../components/dashboard-container";
-import { insuranceDb } from "../hooks/insurance";
-import { GetFromDatabase } from "../hooks/baseHook";
+import { GetInsuranceInfo } from "../hooks/insurance";
+import { subYears, getYear, addYears } from "date-fns";
 
 export const Insurance = () => {
-  const [snapshot, loading, error] = GetFromDatabase<insuranceDb>(InsuranceUrl);
+  const [snapshot, loading, error] = GetInsuranceInfo();
+
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState(today);
+  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+
+  const handlePreviousYear = () => {
+    let changeDate = subYears(selectedDate, 1);
+    setSelectedDate(changeDate);
+    setSelectedYear(getYear(changeDate));
+  };
+
+  const handleNextYear = () => {
+    let changeDate = addYears(selectedDate, 1);
+    setSelectedDate(changeDate);
+    setSelectedYear(getYear(changeDate));
+  };
 
   return (
     <DashboardContainer title={"Insurance"}>
-      {!loading && snapshot && <InsuranceBoard insurance={snapshot} />}
+      <Box sx={{ marginBottom: 2, display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handlePreviousYear}
+          sx={{ mr: 1 }}
+          disabled={2022 === selectedYear}
+        >
+          Previous
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleNextYear}
+          sx={{ mr: 1 }}
+          disabled={getYear(today) === selectedYear}
+        >
+          Next
+        </Button>
+      </Box>
+      {!loading && snapshot && <InsuranceBoard insurance={snapshot} year={selectedYear} />}
       <Box sx={{ mt: 3 }}>{snapshot && <InsuranceClaims claims={snapshot.claims} />}</Box>
     </DashboardContainer>
   );
