@@ -2,7 +2,12 @@ import { Box, Container, Grid } from "@mui/material";
 import { HsaTransactions } from "./hsa-transactions";
 import { HsaCategoryChart } from "./hsa-categoryChart";
 
-export const HsaBoard = ({ hsaInfo }) => {
+interface HsaBoardInput {
+  hsaInfo: any;
+  year: number;
+}
+
+export const HsaBoard = ({ hsaInfo, year }: HsaBoardInput) => {
   return (
     <Box>
       <Box
@@ -20,7 +25,7 @@ export const HsaBoard = ({ hsaInfo }) => {
               <HsaCategoryChart categoryMap={hsaInfo.categorySplit} spentAmount={hsaInfo.total} />
             </Grid>
             <Grid item xs={12}>
-              <HsaTransactions transactions={hsaInfo.transactions} />
+              <HsaTransactions year={year} transactions={hsaInfo.transactions} />
             </Grid>
           </Grid>
         </Container>

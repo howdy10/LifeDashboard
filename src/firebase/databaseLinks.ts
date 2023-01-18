@@ -45,7 +45,7 @@ export const InsuranceUrl = (year: number, base: boolean = true) => {
   return base ? GetFamilyId() + url : url;
 };
 
-export const HsaTransactionsUrl = (base: boolean = true) => {
+export const HsaTransactionsUrl = (year: number, base: boolean = true) => {
   let url = `/hsa/transactions`;
   return base ? GetFamilyId() + url : url;
 };

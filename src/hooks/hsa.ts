@@ -6,7 +6,7 @@ import { HsaTransactionsUrl, HsaCategoryUrl } from "../firebase/databaseLinks";
 import { HookReponse } from "./types";
 import { forEachFirebase } from "../firebase/utils";
 
-interface hsaTransactionDb {
+export interface hsaTransactionDb {
   amount: number;
   category: string;
   date: number;
@@ -26,11 +26,11 @@ export const GetHsaCategories = (): HookReponse<string[]> => {
   return useListVals<string>(ref(database, HsaCategoryUrl()));
 };
 
-export const GetHsaInfo = (): HookReponse<hsaInfo> => {
+export const GetHsaInfo = (year: number): HookReponse<hsaInfo> => {
   const database = getDatabase(firebaseApp);
 
-  const [snapshot, loading, error] = useListVals<hsaTransactionDb>(
-    ref(database, HsaTransactionsUrl())
+  const [snapshot, loading, error] = useObjectVal<hsaTransactionDb[]>(
+    ref(database, HsaTransactionsUrl(year))
   );
   const [HsaInfo, setHsaInfo] = useState<hsaInfo>({
     total: 0,
