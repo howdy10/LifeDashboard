@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Box, Button } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { LoadingComponent } from "../components/loading-component";
 import { GetHsaInfo } from "../hooks/hsa";
@@ -26,6 +27,26 @@ export const Hsa = () => {
 
   return (
     <DashboardContainer title={"HSA"}>
+      <Box sx={{ marginBottom: 2, display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handlePreviousYear}
+          sx={{ mr: 1 }}
+          disabled={2022 === selectedYear}
+        >
+          Previous
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleNextYear}
+          sx={{ mr: 1 }}
+          disabled={getYear(today) === selectedYear}
+        >
+          Next
+        </Button>
+      </Box>
       <LoadingComponent loading={loading} error={error}>
         <HsaBoard hsaInfo={snapshot} year={selectedYear} />
       </LoadingComponent>
