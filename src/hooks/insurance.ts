@@ -15,7 +15,6 @@ export interface insuranceDb {
   deductible: number;
   outOfPocket: number;
   claims: claimDB[];
-  members: string[];
   providers: string[];
 }
 
@@ -33,6 +32,8 @@ export interface claimDB {
 export interface insuranceInfo extends insuranceDb {
   totalPaid: number;
   percentPaid: number;
+  balanceRemaining: number;
+  memberBalance: Map<string, number>;
 }
 
 export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
@@ -42,30 +43,41 @@ export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
   const [insuranceInfo, setInsuranceInfo] = useState<insuranceInfo>({
     totalPaid: 0,
     percentPaid: 0,
+    balanceRemaining: 0,
     deductible: 0,
     claims: [],
-    members: [],
     outOfPocket: 0,
     providers: [],
+    memberBalance: new Map(),
   });
 
   useEffect(() => {
     let totalPaid = 0;
     let percentPaid = 0;
+    let balanceRemaining = 0;
+    const breakdownMap = new Map();
 
     if (insurance?.claims) {
-      forEachFirebase(insurance.claims, (value) => (totalPaid += value.cost));
+      forEachFirebase(insurance.claims, (value) => {
+        totalPaid += value.cost;
+        balanceRemaining += !value.paid ? value.cost : 0;
+
+        let currentBill = value.cost;
+        currentBill += breakdownMap.has(value.person) ? breakdownMap.get(value.person) : 0;
+        breakdownMap.set(value.person, currentBill);
+      });
       percentPaid = Math.trunc((totalPaid * 100) / insurance.deductible);
 
       setInsuranceInfo({
         ...setInsuranceInfo,
         totalPaid: totalPaid,
         percentPaid: percentPaid,
+        balanceRemaining: balanceRemaining,
         deductible: insurance.deductible,
         outOfPocket: insurance.outOfPocket,
         claims: insurance.claims,
-        members: insurance.members,
         providers: insurance.providers,
+        memberBalance: breakdownMap,
       });
     }
   }, [insurance]);

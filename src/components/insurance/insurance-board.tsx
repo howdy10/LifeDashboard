@@ -1,6 +1,8 @@
 import { Grid } from "@mui/material";
 import { InsuranceDeductable } from "./insurance-deductable";
+import { InsuranceMemberBreakdown } from "./insurance-memberBreakdown";
 import { insuranceInfo } from "../../hooks/insurance";
+import { InsuranceBalance } from "./insurance-balance";
 
 interface InsuranceBoardInput {
   insurance: insuranceInfo;
@@ -15,6 +17,24 @@ export const InsuranceBoard = ({ insurance, year, ...rest }: InsuranceBoardInput
           deductible={insurance.deductible}
           outOfPocket={insurance.outOfPocket}
           year={year}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <InsuranceMemberBreakdown
+          paid={insurance.totalPaid}
+          deductible={insurance.deductible}
+          outOfPocket={insurance.outOfPocket}
+          year={year}
+          members={insurance.memberBalance}
+        />
+      </Grid>
+
+      <Grid item xs={6}>
+        <InsuranceBalance
+          paid={insurance.totalPaid}
+          deductible={insurance.deductible}
+          outOfPocket={insurance.outOfPocket}
+          remaining={insurance.balanceRemaining}
         />
       </Grid>
     </Grid>
