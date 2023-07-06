@@ -19,7 +19,7 @@ export const InsuranceBoard = ({ insurance, year, ...rest }: InsuranceBoardInput
           year={year}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={12}>
         <InsuranceMemberBreakdown
           paid={insurance.totalPaid}
           deductible={insurance.deductible}
@@ -29,7 +29,7 @@ export const InsuranceBoard = ({ insurance, year, ...rest }: InsuranceBoardInput
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={12}>
         <InsuranceBalance
           paid={insurance.totalPaid}
           deductible={insurance.deductible}
