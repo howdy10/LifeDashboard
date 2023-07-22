@@ -1,13 +1,26 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 import { LinearProgressWithLabel } from "../dataDisplay/linearProgressWithLabel";
 
-export const InsuranceDeductable = ({ paid, deductible, outOfPocket, ...rest }) => (
+interface InsuranceDeductableInput {
+  paid: number;
+  deductible: number;
+  outOfPocket: number;
+  year: number;
+}
+
+export const InsuranceDeductable = ({
+  paid,
+  deductible,
+  outOfPocket,
+  year,
+  ...rest
+}: InsuranceDeductableInput) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textPrimary" gutterBottom variant="h5">
-            Insurance values
+            Insurance values {year}
           </Typography>
         </Grid>
       </Grid>

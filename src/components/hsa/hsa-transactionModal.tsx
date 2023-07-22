@@ -6,15 +6,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { getTime } from "date-fns";
 import Grid from "@mui/material/Grid";
-import { createHsaTransaction } from "../../api/hsa-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDropdown } from "../forms/dropdown-input";
 import { GetHsaCategories } from "../../hooks/hsa";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
+import { HsaTransactionsUrl } from "../../firebase/databaseLinks";
+import { createListResource } from "../../api/rest-list-api";
 
 const defaultValues = {
   amount: 0,
@@ -23,9 +22,12 @@ const defaultValues = {
   vendor: "",
   category: 0,
 };
+interface hsaModalInput {
+  year: number;
+}
 
-export function HsaModal() {
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+export function HsaModal({ year }: hsaModalInput) {
+  const transactionsUrl = HsaTransactionsUrl(year);
 
   const [open, setOpen] = useState(false);
 
@@ -47,7 +49,7 @@ export function HsaModal() {
     if (isNaN(data.date)) {
       return;
     }
-    let claim = {
+    let transaction = {
       amount: parseFloat(data.amount),
       date: getTime(data.date),
       notes: data.notes ?? "",
@@ -55,7 +57,7 @@ export function HsaModal() {
       category: data.category,
     };
 
-    createHsaTransaction(familyIdBaseUrl, claim);
+    createListResource(transactionsUrl, transaction);
     handleClose();
   };
 

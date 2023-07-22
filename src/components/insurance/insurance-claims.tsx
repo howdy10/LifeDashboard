@@ -2,30 +2,18 @@ import { useState } from "react";
 import { getTime } from "date-fns";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
 import { ClaimModal } from "./insurance-claimModal";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import {
-  createInsuranceClaim,
-  deleteInsuranceClaim,
-  updateInsuranceClaim,
-} from "../../api/insurance-api";
+  createListResource,
+  deleteListResource,
+  updateListResource,
+} from "../../api/rest-list-api";
+import { InsuranceClaimsUrl } from "../../firebase/databaseLinks";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
-
-function Row(props) {
-  const { row } = props;
-
-  return (
-    <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
-      <TableCell>{row.provider}</TableCell>
-    </TableRow>
-  );
-}
+import { claimDB } from "../../hooks/insurance";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -37,11 +25,16 @@ const columns = [
   { title: "Paid", field: "paid", type: "boolean" },
 ];
 
-export function InsuranceClaims({ claims, ...rest }) {
+interface InsuranceClaimsInput {
+  claims: claimDB[];
+  year: number;
+}
+
+export function InsuranceClaims({ claims, year, ...rest }: InsuranceClaimsInput) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+  const claimUrl = InsuranceClaimsUrl(year);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -69,15 +62,15 @@ export function InsuranceClaims({ claims, ...rest }) {
       insurance: newData.insurance,
     };
     if (index) {
-      updateInsuranceClaim(familyIdBaseUrl, claim, index);
+      updateListResource(claimUrl, claim, index);
     } else {
-      createInsuranceClaim(familyIdBaseUrl, claim);
+      createListResource(claimUrl, claim);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData, index) => {
-    deleteInsuranceClaim(familyIdBaseUrl, index);
+    deleteListResource(claimUrl, index);
     setDeletedSnackbar(true);
   };
 
@@ -96,7 +89,7 @@ export function InsuranceClaims({ claims, ...rest }) {
           Claims
         </Typography>
         <Box sx={{ m: 1 }}>
-          <ClaimModal />
+          <ClaimModal year={year} />
         </Box>
       </Box>
       <DashboardTable

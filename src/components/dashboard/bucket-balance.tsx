@@ -1,14 +1,13 @@
 import { Avatar, Card, CardContent, Grid, Typography } from "@mui/material";
+import SavingsIcon from "@mui/icons-material/Savings";
 import IconButton from "@mui/material/IconButton";
 import { useRouter } from "next/router";
 import { MoneyFormatter } from "../dataDisplay/numberFormatter";
-import { GetCurrentBalance } from "../../hooks/balance";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import { GetSavingsBucketDashboardCard } from "../../hooks/savings";
 
-export const AccountBalance = ({ href, type, ...props }) => {
+export const SavingsBucketBalance = ({ href, bucketId, ...rest }) => {
   const router = useRouter();
-  const today = new Date();
-  const [balance, loading, error] = GetCurrentBalance(today.getFullYear(), today.getMonth());
+  const [savings, savingsLoading, savingsError] = GetSavingsBucketDashboardCard(bucketId);
 
   const Icon = () => {
     let base = (
@@ -19,22 +18,22 @@ export const AccountBalance = ({ href, type, ...props }) => {
           width: 56,
         }}
       >
-        <AccountBalanceIcon />
+        <SavingsIcon />
       </Avatar>
     );
 
-    return <IconButton onClick={() => router.push("/balance")}> {base}</IconButton>;
+    return <IconButton onClick={() => router.push("/savings")}> {base}</IconButton>;
   };
   return (
-    <Card {...props}>
+    <Card {...rest}>
       <CardContent>
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
-              {type == "cc" ? "After Credit Card" : "Bank Account"}
+              {savings.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(type == "cc" ? balance.afterCreditCard : balance.bankAmount)}
+              {MoneyFormatter(savings?.amount)}
             </Typography>
           </Grid>
           <Grid item>{Icon()}</Grid>

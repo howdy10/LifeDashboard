@@ -5,20 +5,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { getTime } from "date-fns";
-import { ref, getDatabase } from "firebase/database";
-import { firebase } from "../../firebase/clientApp";
-import { useObject } from "react-firebase-hooks/database";
 import Grid from "@mui/material/Grid";
-import { InsuranceMembersUrl, InsuranceProvidersUrl } from "../../firebase/databaseLinks";
-import { createInsuranceClaim } from "../../api/insurance-api";
+import { GetInsuranceMembers, GetInsuranceProviders } from "../../hooks/insurance";
+import { InsuranceClaimsUrl } from "../../firebase/databaseLinks";
+import { createListResource } from "../../api/rest-list-api";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
 import { FormInputSwitch } from "../forms/switch-input";
 import { FormInputText } from "../forms/text-input";
 import { FormInputDropdown } from "../forms/dropdown-input";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 
 const defaultValues = {
   amount: 0,
@@ -28,16 +24,15 @@ const defaultValues = {
   provider: 0,
   checkboxValue: [],
 };
-
-export function ClaimModal() {
-  const database = getDatabase(firebase);
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+interface ClaimModalInput {
+  year: number;
+}
+export function ClaimModal({ year }: ClaimModalInput) {
+  const claimUrl = InsuranceClaimsUrl(year);
 
   const [open, setOpen] = useState(false);
-  const [members, membersLoading, membersError] = useObject(ref(database, InsuranceMembersUrl()));
-  const [providers, providersLoading, providersError] = useObject(
-    ref(database, InsuranceProvidersUrl())
-  );
+  const [members, membersLoading, membersError] = GetInsuranceMembers();
+  const [providers, providersLoading, providersError] = GetInsuranceProviders(year);
 
   const methods = useForm({ defaultValues: defaultValues });
   const { handleSubmit, reset, control, setValue } = methods;
@@ -66,7 +61,7 @@ export function ClaimModal() {
       insurance: data.checkboxValue.includes(1),
     };
 
-    createInsuranceClaim(familyIdBaseUrl, claim);
+    createListResource(claimUrl, claim);
     handleClose();
   };
 
@@ -78,10 +73,6 @@ export function ClaimModal() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Transaction</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText> */}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormInputMoney
@@ -102,7 +93,7 @@ export function ClaimModal() {
                 name="member"
                 control={control}
                 label="Member"
-                options={members?.val()}
+                options={members}
               />
             </Grid>
             <Grid item xs={6}>
@@ -112,7 +103,7 @@ export function ClaimModal() {
                 name="provider"
                 control={control}
                 label="Provider"
-                options={providers?.val()}
+                options={providers}
               />
             </Grid>
             <Grid item xs={12}>

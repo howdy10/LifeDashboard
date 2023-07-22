@@ -5,7 +5,7 @@ import { Controller } from "react-hook-form";
 export interface SwitchFormProps<T> {
   name: string;
   control: any;
-  label: any;
+  label?: any;
   setValue: any;
   options: T[];
   rules?: any;

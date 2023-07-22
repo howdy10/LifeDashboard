@@ -3,7 +3,7 @@ import { LoanProgress } from "../components/dashboard/loan-progress";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { firebase } from "../firebase/clientApp";
+import { firebaseApp } from "../firebase/clientApp";
 import { DashboardUrl } from "../firebase/databaseLinks";
 import { LoadingComponent } from "../components/loading-component";
 import { SavingsBucketBalance } from "../components/dashboard/bucket-balance";
@@ -17,24 +17,26 @@ const CardResolver = ({ card }) => {
     case "loan":
       return <LoanProgress sx={{ height: "100%" }} loanId={card.loanId} />;
     case "savings":
-      return <SavingsBucketBalance sx={{ height: "100%" }} bucketId={card.bucketId} />;
+      return (
+        <SavingsBucketBalance href="/savings" sx={{ height: "100%" }} bucketId={card.bucketId} />
+      );
     default:
-      return "No card type for " + card.type;
+      return <div>No card type for {card.type}</div>;
   }
 };
 
 const Dashboard = () => {
-  const database = getDatabase(firebase);
+  const database = getDatabase(firebaseApp);
 
   const [cards, loading, error] = useObjectVal(ref(database, DashboardUrl()));
   return (
     <DashboardContainer title={"Life Dashboard"}>
       <Grid container spacing={3}>
         <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-          <AccountBalance sx={{ height: "100%" }} />
+          <AccountBalance href="/balance" sx={{ height: "100%" }} />
         </Grid>
         <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
-          <AccountBalance type="cc" sx={{ height: "100%" }} />
+          <AccountBalance href="/balance" type="cc" sx={{ height: "100%" }} />
         </Grid>
         <Grid item xl={3} lg={6} md={6} sm={12} xs={12}>
           <SavingsBalance sx={{ height: "100%" }} />

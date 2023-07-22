@@ -6,15 +6,15 @@ import Typography from "@mui/material/Typography";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { HsaModal } from "./hsa-transactionModal";
 import { Button } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
-import { selectFamilyBaseUrl } from "../../app/sessionSlice";
 import { SnackbarStatus } from "../dataDisplay/snackbar-status";
 import {
-  updateHsaTransaction,
-  createHsaTransaction,
-  deleteHsaTransaction,
-} from "../../api/hsa-api";
+  createListResource,
+  deleteListResource,
+  updateListResource,
+} from "../../api/rest-list-api";
 import { GetHsaCategories } from "../../hooks/hsa";
+import { hsaTransactionDb } from "../../hooks/hsa";
+import { HsaTransactionsUrl } from "../../firebase/databaseLinks";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -24,12 +24,17 @@ const columns = [
   { title: "Notes", field: "notes" },
 ];
 
-export function HsaTransactions({ transactions, ...rest }) {
+interface HsaTransactionsInput {
+  transactions: hsaTransactionDb[];
+  year: number;
+}
+
+export function HsaTransactions({ transactions, year, ...rest }: HsaTransactionsInput) {
   const [updatedSnackbar, setUpdatedSnackbar] = useState(false);
   const [deletedErrorSnackbar, setDeletedErrorSnackbar] = useState(false);
   const [deletedSnackbar, setDeletedSnackbar] = useState(false);
   const [masterEdit, setMasterEdit] = useState(false);
-  const familyIdBaseUrl = useAppSelector(selectFamilyBaseUrl);
+  const transactionsUrl = HsaTransactionsUrl(year);
   const [categories] = GetHsaCategories();
 
   useEffect(() => {
@@ -47,7 +52,7 @@ export function HsaTransactions({ transactions, ...rest }) {
     setDeletedSnackbar(false);
   };
 
-  const handleUpdateRow = (newData: any, oldData: any, index: string) => {
+  const handleUpdateRow = (newData, oldData, index) => {
     if (newData.date === null) {
       setDeletedErrorSnackbar(true);
       return;
@@ -62,15 +67,15 @@ export function HsaTransactions({ transactions, ...rest }) {
       transaction["category"] = newData.category;
     }
     if (index) {
-      updateHsaTransaction(familyIdBaseUrl, transaction, index);
+      updateListResource(transactionsUrl, transaction, index);
     } else {
-      createHsaTransaction(familyIdBaseUrl, transaction);
+      createListResource(transactionsUrl, transaction);
     }
     setUpdatedSnackbar(true);
   };
 
   const handleDeleteRow = (oldData: any, index: string) => {
-    deleteHsaTransaction(familyIdBaseUrl, index);
+    deleteListResource(transactionsUrl, index);
     setDeletedSnackbar(true);
   };
 
@@ -90,11 +95,11 @@ export function HsaTransactions({ transactions, ...rest }) {
         }}
       >
         <Typography sx={{ m: 1 }} variant="h4">
-          HSA Transactions
+          HSA Transactions {year}
         </Typography>
         <Button onClick={handleEditOpen}>{masterEdit ? "Cancle Edit" : "Edit"}</Button>
         <Box sx={{ m: 1 }}>
-          <HsaModal />
+          <HsaModal year={year} />
         </Box>
       </Box>
       <DashboardTable

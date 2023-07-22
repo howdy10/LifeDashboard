@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // Configure FirebaseUI.
 const uiConfig = {
+  signInFlow: "popup",
   // Redirect to / after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
   signInSuccessUrl: "/",
   // GitHub as the only included Auth Provider.
