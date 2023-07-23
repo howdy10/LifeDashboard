@@ -3,6 +3,16 @@ import { CurrentModal } from "./balance-currentModal";
 import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 import { MonthName } from "../dataDisplay/date-util";
 
+interface BalanceCurrentInput {
+  spentAmount: number;
+  creditCardAmount: number;
+  incomeAmount: number;
+  month: number;
+  year: number;
+  isCurrentMonth: boolean;
+  isLastMonth: boolean;
+}
+
 export const BalanceCurrent = ({
   spentAmount,
   creditCardAmount,
@@ -11,7 +21,7 @@ export const BalanceCurrent = ({
   year,
   isCurrentMonth,
   isLastMonth,
-}) => (
+}: BalanceCurrentInput) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>

@@ -5,22 +5,25 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { getTime } from "date-fns";
-import { ref, getDatabase, push, child, update } from "firebase/database";
-import { firebase } from "../../firebase/clientApp";
 import Grid from "@mui/material/Grid";
-import { BudgetUrl } from "../../firebase/databaseLinks";
+import { BalancePaycheckUrl } from "../../firebase/databaseLinks";
 import { useForm } from "react-hook-form";
 import { FormInputDate } from "../forms/date-input";
 import { FormInputMoney } from "../forms/money-input";
+import { createListResource } from "../../api/rest-list-api";
 
 const defaultValues = {
   amount: 0,
   date: getTime(new Date()),
 };
 
-export function PaycheckModal({ year, month }) {
-  const database = getDatabase(firebase);
-  const budgetUrl = BudgetUrl() + "/" + year + "/" + month + "/payChecks";
+interface PaycheckModalInput {
+  year: number;
+  month: number;
+}
+
+export function PaycheckModal({ year, month }: PaycheckModalInput) {
+  const balancePayCheckUrl = BalancePaycheckUrl(year, month);
 
   const [open, setOpen] = useState(false);
 
@@ -36,17 +39,14 @@ export function PaycheckModal({ year, month }) {
     setOpen(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     let transaction = {
       amount: parseFloat(data.amount),
       date: data.date,
     };
 
-    const newTransactionsKey = push(child(ref(database), budgetUrl)).key;
+    createListResource(balancePayCheckUrl, transaction);
 
-    const updates = {};
-    updates[budgetUrl + "/" + newTransactionsKey] = transaction;
-    update(ref(database), updates);
     handleClose();
   };
 

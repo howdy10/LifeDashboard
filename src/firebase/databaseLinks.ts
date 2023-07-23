@@ -35,8 +35,23 @@ export const AllLoansUrl = (base: boolean = true) => {
   return base ? GetFamilyId() + url : url;
 };
 
-export const BudgetUrl = (base: boolean = true) => {
-  let url = `/Budget`;
+export const BalanceUrl = (base: boolean = true) => {
+  let url = `/Balance`;
+  return base ? GetFamilyId() + url : url;
+};
+
+export const BalancePaycheckUrl = (year: number, month: number, base: boolean = true) => {
+  let url = `/Balance/${year}/${month}/payChecks`;
+  return base ? GetFamilyId() + url : url;
+};
+
+export const BalanceSpentUrl = (year: number, month: number, base: boolean = true) => {
+  let url = `/Balance/${year}/${month}/spent`;
+  return base ? GetFamilyId() + url : url;
+};
+
+export const BalanceCreditCardUrl = (base: boolean = true) => {
+  let url = `/Balance/creditCard`;
   return base ? GetFamilyId() + url : url;
 };
 

@@ -26,7 +26,7 @@ exports.createTestDb = functions.https.onRequest((req, resp) => {
 });
 
 exports.endingBalanceUpdate = functions.database
-  .ref("family/{familyId}/Budget/{year}/{month}/spent")
+  .ref("family/{familyId}/Balance/{year}/{month}/spent")
   .onWrite((change, context) => {
     if (!change.after.exists()) {
       //if deleted
@@ -45,7 +45,7 @@ exports.endingBalanceUpdate = functions.database
     const spent = change.after.val();
 
     database
-      .ref(`family/${familyId}/Budget`)
+      .ref(`family/${familyId}/Balance`)
       .once("value")
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -67,7 +67,7 @@ exports.endingBalanceUpdate = functions.database
           functions.logger.info(`paid this month: ${paidThisMonth}`);
           functions.logger.info(`Ending Balance: ${currentBalance}`);
           database
-            .ref(`family/${familyId}/Budget/${year}/${month}/endingBalance`)
+            .ref(`family/${familyId}/Balance/${year}/${month}/endingBalance`)
             .set(Math.round((currentBalance + Number.EPSILON) * 100) / 100);
         } else {
           functions.logger.error(`Did not find paychecks for month ${month}, year ${year}`);

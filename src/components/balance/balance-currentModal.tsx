@@ -4,18 +4,31 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { ref, getDatabase, update } from "firebase/database";
-import { firebase } from "../../firebase/clientApp";
 import Grid from "@mui/material/Grid";
-import { BudgetUrl } from "../../firebase/databaseLinks";
+import { BalanceCreditCardUrl, BalanceSpentUrl } from "../../firebase/databaseLinks";
 import { useForm } from "react-hook-form";
 import { FormInputMoney } from "../forms/money-input";
+import { BaseCreateOrUpdate } from "../../api/rest-api";
 
 const defaultValues = { spent: 0, creditCard: 0 };
 
-export function CurrentModal({ spent, creditCard, month, year, isCurrentMonth }) {
-  const database = getDatabase(firebase);
-  const budgetUrl = BudgetUrl();
+interface CurrentModalInput {
+  spent: number;
+  creditCard: number;
+  month: number;
+  year: number;
+  isCurrentMonth: boolean;
+}
+
+export function CurrentModal({
+  spent,
+  creditCard,
+  month,
+  year,
+  isCurrentMonth,
+}: CurrentModalInput) {
+  const balanceSpentUrl = BalanceSpentUrl(year, month);
+  const balanceCreditUrl = BalanceCreditCardUrl();
 
   const [open, setOpen] = useState(false);
 
@@ -35,13 +48,11 @@ export function CurrentModal({ spent, creditCard, month, year, isCurrentMonth })
     setOpen(false);
   };
 
-  const onSubmit = (data) => {
-    const updates = {};
+  const onSubmit = (data: any) => {
     if (isCurrentMonth) {
-      updates[budgetUrl + "/creditCard"] = parseFloat(data.creditCard);
+      BaseCreateOrUpdate(data.creditCard, balanceCreditUrl);
     }
-    updates[budgetUrl + "/" + year + "/" + month + "/spent"] = parseFloat(data.spent);
-    update(ref(database), updates);
+    BaseCreateOrUpdate(parseFloat(data.spent), balanceSpentUrl);
 
     setOpen(false);
   };
@@ -52,7 +63,7 @@ export function CurrentModal({ spent, creditCard, month, year, isCurrentMonth })
         Edit
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Paycheck</DialogTitle>
+        <DialogTitle>Balances</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
