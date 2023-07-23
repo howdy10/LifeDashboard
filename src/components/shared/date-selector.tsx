@@ -2,7 +2,13 @@ import { useState, cloneElement } from "react";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 
-export const DateSelector = ({ children }) => {
+export interface DateSelectorInput {
+  firstMonth: number;
+  firstYear: number;
+  renderItem: any; //TODO: Change to correct type
+}
+
+export const DateSelector = ({ firstMonth, firstYear, renderItem }: DateSelectorInput) => {
   const today = new Date();
   const SelectedDateVar = new Date();
   const [selectedDate, setSelectedDate] = useState(SelectedDateVar);
@@ -30,7 +36,7 @@ export const DateSelector = ({ children }) => {
           variant="contained"
           onClick={handlePreviousMonth}
           sx={{ mr: 1 }}
-          disabled={0 === selectedMonth && 2022 === selectedYear}
+          disabled={firstMonth === selectedMonth && firstYear === selectedYear}
         >
           Previous
         </Button>
@@ -44,7 +50,7 @@ export const DateSelector = ({ children }) => {
           Next
         </Button>
       </Box>
-      {cloneElement(children, { month: selectedMonth, year: selectedYear })}
+      {renderItem(selectedMonth, selectedYear)}
     </>
   );
 };

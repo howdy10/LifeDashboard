@@ -6,9 +6,11 @@ import { DateSelector } from "../components/shared/date-selector";
 export const Balance = () => {
   return (
     <DashboardContainer title={"Balance"}>
-      <DateSelector>
-        <BalanceBoard />
-      </DateSelector>
+      <DateSelector
+        firstMonth={0}
+        firstYear={2022}
+        renderItem={(m: number, y: number) => <BalanceBoard month={m} year={y} />}
+      ></DateSelector>
     </DashboardContainer>
   );
 };
