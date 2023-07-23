@@ -2,6 +2,8 @@ import { Box, Container, Grid } from "@mui/material";
 import { LoadingComponent } from "../loading-component";
 import { BudgetCategory } from "./budget-category";
 import { BudgetSummary } from "./budget-summary";
+import { BudgetTransactions } from "./budget-transactions";
+import { BudgetIncome } from "./budget-income";
 
 export const BudgetBoard = ({ month, year }: { month?: number; year?: number }) => {
   const today = new Date();
@@ -20,7 +22,7 @@ export const BudgetBoard = ({ month, year }: { month?: number; year?: number }) 
     >
       <Container maxWidth={false}>
         <Grid container spacing={3}>
-          <Grid item lg={6} sm={6} xl={6} xs={12}>
+          <Grid item xs={12}>
             <BudgetSummary
               month={month}
               year={year}
@@ -38,7 +40,13 @@ export const BudgetBoard = ({ month, year }: { month?: number; year?: number }) 
               /> */}
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={6}>
+            <BudgetIncome />
+          </Grid>
+          <Grid item xs={6}>
+            <BudgetTransactions />
+          </Grid>
+          <Grid item xs={6}>
             <BudgetCategory />
           </Grid>
         </Grid>
