@@ -36,7 +36,7 @@ export const AllLoansUrl = (base: boolean = true) => {
 };
 
 export const BudgetUrl = (base: boolean = true) => {
-  let url = `/Budget`;
+  let url = `/Balance`;
   return base ? GetFamilyId() + url : url;
 };
 
