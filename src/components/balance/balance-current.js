@@ -17,7 +17,7 @@ export const BalanceCurrent = ({
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textPrimary" gutterBottom variant="h4">
-            {MonthName(month)}
+            {MonthName(month) + " " + year}
           </Typography>
         </Grid>
         {(isLastMonth || isCurrentMonth) && (

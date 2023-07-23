@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, cloneElement } from "react";
 import { Box } from "@mui/system";
-import { DashboardLayout } from "../components/dashboard-layout";
-import { BalanceBoard } from "../components/balance/balance-board";
-import { DashboardContainer } from "../components/dashboard-container";
 import { Button } from "@mui/material";
 
-export const Balance = () => {
+export interface DateSelectorInput {
+  firstMonth: number;
+  firstYear: number;
+  renderItem: any; //TODO: Change to correct type
+}
+
+export const DateSelector = ({ firstMonth, firstYear, renderItem }: DateSelectorInput) => {
   const today = new Date();
   const SelectedDateVar = new Date();
   const [selectedDate, setSelectedDate] = useState(SelectedDateVar);
@@ -26,14 +29,14 @@ export const Balance = () => {
     setSelectedYear(selectedDate.getFullYear());
   };
   return (
-    <DashboardContainer title={"Balance"}>
+    <>
       <Box sx={{ marginBottom: 2, display: "flex", justifyContent: "flex-end" }}>
         <Button
           color="primary"
           variant="contained"
           onClick={handlePreviousMonth}
           sx={{ mr: 1 }}
-          disabled={0 === selectedMonth && 2022 === selectedYear}
+          disabled={firstMonth === selectedMonth && firstYear === selectedYear}
         >
           Previous
         </Button>
@@ -47,10 +50,7 @@ export const Balance = () => {
           Next
         </Button>
       </Box>
-      <BalanceBoard month={selectedMonth} year={selectedYear} />
-    </DashboardContainer>
+      {renderItem(selectedMonth, selectedYear)}
+    </>
   );
 };
-Balance.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
-export default Balance;
