@@ -1,6 +1,7 @@
 import { Box, Card, Typography } from "@mui/material";
 import { DashboardTable } from "../dashboadTable/dashboardTable";
 import { PaycheckModal } from "./balance-paycheckModal";
+import { payChecksDB } from "../../hooks/balance";
 
 const columns = [
   { title: "Date", field: "date", type: "date" },
@@ -9,10 +10,25 @@ const columns = [
 
 const order = {
   column: "date",
-  direction: "asc",
+  direction: "asc" as const,
 };
 
-export const BalancePaychecks = ({ income, year, month, isCurrentMonth, isLastMonth, ...rest }) => {
+interface BalancePaychecksInput {
+  income: payChecksDB;
+  year: number;
+  month: number;
+  isCurrentMonth: boolean;
+  isLastMonth: boolean;
+}
+
+export const BalancePaychecks = ({
+  income,
+  year,
+  month,
+  isCurrentMonth,
+  isLastMonth,
+  ...rest
+}: BalancePaychecksInput) => {
   return (
     <Card>
       <Box

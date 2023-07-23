@@ -1,7 +1,19 @@
 import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material";
 import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 
-export const BalanceTotals = ({ bankAmount, afterCreditCard, monthNet, isCurrentMonth }) => (
+interface BalanceTotalsInput {
+  bankAmount: number;
+  afterCreditCard: number;
+  monthNet: number;
+  isCurrentMonth: boolean;
+}
+
+export const BalanceTotals = ({
+  bankAmount,
+  afterCreditCard,
+  monthNet,
+  isCurrentMonth,
+}: BalanceTotalsInput) => (
   <Card sx={{ height: "100%" }}>
     <CardContent>
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>

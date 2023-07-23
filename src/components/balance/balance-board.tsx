@@ -5,7 +5,12 @@ import { BalanceTotals } from "./balance-totals";
 import { BalancePaychecks } from "./balance-paychecks";
 import { LoadingComponent } from "../loading-component";
 
-export const BalanceBoard = ({ month, year }) => {
+interface BalanceBoardInput {
+  month: number;
+  year: number;
+}
+
+export const BalanceBoard = ({ month, year }: BalanceBoardInput) => {
   const [balance, loading, error] = GetCurrentBalance(year, month);
 
   const today = new Date();

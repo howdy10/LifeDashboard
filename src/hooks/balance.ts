@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { ref, getDatabase } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { firebaseApp } from "../firebase/clientApp";
-import { BudgetUrl } from "../firebase/databaseConstants";
+import { BalanceUrl } from "../firebase/databaseConstants";
 import { useAppSelector } from "../app/hooks";
 import { selectFamilyBaseUrl } from "../app/sessionSlice";
 import { subMonths, getMonth, getYear } from "date-fns";
@@ -13,7 +13,7 @@ interface monthIncome {
   payChecks: payChecksDB;
 }
 
-interface payChecksDB {
+export interface payChecksDB {
   [key: string]: payCheckDB;
 }
 
@@ -47,7 +47,7 @@ export const GetPayChecks = (year: number, month: number): HookReponse<monthInco
   });
 
   const [payChecks, loading, error] = useObjectVal<payChecksDB>(
-    ref(database, familyIdBaseUrl + BudgetUrl + "/" + year + "/" + month + "/payChecks")
+    ref(database, familyIdBaseUrl + BalanceUrl + "/" + year + "/" + month + "/payChecks")
   );
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const GetCurrentBalanceDate = (currentDate: Date): HookReponse<monthInfo>
     ref(
       database,
       familyIdBaseUrl +
-        BudgetUrl +
+        BalanceUrl +
         "/" +
         getYear(LastMonth) +
         "/" +
@@ -101,11 +101,11 @@ export const GetCurrentBalanceDate = (currentDate: Date): HookReponse<monthInfo>
   const [currentMonth, loading, error] = useObjectVal<monthInfoDb>(
     ref(
       database,
-      familyIdBaseUrl + BudgetUrl + "/" + getYear(currentDate) + "/" + getMonth(currentDate)
+      familyIdBaseUrl + BalanceUrl + "/" + getYear(currentDate) + "/" + getMonth(currentDate)
     )
   );
   const [currentSpent, infoLoading, infoError] = useObjectVal<number>(
-    ref(database, familyIdBaseUrl + BudgetUrl + "/creditCard")
+    ref(database, familyIdBaseUrl + BalanceUrl + "/creditCard")
   );
 
   useEffect(() => {
