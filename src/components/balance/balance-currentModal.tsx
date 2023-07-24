@@ -48,9 +48,10 @@ export function CurrentModal({
     setOpen(false);
   };
 
+  //TODO: create object for form results
   const onSubmit = (data: any) => {
     if (isCurrentMonth) {
-      BaseCreateOrUpdate(data.creditCard, balanceCreditUrl);
+      BaseCreateOrUpdate(parseFloat(data.creditCard), balanceCreditUrl);
     }
     BaseCreateOrUpdate(parseFloat(data.spent), balanceSpentUrl);
 
