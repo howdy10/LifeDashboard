@@ -74,7 +74,7 @@ const DashboardLayout2 = ({ children, ...props }: DashboardLayoutProps) => {
 
   return (
     <LoadingComponent loading={loading} error={error}>
-      {keys && children}
+      {children}
     </LoadingComponent>
   );
 };

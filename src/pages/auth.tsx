@@ -1,10 +1,10 @@
 import Head from "next/head";
-import NextLink from "next/link";
+import Link from "next/link";
 import React from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "../firebase/clientApp";
 import { Box, Button, Container, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import StyledFirebaseAuth from "../components/StyledFirebaseAuth";
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -35,11 +35,11 @@ function SignInScreen() {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink href="/" passHref>
+          <Link href="/" passHref>
             <Button component="a" startIcon={<ArrowBackIcon fontSize="small" />}>
               Dashboard
             </Button>
-          </NextLink>
+          </Link>
           <Box sx={{ my: 3 }}>
             <Typography color="textPrimary" variant="h4">
               Sign in

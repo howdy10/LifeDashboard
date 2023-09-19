@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 export interface LoadingComponentProps {
   loading: boolean;
-  error: Error;
-  children: JSX.Element | JSX.Element[];
+  error: Error | undefined;
+  children: JSX.Element | JSX.Element[] | undefined | null;
 }
 
 export const LoadingComponent = ({ loading, error, children }: LoadingComponentProps) => {

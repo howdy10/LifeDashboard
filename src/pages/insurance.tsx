@@ -49,7 +49,11 @@ export const Insurance = () => {
         </Button>
       </Box>
       <LoadingComponent loading={loading} error={error}>
-        {snapshot && <InsuranceBoard insurance={snapshot} year={selectedYear} />}
+        {snapshot !== undefined ? (
+          <InsuranceBoard insurance={snapshot} year={selectedYear} />
+        ) : (
+          <div></div>
+        )}
         <Box sx={{ mt: 3 }}>
           {snapshot && <InsuranceClaims claims={snapshot.claims} year={selectedYear} />}
         </Box>

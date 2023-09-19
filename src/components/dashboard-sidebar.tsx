@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Box, Divider, Drawer, useMediaQuery } from "@mui/material";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
@@ -84,20 +84,16 @@ export const DashboardSidebar = ({ open, onClose }: DashboardSidebarProps) => {
         height: "100%",
       }}
     >
-      <div>
-        <Box sx={{ p: 3 }}>
-          <NextLink href="/" passHref>
-            <a>
-              <Logo
-                sx={{
-                  height: 42,
-                  width: 42,
-                }}
-              />
-            </a>
-          </NextLink>
-        </Box>
-      </div>
+      <Box sx={{ p: 3 }}>
+        <Link href="/" passHref>
+          <Logo
+            sx={{
+              height: 42,
+              width: 42,
+            }}
+          />
+        </Link>
+      </Box>
       <Divider
         sx={{
           borderColor: "#2D3748",
