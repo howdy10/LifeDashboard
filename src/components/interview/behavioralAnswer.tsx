@@ -17,50 +17,13 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { answers } from "../../__mocks__/interview";
 import { useState } from "react";
+import { BehavioralAnswersRow } from "./bahavioralAnswerRow";
 
 const columns = [
   { title: "Story told", field: "insurance", type: "boolean" },
   { title: "Category", field: "category" },
   { title: "Title", field: "title" },
 ];
-
-const row = (answer) => {
-  const [isInfoRowOpened, setIsInfoRowOpened] = useState(false);
-  return (
-    <>
-      <TableRow hover>
-        <TableCell>
-          <Checkbox />
-        </TableCell>
-        <TableCell onClick={() => setIsInfoRowOpened(!isInfoRowOpened)}>
-          {answer.category}
-        </TableCell>
-        <TableCell onClick={() => setIsInfoRowOpened(!isInfoRowOpened)}>{answer.title}</TableCell>
-
-        {
-          <TableCell onClick={() => setIsInfoRowOpened(!isInfoRowOpened)}>
-            <IconButton aria-label="expand row" size="small">
-              {isInfoRowOpened ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </TableCell>
-        }
-      </TableRow>
-      {
-        <TableRow>
-          <TableCell colSpan={columns.length + 1}>
-            <Collapse in={isInfoRowOpened} timeout="auto" unmountOnExit>
-              {answer.story.map((x) => (
-                <Typography variant="body1" display="block" gutterBottom mb={3}>
-                  {x}
-                </Typography>
-              ))}
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      }
-    </>
-  );
-};
 
 export const BehavioralAnswers = () => {
   return (
@@ -98,19 +61,9 @@ export const BehavioralAnswers = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {answers.map((x) => row(x))}
-            {/* {data &&
-              localData &&
-              dataListIdOrder.map((firebaseId, indexRow) => row(firebaseId, indexRow))}
-            { (
-              <TableRow
-                style={{
-                  height: 55 ,
-                }}
-              >
-                <TableCell colSpan={columns.length} />
-              </TableRow>
-            )} */}
+            {answers.map((x) => (
+              <BehavioralAnswersRow answer={x} columns={columns} key={0} />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
