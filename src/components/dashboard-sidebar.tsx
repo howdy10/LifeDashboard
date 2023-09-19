@@ -8,6 +8,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import SavingsIcon from "@mui/icons-material/Savings";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+import BackpackIcon from "@mui/icons-material/Backpack";
 import { useTheme } from "@mui/material/styles";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
@@ -41,6 +42,11 @@ const items = [
     href: "/reminders",
     icon: <AccessAlarmIcon fontSize="small" />,
     title: "Reminders",
+  },
+  {
+    href: "/interview",
+    icon: <BackpackIcon fontSize="small" />,
+    title: "Interview",
   },
   {
     href: "/404",
