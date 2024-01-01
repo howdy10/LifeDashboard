@@ -67,19 +67,18 @@ export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
         breakdownMap.set(value.person, currentBill);
       });
       percentPaid = Math.trunc((totalPaid * 100) / insurance.deductible);
-
-      setInsuranceInfo({
-        ...setInsuranceInfo,
-        totalPaid: totalPaid,
-        percentPaid: percentPaid,
-        balanceRemaining: balanceRemaining,
-        deductible: insurance.deductible,
-        outOfPocket: insurance.outOfPocket,
-        claims: insurance.claims,
-        providers: insurance.providers,
-        memberBalance: breakdownMap,
-      });
     }
+    setInsuranceInfo({
+      ...setInsuranceInfo,
+      totalPaid: totalPaid,
+      percentPaid: percentPaid,
+      balanceRemaining: balanceRemaining,
+      deductible: insurance.deductible,
+      outOfPocket: insurance.outOfPocket,
+      claims: insurance.claims,
+      providers: insurance.providers,
+      memberBalance: breakdownMap,
+    });
   }, [insurance]);
 
   const resArray: HookReponse<insuranceInfo> = [insuranceInfo, loading, error];
