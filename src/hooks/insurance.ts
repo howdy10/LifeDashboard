@@ -56,8 +56,10 @@ export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
     let percentPaid = 0;
     let balanceRemaining = 0;
     const breakdownMap = new Map();
+    let currentClaims = [];
 
     if (insurance?.claims) {
+      currentClaims = insurance.claims;
       forEachFirebase(insurance.claims, (value) => {
         totalPaid += value.cost;
         balanceRemaining += !value.paid ? value.cost : 0;
@@ -68,17 +70,19 @@ export const GetInsuranceInfo = (year: number): HookReponse<insuranceInfo> => {
       });
       percentPaid = Math.trunc((totalPaid * 100) / insurance.deductible);
     }
-    setInsuranceInfo({
-      ...setInsuranceInfo,
-      totalPaid: totalPaid,
-      percentPaid: percentPaid,
-      balanceRemaining: balanceRemaining,
-      deductible: insurance.deductible,
-      outOfPocket: insurance.outOfPocket,
-      claims: insurance.claims,
-      providers: insurance.providers,
-      memberBalance: breakdownMap,
-    });
+    if (insurance) {
+      setInsuranceInfo({
+        ...setInsuranceInfo,
+        totalPaid: totalPaid,
+        percentPaid: percentPaid,
+        balanceRemaining: balanceRemaining,
+        deductible: insurance.deductible,
+        outOfPocket: insurance.outOfPocket,
+        claims: currentClaims,
+        providers: insurance.providers,
+        memberBalance: breakdownMap,
+      });
+    }
   }, [insurance]);
 
   const resArray: HookReponse<insuranceInfo> = [insuranceInfo, loading, error];
