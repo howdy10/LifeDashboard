@@ -1,51 +1,62 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-admin.initializeApp(functions.config().firebase);
+const { initializeApp } = require("firebase-admin/app");
+const { getDatabase } = require("firebase-admin/database");
+const { onValueWritten } = require("firebase-functions/v2/database");
+const { onRequest } = require("firebase-functions/v2/https");
+const { logger } = require("firebase-functions/v2");
 
-var database = admin.database();
+initializeApp();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 
-exports.createTestDb = functions.https.onRequest((req, resp) => {
-  database
-    .ref("family/a70b3195-4787-4509-8d08-cfeb49761524")
+//This function needs permissions to be called
+// Steps can be found: https://cloud.google.com/run/docs/authenticating/public#console-ui
+exports.createTestDbSecondGen = onRequest({}, (req, res) => {
+  const db = getDatabase();
+  const sourceRef = db.ref("family/a70b3195-4787-4509-8d08-cfeb49761524");
+  const targetRef = db.ref("family/test");
+
+  sourceRef
     .once("value")
     .then((snapshot) => {
       if (snapshot.exists()) {
-        database.ref(`family/test`).set(snapshot.val());
-        resp.send("Database has been copied to test profile");
+        targetRef.set(snapshot.val());
+        res.send("Database has been copied to test profile");
       } else {
-        resp.send("No data avaliable");
+        res.send("No data avaliable");
       }
     })
     .catch((error) => {
-      resp.send(`Error pulling data: ${error}`);
+      res.send(`Error pulling data: ${error}`);
     });
 });
 
-exports.endingBalanceUpdate = functions.database
-  .ref("family/{familyId}/Balance/{year}/{month}/spent")
-  .onWrite((change, context) => {
-    if (!change.after.exists()) {
+exports.endingBalanceUpdateSecondGen = onValueWritten(
+  "family/{familyId}/Balance/{year}/{month}/spent",
+  (event) => {
+    if (!event.data.after.exists()) {
       //if deleted
-      functions.logger.info(`Was being deleted`);
+      logger.info(`Was being deleted`);
       return null;
     }
-    const familyId = context.params.familyId;
-    const year = context.params.year;
-    const month = context.params.month;
+    const familyId = event.params.familyId;
+    const year = event.params.year;
+    const month = event.params.month;
     const today = new Date(year, month, 1);
+    logger.info(`Call made for ${month}/${year}`);
 
     today.setMonth(today.getMonth() - 1);
     const prevMonth = today.getMonth();
     const prevMonthYear = today.getFullYear();
 
-    const spent = change.after.val();
+    const spent = event.data.after.val();
 
-    database
-      .ref(`family/${familyId}/Balance`)
+    const db = getDatabase();
+    const balanceRef = db.ref(`family/${familyId}/Balance`);
+    const endBalanceRef = db.ref(`family/${familyId}/Balance/${year}/${month}/endingBalance`);
+
+    balanceRef
       .once("value")
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -62,40 +73,41 @@ exports.endingBalanceUpdate = functions.database
           }
           let currentBalance = lastBalance + paidThisMonth - spent;
 
-          functions.logger.info(`Today date: ${month} Year: ${year}`);
-          functions.logger.info(`last balance: ${lastBalance}`);
-          functions.logger.info(`paid this month: ${paidThisMonth}`);
-          functions.logger.info(`Ending Balance: ${currentBalance}`);
-          database
-            .ref(`family/${familyId}/Balance/${year}/${month}/endingBalance`)
-            .set(Math.round((currentBalance + Number.EPSILON) * 100) / 100);
+          logger.info(`Today date: ${month} Year: ${year}`);
+          logger.info(`last balance: ${lastBalance}`);
+          logger.info(`paid this month: ${paidThisMonth}`);
+          logger.info(`Ending Balance: ${currentBalance}`);
+          endBalanceRef.set(Math.round((currentBalance + Number.EPSILON) * 100) / 100);
         } else {
-          functions.logger.error(`Did not find paychecks for month ${month}, year ${year}`);
+          logger.error(`Did not find paychecks for month ${month}, year ${year}`);
         }
       })
       .catch((error) => {
-        functions.logger.error(`Error pulling data: ${error}`);
+        logger.error(`Error pulling data: ${error}`);
       });
-  });
+  }
+);
 
-exports.savingBucketAmountUpdate = functions.database
-  .ref("family/{familyId}/Savings/bucketTransactions/{bucketId}")
-  .onWrite((change, context) => {
-    const familyId = context.params.familyId;
-    const bucketId = context.params.bucketId;
+exports.savingBucketAmountUpdateSecondGen = onValueWritten(
+  "family/{familyId}/Savings/bucketTransactions/{bucketId}",
+  (event) => {
+    const familyId = event.params.familyId;
+    const bucketId = event.params.bucketId;
 
     let bucketSum = 0;
-    const transactionList = change.after.val();
+    const transactionList = event.data.after.val();
     Object.keys(transactionList).map(
       (key, index) => (bucketSum += transactionList[key].amount ?? 0)
     );
 
-    functions.logger.info(`Family Id updating: ${familyId}`);
-    functions.logger.info(`Bucket Id: ${bucketId}`);
-    functions.logger.info(`Amount updating: ${bucketSum}`);
-    return change.after.ref.parent.parent
+    logger.info(`Family Id updating: ${familyId}`);
+    logger.info(`Bucket Id: ${bucketId}`);
+    logger.info(`Amount updating: ${bucketSum}`);
+
+    return event.data.after.ref.parent.parent
       .child("buckets")
       .child(bucketId)
       .child("amount")
       .set(bucketSum);
-  });
+  }
+);
