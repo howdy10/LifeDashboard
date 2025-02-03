@@ -4,6 +4,7 @@ import DashboardContainer from "../components/dashboard-container";
 import { BehavioralAnswers } from "../components/interview/behavioralAnswer";
 import { useState } from "react";
 import { about } from "../__mocks__/interview";
+import { BehavioralQuestions } from "../components/interview/behavioralQuestions";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,7 +56,7 @@ export const Interview = () => {
             <BehavioralAnswers />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
-            Item Three
+            <BehavioralQuestions />
           </CustomTabPanel>
         </Box>
       </Box>
