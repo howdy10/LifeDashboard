@@ -48,7 +48,7 @@ export const InsuranceProgress = ({ href, ...rest }) => {
           </Grid>
           <Box sx={{ pt: 3 }}>
             <LinearProgress
-              value={paid?.percentPaid > 100 ? 100 : paid?.percentPaid}
+              value={(paid?.percentPaid || 0) > 100 ? 100 : paid?.percentPaid || 0}
               variant="determinate"
             />
           </Box>

@@ -34,7 +34,7 @@ export const BalanceBoard = ({ month, year }: BalanceBoardInput) => {
               <BalanceCurrent
                 spentAmount={balance?.spent}
                 creditCardAmount={balance?.creditCard}
-                incomeAmount={balance.total}
+                incomeAmount={balance?.total}
                 month={month}
                 year={year}
                 isCurrentMonth={isCurrentMonth}
@@ -43,16 +43,16 @@ export const BalanceBoard = ({ month, year }: BalanceBoardInput) => {
             </Grid>
             <Grid item lg={6} sm={6} xl={6} xs={12}>
               <BalanceTotals
-                bankAmount={balance.bankAmount}
-                afterCreditCard={balance.afterCreditCard}
-                monthNet={balance.total - balance?.spent}
+                bankAmount={balance?.bankAmount}
+                afterCreditCard={balance?.afterCreditCard}
+                monthNet={(balance?.total || 0) - (balance?.spent || 0)}
                 isCurrentMonth={isCurrentMonth}
               />
             </Grid>
 
             <Grid item xs={12}>
               <BalancePaychecks
-                income={balance.payChecks}
+                income={balance?.payChecks}
                 month={month}
                 year={year}
                 isCurrentMonth={isCurrentMonth}

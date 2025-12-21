@@ -59,7 +59,7 @@ export const DashboardTable: FC<DashboardTableProps> = ({
   const [infoRowOpenedId, setInfoRowOpenedId] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [dataListIdOrder, setDataListIdOrder] = useState([]);
+  const [dataListIdOrder, setDataListIdOrder] = useState<string[]>([]);
   const [localData, setLocalData] = useState([]);
 
   useEffect(() => {

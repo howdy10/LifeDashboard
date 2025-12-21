@@ -14,7 +14,7 @@ const order = {
 };
 
 interface BalancePaychecksInput {
-  income: payChecksDB;
+  income: payChecksDB | undefined;
   year: number;
   month: number;
   isCurrentMonth: boolean;
@@ -49,7 +49,7 @@ export const BalancePaychecks = ({
           </Box>
         )}
       </Box>
-      <DashboardTable columns={columns} data={income} order={order} />
+      <DashboardTable columns={columns} data={income || []} order={order} />
     </Card>
   );
 };

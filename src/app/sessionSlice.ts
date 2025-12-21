@@ -3,8 +3,8 @@ import type { RootState } from "./store";
 
 // Define a type for the slice state
 interface SessionState {
-  user: string;
-  familyIdBaseUrl: string;
+  user: string | null;
+  familyIdBaseUrl: string | null;
 }
 
 // Define the initial state using that type

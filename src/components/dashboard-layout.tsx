@@ -50,7 +50,7 @@ export const DashboardLayout = ({ children, ...props }: DashboardLayoutProps) =>
           }}
         >
           <LoadingComponent loading={userLoading} error={error}>
-            {user && <DashboardLayout2 {...props}>{children}</DashboardLayout2>}
+            {user ? <DashboardLayout2 {...props}>{children}</DashboardLayout2> : <></>}
           </LoadingComponent>
         </Box>
       </Box>
@@ -74,7 +74,7 @@ const DashboardLayout2 = ({ children, ...props }: DashboardLayoutProps) => {
 
   return (
     <LoadingComponent loading={loading} error={error}>
-      {keys && children}
+      {keys ? children : <></>}
     </LoadingComponent>
   );
 };

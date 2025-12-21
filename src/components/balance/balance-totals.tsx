@@ -2,8 +2,8 @@ import { Box, Card, CardContent, Grid, Typography, Divider } from "@mui/material
 import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 
 interface BalanceTotalsInput {
-  bankAmount: number;
-  afterCreditCard: number;
+  bankAmount: number | undefined;
+  afterCreditCard: number | undefined;
   monthNet: number;
   isCurrentMonth: boolean;
 }
@@ -34,10 +34,10 @@ export const BalanceTotals = ({
         <Grid container>
           <CardInfoRowMoney
             title={"Bank Account"}
-            value={isCurrentMonth ? bankAmount : afterCreditCard}
+            value={isCurrentMonth ? bankAmount || 0 : afterCreditCard || 0}
           />
           {isCurrentMonth && (
-            <CardInfoRowMoney title={"After Credit Card"} value={afterCreditCard} />
+            <CardInfoRowMoney title={"After Credit Card"} value={afterCreditCard || 0} />
           )}
           <CardInfoRowMoney title={"Net Balance"} value={monthNet} />
         </Grid>

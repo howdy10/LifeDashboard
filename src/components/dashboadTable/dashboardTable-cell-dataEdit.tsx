@@ -93,7 +93,7 @@ export const TableCellEdit = ({
             <MenuItem key={-1} value={0}>
               Please Select
             </MenuItem>
-            {columnOptions.map((x) => (
+            {columnOptions?.map((x) => (
               <MenuItem key={x} value={x}>
                 {x}
               </MenuItem>

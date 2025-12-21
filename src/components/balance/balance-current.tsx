@@ -4,9 +4,9 @@ import { CardInfoRowMoney } from "../dataDisplay/card-infoRow";
 import { MonthName } from "../dataDisplay/date-util";
 
 interface BalanceCurrentInput {
-  spentAmount: number;
-  creditCardAmount: number;
-  incomeAmount: number;
+  spentAmount: number | undefined;
+  creditCardAmount: number | undefined;
+  incomeAmount: number | undefined;
   month: number;
   year: number;
   isCurrentMonth: boolean;
@@ -33,8 +33,8 @@ export const BalanceCurrent = ({
         {(isLastMonth || isCurrentMonth) && (
           <Grid item>
             <CurrentModal
-              spent={spentAmount}
-              creditCard={creditCardAmount}
+              spent={spentAmount || 0}
+              creditCard={creditCardAmount || 0}
               month={month}
               year={year}
               isCurrentMonth={isCurrentMonth}
@@ -51,9 +51,11 @@ export const BalanceCurrent = ({
         }}
       >
         <Grid container>
-          <CardInfoRowMoney title={"Spent This Month"} value={spentAmount} />
-          {isCurrentMonth && <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount} />}
-          <CardInfoRowMoney title={"Income Earned"} value={incomeAmount} />
+          <CardInfoRowMoney title={"Spent This Month"} value={spentAmount || 0} />
+          {isCurrentMonth && (
+            <CardInfoRowMoney title={"On Credit Card"} value={creditCardAmount || 0} />
+          )}
+          <CardInfoRowMoney title={"Income Earned"} value={incomeAmount || 0} />
         </Grid>
       </Box>
     </CardContent>

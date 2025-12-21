@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 export interface LoadingComponentProps {
   loading: boolean;
-  error: Error;
+  error: Error | undefined;
   children: JSX.Element | JSX.Element[];
 }
 

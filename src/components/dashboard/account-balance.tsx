@@ -34,7 +34,9 @@ export const AccountBalance = ({ href, type = "full", ...rest }) => {
               {type == "cc" ? "After Credit Card" : "Bank Account"}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(type == "cc" ? balance.afterCreditCard : balance.bankAmount)}
+              {MoneyFormatter(
+                type == "cc" ? balance?.afterCreditCard || 0 : balance?.bankAmount || 0
+              )}
             </Typography>
           </Grid>
           <Grid item>{Icon()}</Grid>

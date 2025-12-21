@@ -81,7 +81,7 @@ export const DashboardNavbar = ({ onSidebarOpen, ...props }: DashboardNavbarProp
           </IconButton>
         </Tooltip>
         <Avatar sx={{ bgcolor: "primary.main", height: 40, width: 40, ml: 1 }}>
-          {user && user.displayName.charAt(0)}
+          {user && user.displayName?.charAt(0)}
         </Avatar>
       </Toolbar>
     </AppBar>

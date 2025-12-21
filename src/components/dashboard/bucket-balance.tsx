@@ -30,10 +30,10 @@ export const SavingsBucketBalance = ({ href, bucketId, ...rest }) => {
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
-              {savings.name}
+              {savings?.name}
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {MoneyFormatter(savings?.amount)}
+              {MoneyFormatter(savings?.amount || 0)}
             </Typography>
           </Grid>
           <Grid item>{Icon()}</Grid>
